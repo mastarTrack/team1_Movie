@@ -15,8 +15,8 @@ class SignUpView: UIView {
     
     private let nameField = CustomTextField(placeholder: "이름")
     private let emailField = CustomTextField(placeholder: "이메일")
-    private let passwordField = CustomTextField(placeholder: "비밀번호 (8자 이상)")
-    private let rePasswordField = CustomTextField(placeholder: "비밀번호 확인")
+    private let passwordField = CustomTextField(placeholder: "비밀번호 (8자 이상)", isPassword: true)
+    private let rePasswordField = CustomTextField(placeholder: "비밀번호 확인", isPassword: true)
     private let signUpButton = CustomLoginButton(title: "가입하기")
     
     override init(frame: CGRect) {
