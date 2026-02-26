@@ -53,4 +53,15 @@ extension CoreDataManager {
             return nil
         }
     }
+    
+    func login(email: String, password: String) -> Bool {
+        let fetchRequest = User.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "email == %@ && password == %@", email, password)
+        do {
+            let result = try context.fetch(fetchRequest)
+            return !result.isEmpty
+        } catch {
+            return false
+        }
+    }
 }

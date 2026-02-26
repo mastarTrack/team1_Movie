@@ -12,6 +12,7 @@ import SnapKit
 
 protocol LoginViewDelegate: AnyObject {
     func didTapSignUpButton()
+    func didTapLoginButton(email: String, password: String)
 }
 
 class LoginView: UIView {
@@ -103,10 +104,16 @@ extension LoginView {
 extension LoginView {
     private func setAction() {
         signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
     @objc
     private func signUpButtonTapped() {
         delegate?.didTapSignUpButton()
+    }
+    
+    @objc
+    private func loginButtonTapped() {
+        delegate?.didTapLoginButton(email: emailField.text ?? "", password: passwordField.text ?? "")
     }
 }
