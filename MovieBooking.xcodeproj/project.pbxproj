@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8AC8BB792F4FDFD4009690BD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB782F4FDFD4009690BD /* SnapKit */; };
+		8AC8BB7C2F4FDFDC009690BD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB7B2F4FDFDC009690BD /* Alamofire */; };
+		8AC8BB7F2F4FDFF3009690BD /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB7E2F4FDFF3009690BD /* Then */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		8AC8BB5C2F4FDFA8009690BD /* MovieBooking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBooking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AC8BB792F4FDFD4009690BD /* SnapKit in Frameworks */,
+				8AC8BB7F2F4FDFF3009690BD /* Then in Frameworks */,
+				8AC8BB7C2F4FDFDC009690BD /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +87,9 @@
 			);
 			name = MovieBooking;
 			packageProductDependencies = (
+				8AC8BB782F4FDFD4009690BD /* SnapKit */,
+				8AC8BB7B2F4FDFDC009690BD /* Alamofire */,
+				8AC8BB7E2F4FDFF3009690BD /* Then */,
 			);
 			productName = MovieBooking;
 			productReference = 8AC8BB5C2F4FDFA8009690BD /* MovieBooking.app */;
@@ -107,6 +119,11 @@
 			);
 			mainGroup = 8AC8BB532F4FDFA8009690BD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8AC8BB772F4FDFD4009690BD /* XCRemoteSwiftPackageReference "SnapKit" */,
+				8AC8BB7A2F4FDFDC009690BD /* XCRemoteSwiftPackageReference "Alamofire" */,
+				8AC8BB7D2F4FDFF3009690BD /* XCRemoteSwiftPackageReference "Then" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8AC8BB5D2F4FDFA8009690BD /* Products */;
 			projectDirPath = "";
@@ -149,9 +166,9 @@
 				INFOPLIST_FILE = MovieBooking/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -160,12 +177,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.MovieBooking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -180,9 +201,9 @@
 				INFOPLIST_FILE = MovieBooking/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -191,12 +212,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.MovieBooking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -341,6 +366,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8AC8BB772F4FDFD4009690BD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		8AC8BB7A2F4FDFDC009690BD /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.11.1;
+			};
+		};
+		8AC8BB7D2F4FDFF3009690BD /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8AC8BB782F4FDFD4009690BD /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC8BB772F4FDFD4009690BD /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		8AC8BB7B2F4FDFDC009690BD /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC8BB7A2F4FDFDC009690BD /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		8AC8BB7E2F4FDFF3009690BD /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC8BB7D2F4FDFF3009690BD /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8AC8BB542F4FDFA8009690BD /* Project object */;
 }
