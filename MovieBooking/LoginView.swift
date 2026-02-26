@@ -10,7 +10,13 @@
 import UIKit
 import SnapKit
 
+protocol LoginViewDelegate: AnyObject {
+    func didTapSignUpButton()
+}
+
 class LoginView: UIView {
+    
+    weak var delegate: LoginViewDelegate?
     
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
@@ -18,13 +24,14 @@ class LoginView: UIView {
     private let emailField = CustomTextField(placeholder: "email을 입력하세요.")
     private let passwordField = CustomTextField(placeholder: "password를 입력하세요.", isPassword: true)
     private let loginButton = CustomLoginButton(title: "로그인")
-    private let signUpLabel = UILabel()
+    private let signUpButton = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -46,14 +53,15 @@ extension LoginView {
         subtitleLabel.font = .systemFont(ofSize: 16)
         subtitleLabel.textAlignment = .center
         
-        signUpLabel.text = "계정이 없으신가요? 회원가입"
-        signUpLabel.textColor = .systemOrange
-        signUpLabel.textAlignment = .center
+        signUpButton.setTitle("계정이 없으신가요? 회원가입", for: .normal)
+        signUpButton.setTitleColor(.systemOrange, for: .normal)
+        signUpButton.titleLabel?.font = .systemFont(ofSize: 14)
+        signUpButton.titleLabel?.textAlignment = .center
         
     }
     private func setLayout() {
         
-        [titleLabel, subtitleLabel, emailField, passwordField, loginButton, signUpLabel ].forEach { addSubview($0) }
+        [titleLabel, subtitleLabel, emailField, passwordField, loginButton, signUpButton ].forEach { addSubview($0) }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide).offset(100)
@@ -83,10 +91,21 @@ extension LoginView {
             $0.height.equalTo(50)
         }
         
-        signUpLabel.snp.makeConstraints {
+        signUpButton.snp.makeConstraints {
             $0.top.equalTo(loginButton.snp.bottom).offset(50)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
+    }
+}
+
+extension LoginView {
+    private func setAction() {
+        signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func signUpButtonTapped() {
+        delegate?.didTapSignUpButton()
     }
 }
