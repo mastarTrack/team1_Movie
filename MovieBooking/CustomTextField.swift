@@ -9,6 +9,11 @@ import UIKit
 import SnapKit
 
 class CustomTextField: UIView {
+    
+    var text: String? {
+        return textField.text
+    }
+    
     let textField = UITextField()
     
     init(placeholder: String, isPassword: Bool = false) {

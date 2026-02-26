@@ -8,7 +8,15 @@
 import UIKit
 import SnapKit
 
+//TODO: 회원가입 버튼 클릭 시 조건에 따라 alert, 비밀번호 확인 버튼 생성 및 로직 구현
+
+protocol SignUpViewDelegate: AnyObject {
+    func didTapSignUpButton(name: String, email: String, password: String, rePassword: String)
+}
+
 class SignUpView: UIView {
+    
+    weak var delegate: SignUpViewDelegate?
     
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
@@ -25,6 +33,7 @@ class SignUpView: UIView {
         
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -91,5 +100,20 @@ extension SignUpView {
         }
         
         
+    }
+}
+
+extension SignUpView {
+    private func setAction() {
+        signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func signUpButtonTapped() {
+        delegate?.didTapSignUpButton(name: nameField.text ?? "",
+                                     email: emailField.text ?? "",
+                                     password: passwordField.text ?? "",
+                                     rePassword: rePasswordField.text ?? ""
+        )
     }
 }
