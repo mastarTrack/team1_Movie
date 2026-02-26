@@ -13,6 +13,7 @@ import SnapKit
 protocol SignUpViewDelegate: AnyObject {
     func didTapSignUpButton(name: String, email: String, password: String, rePassword: String)
     func passwordFieldDidChange(isEqual: Bool)
+    func didTapCheckButton(email: String)
 }
 
 class SignUpView: UIView {
@@ -118,6 +119,7 @@ extension SignUpView {
         signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         passwordField.textField.addTarget(self, action: #selector(passwordFieldDidChange), for: .editingChanged)
         rePasswordField.textField.addTarget(self, action: #selector(passwordFieldDidChange), for: .editingChanged)
+        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
     }
     
     @objc
@@ -146,6 +148,11 @@ extension SignUpView {
             rePasswordField.layer.borderWidth = 1
             rePasswordField.layer.borderColor = UIColor.systemRed.cgColor
         }
+    }
+    
+    @objc
+    private func checkButtonTapped() {
+        delegate?.didTapCheckButton(email: emailField.textField.text ?? "")
     }
 }
 

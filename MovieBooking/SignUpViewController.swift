@@ -57,6 +57,23 @@ extension SignUpViewController: SignUpViewDelegate {
     func passwordFieldDidChange(isEqual: Bool) {
         signUpView.updateRePasswordColor(isEqual: isEqual)
     }
+    
+    func didTapCheckButton(email: String) {
+        guard !email.isEmpty else {
+            showAlert(message: "이메일을 입력해주세요.")
+            return
+        }
+        
+        let userData = CoreDataManager.shared.isUserExist(email: email)
+        switch userData {
+        case .some(true):
+            showAlert(message: "이미 존재하는 이메일입니다.")
+        case .some(false):
+            showAlert(message: "사용 가능한 이메일입니다.")
+        case .none:
+            showAlert(message: "서버 오류. 다시 시도해주세요.")
+        }
+    }
 }
 
 extension SignUpViewController {
