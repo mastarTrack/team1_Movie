@@ -25,10 +25,10 @@ class CustomTextField: UIView {
 extension CustomTextField {
     private func setAttributes(placeholder: String, isSecure: Bool) {
         
-        self.backgroundColor = .lightGray
+        self.backgroundColor = .systemGray6
         self.layer.cornerRadius = 10
         
-        textField.textColor = .white
+        textField.textColor = .label
         textField.font = .systemFont(ofSize: 16)
         textField.placeholder = placeholder
         textField.isSecureTextEntry = isSecure

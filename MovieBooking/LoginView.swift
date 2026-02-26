@@ -44,9 +44,10 @@ extension LoginView {
     private func setAttributes() {
         
         titleLabel.text = "Movie Booking"
-        titleLabel.textColor = .black
+        titleLabel.textColor = .label
         titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
         titleLabel.textAlignment = .center
+
         
         subtitleLabel.text = "영화 예매를 쉽고 편리하게"
         subtitleLabel.textColor = .systemGray2

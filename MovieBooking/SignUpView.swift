@@ -36,7 +36,7 @@ extension SignUpView {
     private func setAttributes() {
         
         titleLabel.text = "Movie Booking"
-        titleLabel.textColor = .black
+        titleLabel.textColor = .label
         titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
         titleLabel.textAlignment = .center
         
