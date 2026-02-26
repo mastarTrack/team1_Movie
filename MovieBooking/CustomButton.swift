@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomLoginButton: UIButton {
+class CustomButton: UIButton {
     init(title: String) {
         super.init(frame: .zero)
         setAttributes(title: title)
@@ -18,7 +18,7 @@ class CustomLoginButton: UIButton {
     }
 }
 
-extension CustomLoginButton {
+extension CustomButton {
     private func setAttributes(title: String) {
         self.setTitle(title, for: .normal)
         self.setTitleColor(.white, for: .normal)

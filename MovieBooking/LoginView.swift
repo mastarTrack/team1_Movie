@@ -23,7 +23,7 @@ class LoginView: UIView {
     
     private let emailField = CustomTextField(placeholder: "email을 입력하세요.")
     private let passwordField = CustomTextField(placeholder: "password를 입력하세요.", isPassword: true)
-    private let loginButton = CustomLoginButton(title: "로그인")
+    private let loginButton = CustomButton(title: "로그인")
     private let signUpButton = UIButton()
     
     override init(frame: CGRect) {

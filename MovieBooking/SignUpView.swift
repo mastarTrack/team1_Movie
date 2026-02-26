@@ -24,9 +24,10 @@ class SignUpView: UIView {
     
     private let nameField = CustomTextField(placeholder: "이름")
     private let emailField = CustomTextField(placeholder: "이메일")
+    private let checkButton = CustomButton(title: "중복 확인")
     private let passwordField = CustomTextField(placeholder: "비밀번호 (8자 이상)", isPassword: true)
     private let rePasswordField = CustomTextField(placeholder: "비밀번호 확인", isPassword: true)
-    private let signUpButton = CustomLoginButton(title: "가입하기")
+    private let signUpButton = CustomButton(title: "가입하기")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,7 +59,7 @@ extension SignUpView {
     
     private func setLayout() {
         
-        [titleLabel, subtitleLabel, nameField, emailField, passwordField, rePasswordField, signUpButton].forEach { addSubview($0) }
+        [titleLabel, subtitleLabel, nameField, emailField, checkButton, passwordField, rePasswordField, signUpButton].forEach { addSubview($0) }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide).offset(100)
@@ -78,7 +79,15 @@ extension SignUpView {
         
         emailField.snp.makeConstraints {
             $0.top.equalTo(nameField.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(20)
+            $0.trailing.equalTo(checkButton.snp.leading).offset(-10)
+            $0.height.equalTo(50)
+        }
+        
+        checkButton.snp.makeConstraints {
+            $0.top.equalTo(nameField.snp.bottom).offset(20)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.equalTo(100)
             $0.height.equalTo(50)
         }
         
