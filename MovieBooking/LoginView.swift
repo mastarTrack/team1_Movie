@@ -5,7 +5,7 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
-//TODO: 커스텀 버튼, TextField 만들기
+//TODO: 커스텀 버튼, TextField 만들기 - 완료
 
 import UIKit
 import SnapKit
@@ -17,7 +17,7 @@ class LoginView: UIView {
     
     private let emailField = CustomTextField(placeholder: "email을 입력하세요.")
     private let passwordField = CustomTextField(placeholder: "password를 입력하세요.", isPassword: true)
-    private let loginButton = UIButton()
+    private let loginButton = CustomLoginButton(title: "로그인")
     private let signUpLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -45,14 +45,6 @@ extension LoginView {
         subtitleLabel.textColor = .systemGray2
         subtitleLabel.font = .systemFont(ofSize: 16)
         subtitleLabel.textAlignment = .center
-        
-        loginButton.setTitle("로그인", for: .normal)
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.backgroundColor = .systemOrange
-        loginButton.titleLabel?.textAlignment = .center
-        loginButton.layer.cornerRadius = 10
-        loginButton.clipsToBounds = true
-        
         
         signUpLabel.text = "계정이 없으신가요? 회원가입"
         signUpLabel.textColor = .systemOrange
