@@ -33,8 +33,10 @@ extension CoreDataManager {
         
         do {
             try context.save()
+            print("이름: \(name), email: \(email), 비밀번호: \(password) 저장 완료")
             return true
         } catch {
+            print("저장 실패")
             return false
         }
     }

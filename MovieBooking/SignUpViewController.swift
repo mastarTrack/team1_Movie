@@ -5,9 +5,15 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
+//TODO: 이메일 검사 이전에 가입버튼 클릭 시 이메일 검사를 진행해주세요. 출력 - 완료
+//TODO: 이메일 검사 이후 값을 변경할 경우 다시 이메일 검사 진행하도록
+//TODO: 회원가입 성공 시 CoreData 저장, LoginView로 돌아가기
+
 import UIKit
 
 class SignUpViewController: UIViewController {
+    
+    var isEmailChecked = false
     
     private let signUpView = SignUpView()
     
@@ -51,7 +57,22 @@ extension SignUpViewController: SignUpViewDelegate {
             showAlert(message: "비밀번호가 맞지않습니다.")
             return
         }
-        showAlert(message: "회원가입에 성공했습니다.", success: true)
+        guard isEmailChecked else {
+            showAlert(message: "이메일 중복 검사를 진행해 주세요.")
+            return
+        }
+        
+        let isSaved = CoreDataManager.shared.saveUser(
+            name: name,
+            email: email,
+            password: password
+        )
+        
+        if isSaved {
+            showAlert(message: "회원가입에 성공했습니다.", success: true)
+        } else {
+            showAlert(message: "회원가입 중 오류가 발생했습니다. 잠시후 다시 시도해주세요.")
+        }
     }
     
     func passwordFieldDidChange(isEqual: Bool) {
@@ -68,10 +89,13 @@ extension SignUpViewController: SignUpViewDelegate {
         switch userData {
         case .some(true):
             showAlert(message: "이미 존재하는 이메일입니다.")
+            self.isEmailChecked = false
         case .some(false):
             showAlert(message: "사용 가능한 이메일입니다.")
+            self.isEmailChecked = true
         case .none:
             showAlert(message: "서버 오류. 다시 시도해주세요.")
+            self.isEmailChecked = false
         }
     }
 }
