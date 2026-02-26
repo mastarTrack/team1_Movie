@@ -15,8 +15,8 @@ class LoginView: UIView {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     
-    private let emailField = UITextField()
-    private let passwordField = UITextField()
+    private let emailField = CustomTextField(placeholder: "email을 입력하세요.")
+    private let passwordField = CustomTextField(placeholder: "password를 입력하세요.", isPassword: true)
     private let loginButton = UIButton()
     private let signUpLabel = UILabel()
     
@@ -45,20 +45,6 @@ extension LoginView {
         subtitleLabel.textColor = .systemGray2
         subtitleLabel.font = .systemFont(ofSize: 16)
         subtitleLabel.textAlignment = .center
-        
-        [emailField, passwordField].forEach {
-            $0.textColor = .white
-            $0.font = .boldSystemFont(ofSize: 16)
-            $0.backgroundColor = .systemGray2
-            $0.textAlignment = .left
-            
-            $0.layer.cornerRadius = 10
-            $0.clipsToBounds = true
-            
-        }
-        
-        emailField.placeholder = "email 입력하세요."
-        passwordField.placeholder = "password 입력하세요."
         
         loginButton.setTitle("로그인", for: .normal)
         loginButton.setTitleColor(.white, for: .normal)
@@ -100,7 +86,7 @@ extension LoginView {
         }
         
         loginButton.snp.makeConstraints {
-            $0.top.equalTo(passwordField.snp.bottom).offset(50)
+            $0.top.equalTo(passwordField.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(50)
         }
