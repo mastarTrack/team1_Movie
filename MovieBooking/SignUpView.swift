@@ -12,6 +12,7 @@ import SnapKit
 
 protocol SignUpViewDelegate: AnyObject {
     func didTapSignUpButton(name: String, email: String, password: String, rePassword: String)
+    func passwordFieldDidChange(isEqual: Bool)
 }
 
 class SignUpView: UIView {
@@ -106,14 +107,36 @@ extension SignUpView {
 extension SignUpView {
     private func setAction() {
         signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+        passwordField.textField.addTarget(self, action: #selector(passwordFieldDidChange), for: .editingChanged)
+        rePasswordField.textField.addTarget(self, action: #selector(passwordFieldDidChange), for: .editingChanged)
     }
     
     @objc
     private func signUpButtonTapped() {
-        delegate?.didTapSignUpButton(name: nameField.text ?? "",
-                                     email: emailField.text ?? "",
-                                     password: passwordField.text ?? "",
-                                     rePassword: rePasswordField.text ?? ""
+        delegate?.didTapSignUpButton(
+            name: nameField.text ?? "",
+            email: emailField.text ?? "",
+            password: passwordField.text ?? "",
+            rePassword: rePasswordField.text ?? ""
         )
     }
+    
+    @objc
+    private func passwordFieldDidChange() {
+        let password = passwordField.textField.text ?? ""
+        let rePassword = rePasswordField.textField.text ?? ""
+        
+        delegate?.passwordFieldDidChange(isEqual: password == rePassword && !rePassword.isEmpty)
+    }
+    
+    func updateRePasswordColor(isEqual: Bool) {
+        if isEqual {
+            rePasswordField.layer.borderWidth = 1
+            rePasswordField.layer.borderColor = UIColor.systemBlue.cgColor
+        } else {
+            rePasswordField.layer.borderWidth = 1
+            rePasswordField.layer.borderColor = UIColor.systemRed.cgColor
+        }
+    }
 }
+

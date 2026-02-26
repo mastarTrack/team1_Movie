@@ -28,6 +28,7 @@ extension SignUpViewController {
 }
 
 extension SignUpViewController: SignUpViewDelegate {
+    
     func didTapSignUpButton(name: String, email: String, password: String, rePassword: String) {
         
         guard !name.isEmpty else {
@@ -50,8 +51,11 @@ extension SignUpViewController: SignUpViewDelegate {
             showAlert(message: "비밀번호가 맞지않습니다.")
             return
         }
-        
         showAlert(message: "회원가입에 성공했습니다.", success: true)
+    }
+    
+    func passwordFieldDidChange(isEqual: Bool) {
+        signUpView.updateRePasswordColor(isEqual: isEqual)
     }
 }
 
