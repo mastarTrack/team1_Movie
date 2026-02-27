@@ -22,6 +22,7 @@ class SearchTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none // 클릭 음영 제거
         setAttributes()
         setLayout()
     }
@@ -96,7 +97,7 @@ extension SearchTableViewCell {
             $0.top.equalTo(posterImageView.snp.top).offset(10)
             $0.leading.equalTo(posterImageView.snp.trailing).offset(10)
             $0.trailing.equalToSuperview().offset(-10)
-            $0.bottom.lessThanOrEqualTo(posterImageView.snp.bottom)
+            $0.bottom.equalTo(posterImageView.snp.bottom).offset(-10)
         }
         reservationButton.snp.makeConstraints {
 //            $0.top.equalTo(genreLabel.snp.bottom).offset(10)
