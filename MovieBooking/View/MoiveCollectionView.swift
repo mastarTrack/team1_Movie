@@ -7,6 +7,7 @@
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
 class MovieCollectionView: UIView {
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeLayout())
@@ -16,11 +17,7 @@ class MovieCollectionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
-        
         addSubview(collectionView)
-        
-        collectionView.dataSource = self
-        collectionView.delegate = self
         
         collectionView.register(PosterCell.self, forCellWithReuseIdentifier: PosterCell.identifier)
         collectionView.register(
@@ -94,56 +91,40 @@ class MovieCollectionView: UIView {
     }
 }
 
-extension MovieCollectionView: UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        20
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCell.identifier, for: indexPath) as! PosterCell
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        guard kind == UICollectionView.elementKindSectionHeader else {
-            return UICollectionReusableView()
-        }
-        
-        let header = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: SectionHeaderView.identifier,
-            for: indexPath
-        ) as! SectionHeaderView
-        
-        header.configure(title: sectionTitles[indexPath.section])
-        return header
-    }
-}
-
 final class PosterCell: UICollectionViewCell {
     static let identifier = "PosterCell"
+    private let imageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .cyan
+        
         contentView.layer.cornerRadius = 12
         contentView.layer.masksToBounds = true
+        
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        
+        contentView.addSubview(imageView)
+        
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    // 스크롤 빠르게해도 재사용 안전하게
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.kf.cancelDownloadTask()
+        imageView.image = nil
+    }
+    
+    func setPoster(url: URL?) {
+        imageView.kf.setImage(with: url)
+    }
 }
 
 final class SectionHeaderView: UICollectionReusableView {
