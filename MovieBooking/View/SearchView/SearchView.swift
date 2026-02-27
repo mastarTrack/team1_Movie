@@ -44,8 +44,7 @@ extension SearchView {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(10)
-            $0.bottom.equalTo(safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
