@@ -31,7 +31,7 @@ class NetworkManager: Networking {
         
         return components.url
     }
-    
+      
     
     func fetchData<T:Decodable>(url: URL) async throws -> T {
         var request = URLRequest(url: url)
@@ -55,7 +55,7 @@ class NetworkManager: Networking {
         guard let checkedApiKey = apiKey else {
             throw URLError(.fileDoesNotExist)
         }
-        print("api \(checkedApiKey)")
+        
         guard let url = makeUpcomingURL(apiKey: checkedApiKey, type) else {
             throw URLError(.badURL)
         }
