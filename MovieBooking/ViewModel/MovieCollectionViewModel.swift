@@ -14,7 +14,7 @@ class MovieCollectionViewModel {
     private(set) var popular: [Movie] = []
     
     var onUpdate: (() -> Void)?
-    var onError: ((Error) -> Void)?
+    var onErrorMessage: ((String) -> Void)?
     
     init(networkingService: Networking = NetworkManager()) {
         self.networkingService = networkingService
@@ -34,11 +34,25 @@ class MovieCollectionViewModel {
             self.upcoming = up
             self.popular = pop
             
-            // UI 떄문에 MainActor 호출
             self.onUpdate?()
         } catch {
-            print("error:", error)
+            self.onErrorMessage?(makeErrorMessage(error))
         }
+    }
+    
+    private func makeErrorMessage(_ error: Error) -> String {
+        if let urlError = error as? URLError {
+            switch urlError.code {
+            case .notConnectedToInternet, .networkConnectionLost:
+                return "인터넷에 연결 할 수 없습니다."
+            case .timedOut:
+                return "요청 시간이 초과됐어요. 잠시 후 다시 시도해주세요."
+            default:
+                return "다시 시도해주세요."
+            }
+        }
+        
+        return "잠시 후 다시 시도해주세요."
     }
     
     // 각 섹션에다가 줄 아이템 갯수 주는 함수
