@@ -8,11 +8,12 @@
 import UIKit
 import SnapKit
 
-//TODO: 회원가입 버튼 클릭 시 조건에 따라 alert, 비밀번호 확인 버튼 생성 및 로직 구현
+//TODO: 회원가입 버튼 클릭 시 조건에 따라 alert, 비밀번호 확인 버튼 생성 및 로직 구현 - 완료
+//TODO: View에서 데이터 계산하는 로직 제거 (passwordFieldDidChange) - 완료
 
 protocol SignUpViewDelegate: AnyObject {
     func didTapSignUpButton(name: String, email: String, password: String, rePassword: String)
-    func passwordFieldDidChange(isEqual: Bool)
+    func passwordFieldDidChange(password: String, rePassword: String)
     func didTapCheckButton(email: String)
 }
 
@@ -137,7 +138,7 @@ extension SignUpView {
         let password = passwordField.textField.text ?? ""
         let rePassword = rePasswordField.textField.text ?? ""
         
-        delegate?.passwordFieldDidChange(isEqual: password == rePassword && !rePassword.isEmpty)
+        delegate?.passwordFieldDidChange(password: password, rePassword: rePassword)
     }
     
     func updateRePasswordColor(isEqual: Bool) {

@@ -6,8 +6,8 @@
 //
 
 //TODO: 이메일 검사 이전에 가입버튼 클릭 시 이메일 검사를 진행해주세요. 출력 - 완료
-//TODO: 이메일 검사 이후 값을 변경할 경우 다시 이메일 검사 진행하도록
-//TODO: 회원가입 성공 시 CoreData 저장, LoginView로 돌아가기
+//TODO: 이메일 검사 이후 값을 변경할 경우 다시 이메일 검사 진행하도록 - 완료
+//TODO: 회원가입 성공 시 CoreData 저장, LoginView로 돌아가기 - 완료
 
 import UIKit
 
@@ -31,7 +31,12 @@ extension SignUpViewController {
     private func bind() {
         viewModel.showAlert = { [weak self] message, success in
             self?.showAlert(message: message, success: success)
-        }}
+        }
+        viewModel.passwordEqual = { [weak self] result in
+            self?.signUpView.updateRePasswordColor(isEqual: result)
+            
+        }
+    }
 }
 
 extension SignUpViewController {
@@ -42,12 +47,13 @@ extension SignUpViewController {
 
 extension SignUpViewController: SignUpViewDelegate {
     
+    
     func didTapSignUpButton(name: String, email: String, password: String, rePassword: String) {
         viewModel.signUp(name: name, email: email, password: password, rePassword: rePassword)
     }
     
-    func passwordFieldDidChange(isEqual: Bool) {
-        signUpView.updateRePasswordColor(isEqual: isEqual)
+    func passwordFieldDidChange(password: String, rePassword: String) {
+        viewModel.isPasswordEqual(password: password, rePassword: rePassword)
     }
     
     func didTapCheckButton(email: String) {

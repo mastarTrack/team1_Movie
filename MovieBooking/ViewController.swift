@@ -5,7 +5,7 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
-//MARK: 임시용 로그아웃 버튼 생성
+//MARK: 임시용 로그아웃 버튼 생성 - 완료
 
 import UIKit
 import SnapKit

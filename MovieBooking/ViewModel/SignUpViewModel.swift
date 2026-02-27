@@ -10,8 +10,13 @@ import Foundation
 class SignUpViewModel {
     
     var showAlert: ((String, Bool) -> Void)?
+    var passwordEqual: ((Bool) -> Void)?
     
     var isEmailChecked = false
+    
+    func emailChanged() {
+            isEmailChecked = false
+        }
     
     func signUp(name: String, email: String, password: String, rePassword: String) {
         guard !name.isEmpty else {
@@ -67,6 +72,11 @@ class SignUpViewModel {
             showAlert?("서버 오류. 다시 시도해주세요.", false)
             self.isEmailChecked = false
         }
+    }
+    
+    func isPasswordEqual(password: String, rePassword: String) {
+        let result = (password == rePassword) && !rePassword.isEmpty
+        passwordEqual?(result)
     }
     
 }
