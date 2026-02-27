@@ -20,26 +20,24 @@ class MovieCollectionViewModel {
         self.networkingService = networkingService
     }
     
-    func fetchMovieData() {
-        Task {
-            do {
-                // async let : 비동기 작업을 일단 시작해두고 필요할때 한번에 await해서 받아옴, 바로 다음 줄로 넘어가면서 작업은 백그라운드에서 계속 진행
-                async let NowPlaying = networkingService.fetchMovies(type: .NowPlaying)
-                async let upcoming = networkingService.fetchMovies(type: .upcoming)
-                async let popular = networkingService.fetchMovies(type: .popular)
-                
-                let (now, up, pop) = try await (NowPlaying, upcoming, popular)
-                
-                self.nowPlaying = now
-                self.upcoming = up
-                self.popular = pop
-                
-                
-                self.onUpdate?()
-                
-            } catch {
-                print("error:", error)
-            }
+    @MainActor
+    func fetchMovieData() async {
+        do {
+            // async let : 비동기 작업을 일단 시작해두고 필요할때 한번에 await해서 받아옴, 바로 다음 줄로 넘어가면서 작업은 백그라운드에서 계속 진행
+            async let NowPlaying = networkingService.fetchMovies(type: .NowPlaying)
+            async let upcoming = networkingService.fetchMovies(type: .upcoming)
+            async let popular = networkingService.fetchMovies(type: .popular)
+            
+            let (now, up, pop) = try await (NowPlaying, upcoming, popular)
+            
+            self.nowPlaying = now
+            self.upcoming = up
+            self.popular = pop
+            
+            // UI 떄문에 MainActor 호출
+            self.onUpdate?()
+        } catch {
+            print("error:", error)
         }
     }
     
@@ -53,9 +51,11 @@ class MovieCollectionViewModel {
         }
     }
 
-    // 인덱스패스에 영화포스터 매치
-    func putMovieInfo(at indexPath: IndexPath) -> Movie? {
+    // 인덱스패스 위치에 표시할 Movie 하나를 반환하는 함수
+    func getMovieInfo(at indexPath: IndexPath) -> Movie? {
+        // index.Section은 숫자니까 rawValue로 연결
         guard let section = Section(rawValue: indexPath.section) else { return nil }
+        // 섹션을 받아 왔으니 섹션에 해당하는 case 찾아서 해당 그룹 item에 넣어줌
         switch section {
             // 배열 범위체크
         case .nowPlaying:
