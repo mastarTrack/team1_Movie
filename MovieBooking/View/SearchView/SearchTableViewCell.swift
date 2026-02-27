@@ -5,6 +5,8 @@
 //  Created by 손영빈 on 2/27/26.
 //
 
+//TODO: Cell.config에 String 전달 -> URL로 바로 전달 - 완료
+
 import UIKit
 import SnapKit
 import Kingfisher
@@ -98,9 +100,8 @@ extension SearchTableViewCell {
 }
 
 extension SearchTableViewCell {
-    func config(posterPath: String?, score: Double, title: String, genre: String) {
-        let baseURL = "https://image.tmdb.org/t/p/w300"
-        if let path = posterPath, let url = URL(string: baseURL + path) {
+    func config(posterURL: URL?, score: Double, title: String, genre: String) {
+        if let url = posterURL {
             posterImageView.kf.setImage(with: url)
         } else {
             posterImageView.image = UIImage(systemName: "movieclapper")

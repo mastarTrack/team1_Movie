@@ -15,6 +15,8 @@ class SearchViewModel {
     
     var updateUI: (() -> Void)?
     
+    private let imageURL = "https://image.tmdb.org/t/p/w500"
+    
     private let networkManager = NetworkManager()
     
     private(set) var allMovies: [Movie] = []
@@ -67,5 +69,10 @@ class SearchViewModel {
             }
         }
         updateUI?()
+    }
+    
+    func getPosterURL(index: Int) -> URL? {
+        guard let path = viewMovies[index].posterPath else { return nil }
+        return URL(string: imageURL + path)
     }
 }
