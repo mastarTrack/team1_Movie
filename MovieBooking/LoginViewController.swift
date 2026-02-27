@@ -46,11 +46,13 @@ extension LoginViewController: LoginViewDelegate {
         }
         
         let loginData = CoreDataManager.shared.login(email: email, password: password)
-        
-        if loginData {
+        switch loginData {
+        case .some(true):
             showAlert(message: "로그인에 성공했습니다.", success: true)
-        } else {
-            showAlert(message: "정보를 다시 확인해주세요.", success: false)
+        case .some(false):
+            showAlert(message: "이메일과 비밀번호를 확인해주세요.")
+        case .none:
+            showAlert(message: "로그인 오류. 다시 시도해주세요.")
         }
     }
 }
