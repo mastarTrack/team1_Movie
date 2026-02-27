@@ -5,8 +5,6 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
-//TODO: 커스텀 버튼, TextField 만들기 - 완료
-
 import UIKit
 import SnapKit
 

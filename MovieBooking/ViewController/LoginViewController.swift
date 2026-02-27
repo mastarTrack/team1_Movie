@@ -5,10 +5,6 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
-//TODO: 로그인 성공 시 화면 전환에 애니메이션 적용?
-//TODO: 로그인 성공 시 UserDefaults에 저장 - 완료
-//TODO: MVVM 적용
-
 import UIKit
 
 class LoginViewController: UIViewController {

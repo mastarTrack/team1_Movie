@@ -5,10 +5,6 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
-//TODO: 이메일 검사 이전에 가입버튼 클릭 시 이메일 검사를 진행해주세요. 출력 - 완료
-//TODO: 이메일 검사 이후 값을 변경할 경우 다시 이메일 검사 진행하도록 - 완료
-//TODO: 회원가입 성공 시 CoreData 저장, LoginView로 돌아가기 - 완료
-
 import UIKit
 
 class SignUpViewController: UIViewController {
