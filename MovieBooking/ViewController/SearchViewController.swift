@@ -5,6 +5,8 @@
 //  Created by 손영빈 on 2/27/26.
 //
 
+//TODO: MVVM으로 구조 변경
+
 import UIKit
 
 class SearchViewController: UIViewController {
@@ -88,7 +90,7 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.id, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
         let movie = viewMovies[indexPath.row]
-        cell.config(imgae: nil, score: movie.voteAverage, title: movie.title, genre: "Action")
+        cell.config(posterPath: movie.posterPath, score: movie.voteAverage, title: movie.title, genre: "Action")
         return cell
     }
 }

@@ -5,6 +5,8 @@
 //  Created by 손영빈 on 2/27/26.
 //
 
+//TODO: TableView -> CollectionView로 변경
+
 import UIKit
 import SnapKit
 

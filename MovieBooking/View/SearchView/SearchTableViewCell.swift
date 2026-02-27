@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class SearchTableViewCell: UITableViewCell {
     
@@ -54,7 +55,7 @@ extension SearchTableViewCell {
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
-//        stackView.spacing = 10
+        //        stackView.spacing = 10
         
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = .label
@@ -83,16 +84,6 @@ extension SearchTableViewCell {
             $0.width.equalTo(40)
             $0.height.equalTo(20)
         }
-//        titleLabel.snp.makeConstraints {
-//            $0.top.equalTo(posterImageView.snp.top).offset(10)
-//            $0.leading.equalTo(posterImageView.snp.trailing).offset(10)
-//            $0.trailing.equalToSuperview().inset(10)
-//        }
-//        genreLabel.snp.makeConstraints {
-//            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
-//            $0.leading.equalTo(titleLabel.snp.leading)
-//            $0.trailing.equalTo(titleLabel.snp.trailing)
-//        }
         stackView.snp.makeConstraints {
             $0.top.equalTo(posterImageView.snp.top).offset(10)
             $0.leading.equalTo(posterImageView.snp.trailing).offset(10)
@@ -100,9 +91,6 @@ extension SearchTableViewCell {
             $0.bottom.equalTo(posterImageView.snp.bottom).offset(-10)
         }
         reservationButton.snp.makeConstraints {
-//            $0.top.equalTo(genreLabel.snp.bottom).offset(10)
-//            $0.leading.equalTo(titleLabel.snp.leading)
-//            $0.trailing.equalTo(titleLabel.snp.trailing)
             $0.width.equalTo(stackView.snp.width)
             $0.height.equalTo(40)
         }
@@ -110,9 +98,14 @@ extension SearchTableViewCell {
 }
 
 extension SearchTableViewCell {
-    func config(imgae: UIImage?, score: Double, title: String, genre: String) {
-        posterImageView.image = imgae
-        scoreLabel.text = "\(score)"
+    func config(posterPath: String?, score: Double, title: String, genre: String) {
+        let baseURL = "https://image.tmdb.org/t/p/w300"
+        if let path = posterPath, let url = URL(string: baseURL + path) {
+            posterImageView.kf.setImage(with: url)
+        } else {
+            posterImageView.image = UIImage(systemName: "movieclapper")
+        }
+        scoreLabel.text = String(format: "%.1f", score)
         titleLabel.text = title
         genreLabel.text = genre
     }
