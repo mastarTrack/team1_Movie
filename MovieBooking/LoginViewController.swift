@@ -5,6 +5,8 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
+//TODO: 로그인 성공 시 화면 전환에 애니메이션 적용?
+
 import UIKit
 
 class LoginViewController: UIViewController {
@@ -62,7 +64,13 @@ extension LoginViewController {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
             if success {
-                self.navigationController?.pushViewController(ViewController(), animated: true)
+                let mainVC = ViewController()
+                let navigationController = UINavigationController(rootViewController: mainVC)
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first {
+                    window.rootViewController = navigationController
+                    window.makeKeyAndVisible()
+                }
             }
         })
         present(alert, animated: true)
