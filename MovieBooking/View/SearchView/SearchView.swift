@@ -10,6 +10,7 @@ import SnapKit
 
 class SearchView: UIView {
     
+    let searchBar = UISearchBar()
     let tableView = SearchTableView()
     
     override init(frame: CGRect) {
@@ -25,12 +26,25 @@ class SearchView: UIView {
 
 extension SearchView {
     private func setAttributes() {
+        
+        searchBar.placeholder = "영화 검색"
+        searchBar.searchBarStyle = .minimal
+        searchBar.searchTextField.backgroundColor = .systemGray6
+        
+        
         tableView.separatorStyle = .none
     }
     private func setLayout() {
-        addSubview(tableView)
+        [searchBar, tableView].forEach { addSubview($0) }
+        
+        searchBar.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
         tableView.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeAreaLayoutGuide)
+            $0.top.equalTo(searchBar.snp.bottom).offset(10)
+            $0.bottom.equalTo(safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
         }
     }
