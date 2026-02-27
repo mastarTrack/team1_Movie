@@ -55,11 +55,10 @@ extension LoginViewController {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
             if success {
-                let mainVC = ViewController()
-                let navigationController = UINavigationController(rootViewController: mainVC)
+                let tabBarVC = TabBarController()
                 if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                    let window = windowScene.windows.first {
-                    window.rootViewController = navigationController
+                    window.rootViewController = tabBarVC
                     window.makeKeyAndVisible()
                 }
             }
