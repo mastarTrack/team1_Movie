@@ -6,22 +6,33 @@
 //
 
 //TODO: 로그인 성공 시 화면 전환에 애니메이션 적용?
-//TODO: 로그인 성공 시 UserDefaults에 저장
+//TODO: 로그인 성공 시 UserDefaults에 저장 - 완료
+//TODO: MVVM 적용
 
 import UIKit
 
 class LoginViewController: UIViewController {
     
     private let loginView = LoginView()
+    private let viewModel = LoginViewModel()
     
     override func loadView() {
         self.view = loginView
         setDelegate()
+        bind()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+    }
+}
+
+extension LoginViewController {
+    private func bind() {
+        viewModel.updateLoginStatus = { [weak self] message, success in
+            self?.showAlert(message: message, success: success)
+        }
     }
 }
 
@@ -39,26 +50,7 @@ extension LoginViewController: LoginViewDelegate {
     }
     
     func didTapLoginButton(email: String, password: String) {
-        guard !email.isEmpty else {
-            showAlert(message: "이메일을 입력해주세요.")
-            return
-        }
-        guard !password.isEmpty else {
-            showAlert(message: "비밀번호를 입력해주세요")
-            return
-        }
-        
-        let loginData = CoreDataManager.shared.login(email: email, password: password)
-        switch loginData {
-        case .some(true):
-            UserDefaults.standard.set(true, forKey: "isLogin")
-            UserDefaults.standard.set(email, forKey: "userEmail")
-            showAlert(message: "로그인에 성공했습니다.", success: true)
-        case .some(false):
-            showAlert(message: "이메일과 비밀번호를 확인해주세요.")
-        case .none:
-            showAlert(message: "로그인 오류. 다시 시도해주세요.")
-        }
+        viewModel.login(email: email, password: password)
     }
 }
 
