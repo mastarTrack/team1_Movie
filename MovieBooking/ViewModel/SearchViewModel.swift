@@ -37,10 +37,10 @@ class SearchViewModel {
     func fetchMovies() {
         Task {
             do {
-                async let nowPlaying = networkManager.fetchMovies(type: .NowPlaying)
-                async let upComing = networkManager.fetchMovies(type: .upcoming)
+                async let nowPlaying = networkManager.fetchMovies(type: .nowPlaying)
+                async let upcoming = networkManager.fetchMovies(type: .upcoming)
                 
-                let unfilteredMovies = try await (nowPlaying + upComing)
+                let unfilteredMovies = try await (nowPlaying + upcoming)
                 allMovies = removeDuplicatedData(movies: unfilteredMovies)
                 viewMovies = allMovies
                 updateUI?()
