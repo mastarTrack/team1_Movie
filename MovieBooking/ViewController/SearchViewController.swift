@@ -31,6 +31,8 @@ extension SearchViewController {
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
         searchView.tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.id)
+        
+        searchView.searchBar.delegate = self
     }
 }
 
@@ -71,7 +73,16 @@ extension SearchViewController: UITableViewDelegate {
 
 extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewMovies.count
+        
+        if viewMovies.isEmpty {
+            let emptyLabel = UILabel()
+            emptyLabel.text = "검색 결과 없음"
+            emptyLabel.textAlignment = .center
+            tableView.backgroundView = emptyLabel
+        } else {
+            tableView.backgroundView = nil
+        }
+        return viewMovies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,6 +90,19 @@ extension SearchViewController: UITableViewDataSource {
         let movie = viewMovies[indexPath.row]
         cell.config(imgae: nil, score: movie.voteAverage, title: movie.title, genre: "Action")
         return cell
+    }
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            viewMovies = allMovies
+        } else {
+            viewMovies = allMovies.filter { movie in
+                movie.title.uppercased().contains(searchText.uppercased())
+            }
+        }
+        searchView.tableView.reloadData()
     }
 }
 
