@@ -10,7 +10,7 @@ enum MovieListType: String {
     case upcoming = "upcoming"
     case topRated = "top_rated"
     case popular = "popular"
-    case NowPlaying = "now_playing"
+    case nowPlaying = "now_playing"
 }
 
 class NetworkManager: Networking {

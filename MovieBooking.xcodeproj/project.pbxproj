@@ -13,6 +13,7 @@
 		8AC8BBBF2F503C37009690BD /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8AC8BBBE2F503C37009690BD /* Config.xcconfig */; };
 		8AC8BC3C2F50597B009690BD /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC8BC3B2F50597B009690BD /* User+CoreDataProperties.swift */; };
 		8AC8BC3D2F50597B009690BD /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC8BC3A2F50597B009690BD /* User+CoreDataClass.swift */; };
+		8AC8BF152F517825009690BD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BF142F517825009690BD /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AC8BF152F517825009690BD /* Kingfisher in Frameworks */,
 				8AC8BB792F4FDFD4009690BD /* SnapKit in Frameworks */,
 				8AC8BB7F2F4FDFF3009690BD /* Then in Frameworks */,
 				8AC8BB7C2F4FDFDC009690BD /* Alamofire in Frameworks */,
@@ -99,6 +101,7 @@
 				8AC8BB782F4FDFD4009690BD /* SnapKit */,
 				8AC8BB7B2F4FDFDC009690BD /* Alamofire */,
 				8AC8BB7E2F4FDFF3009690BD /* Then */,
+				8AC8BF142F517825009690BD /* Kingfisher */,
 			);
 			productName = MovieBooking;
 			productReference = 8AC8BB5C2F4FDFA8009690BD /* MovieBooking.app */;
@@ -132,6 +135,7 @@
 				8AC8BB772F4FDFD4009690BD /* XCRemoteSwiftPackageReference "SnapKit" */,
 				8AC8BB7A2F4FDFDC009690BD /* XCRemoteSwiftPackageReference "Alamofire" */,
 				8AC8BB7D2F4FDFF3009690BD /* XCRemoteSwiftPackageReference "Then" */,
+				8AC8BF132F517825009690BD /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8AC8BB5D2F4FDFA8009690BD /* Products */;
@@ -406,6 +410,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		8AC8BF132F517825009690BD /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.7.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -423,6 +435,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8AC8BB7D2F4FDFF3009690BD /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		8AC8BF142F517825009690BD /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC8BF132F517825009690BD /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

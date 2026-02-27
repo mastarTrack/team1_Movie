@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let isLogin = UserDefaults.standard.bool(forKey: "isLogin")
         if isLogin {
-            window.rootViewController = TabBarController()
+            window.rootViewController = ViewManagerController()
         } else {
             window.rootViewController = UINavigationController(rootViewController: LoginViewController())
         }

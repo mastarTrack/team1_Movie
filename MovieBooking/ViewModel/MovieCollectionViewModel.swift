@@ -24,7 +24,7 @@ class MovieCollectionViewModel {
     func fetchMovieData() async {
         do {
             // async let : 비동기 작업을 일단 시작해두고 필요할때 한번에 await해서 받아옴, 바로 다음 줄로 넘어가면서 작업은 백그라운드에서 계속 진행
-            async let NowPlaying = networkingService.fetchMovies(type: .NowPlaying)
+            async let NowPlaying = networkingService.fetchMovies(type: .nowPlaying)
             async let upcoming = networkingService.fetchMovies(type: .upcoming)
             async let popular = networkingService.fetchMovies(type: .popular)
             
