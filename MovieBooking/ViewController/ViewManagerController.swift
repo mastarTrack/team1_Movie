@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TabBarController: UITabBarController {
+class ViewManagerController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,7 +16,7 @@ class TabBarController: UITabBarController {
     }
 }
 
-extension TabBarController {
+extension ViewManagerController {
     private func setupTabBar() {
         let homeVC = createNC(rootVC: ViewController(), title: "Home", image: "house.fill")
         let searchVC = createNC(rootVC: SearchViewController(), title: "Search", image: "magnifyingglass")
