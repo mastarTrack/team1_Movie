@@ -13,9 +13,8 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
-    var isEmailChecked = false
-    
     private let signUpView = SignUpView()
+    private let viewModel = SignUpViewModel()
     
     override func loadView() {
         self.view = signUpView
@@ -24,7 +23,15 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+        bind()
     }
+}
+
+extension SignUpViewController {
+    private func bind() {
+        viewModel.showAlert = { [weak self] message, success in
+            self?.showAlert(message: message, success: success)
+        }}
 }
 
 extension SignUpViewController {
@@ -36,43 +43,7 @@ extension SignUpViewController {
 extension SignUpViewController: SignUpViewDelegate {
     
     func didTapSignUpButton(name: String, email: String, password: String, rePassword: String) {
-        
-        guard !name.isEmpty else {
-            showAlert(message: "이름을 입력해주세요.")
-            return
-        }
-        guard !email.isEmpty else {
-            showAlert(message: "이메일을 입력해주세요.")
-            return
-        }
-        guard !password.isEmpty else {
-            showAlert(message: "비밀번호를 입력해주세요.")
-            return
-        }
-        guard password.count >= 8 else {
-            showAlert(message: "비밀번호를 8자리 이상이어야 합니다.")
-            return
-        }
-        guard password == rePassword else {
-            showAlert(message: "비밀번호가 맞지않습니다.")
-            return
-        }
-        guard isEmailChecked else {
-            showAlert(message: "이메일 중복 검사를 진행해 주세요.")
-            return
-        }
-        
-        let isSaved = CoreDataManager.shared.saveUser(
-            name: name,
-            email: email,
-            password: password
-        )
-        
-        if isSaved {
-            showAlert(message: "회원가입에 성공했습니다.", success: true)
-        } else {
-            showAlert(message: "회원가입 중 오류가 발생했습니다. 잠시후 다시 시도해주세요.")
-        }
+        viewModel.signUp(name: name, email: email, password: password, rePassword: rePassword)
     }
     
     func passwordFieldDidChange(isEqual: Bool) {
@@ -80,23 +51,7 @@ extension SignUpViewController: SignUpViewDelegate {
     }
     
     func didTapCheckButton(email: String) {
-        guard !email.isEmpty else {
-            showAlert(message: "이메일을 입력해주세요.")
-            return
-        }
-        
-        let userData = CoreDataManager.shared.isUserExist(email: email)
-        switch userData {
-        case .some(true):
-            showAlert(message: "이미 존재하는 이메일입니다.")
-            self.isEmailChecked = false
-        case .some(false):
-            showAlert(message: "사용 가능한 이메일입니다.")
-            self.isEmailChecked = true
-        case .none:
-            showAlert(message: "서버 오류. 다시 시도해주세요.")
-            self.isEmailChecked = false
-        }
+        viewModel.checkEmail(email: email)
     }
 }
 
