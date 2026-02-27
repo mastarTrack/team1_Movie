@@ -50,9 +50,16 @@ class MovieCollectionViewController: UIViewController {
             self?.movieCollectionView.collectionView.reloadData()
         }
         
-        viewModel.onError = { error in
-            print("error:", error)
+        viewModel.onErrorMessage = { [weak self] message in
+            guard let self else { return }
+            self.showAlert(with: message)
         }
+    }
+    
+    func showAlert(with message: String) {
+        let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        self.present(alert, animated: true)
     }
     
 }
