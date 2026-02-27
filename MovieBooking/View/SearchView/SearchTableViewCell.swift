@@ -20,7 +20,7 @@ class SearchTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
     private let scoreLabel = UILabel()
-    private let genreLabel = UILabel()
+    private let dateLabel = UILabel()
     private let reservationButton = CustomButton(title: "예매하기")
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -62,13 +62,13 @@ extension SearchTableViewCell {
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = .label
         
-        genreLabel.font = .systemFont(ofSize: 14)
-        genreLabel.textColor = .secondaryLabel
+        dateLabel.font = .systemFont(ofSize: 14)
+        dateLabel.textColor = .secondaryLabel
         
     }
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, genreLabel, reservationButton].forEach { stackView.addArrangedSubview($0) }
+        [titleLabel, dateLabel, reservationButton].forEach { stackView.addArrangedSubview($0) }
         [posterImageView, stackView].forEach { containerView.addSubview($0) }
         posterImageView.addSubview(scoreLabel)
         
@@ -100,7 +100,7 @@ extension SearchTableViewCell {
 }
 
 extension SearchTableViewCell {
-    func config(posterURL: URL?, score: Double, title: String, genre: String) {
+    func config(posterURL: URL?, score: Double, title: String, date: String) {
         if let url = posterURL {
             posterImageView.kf.setImage(with: url)
         } else {
@@ -108,6 +108,6 @@ extension SearchTableViewCell {
         }
         scoreLabel.text = String(format: "%.1f", score)
         titleLabel.text = title
-        genreLabel.text = genre
+        dateLabel.text = "개봉일: \(date)"
     }
 }

@@ -73,7 +73,7 @@ extension SearchViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.id, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
         let movie = viewModel.getMovieData(index: indexPath.row)
         let posterURL = viewModel.getPosterURL(index: indexPath.row)
-        cell.config(posterURL: posterURL, score: movie.voteAverage, title: movie.title, genre: "Action")
+        cell.config(posterURL: posterURL, score: movie.voteAverage, title: movie.title, date: movie.releaseDate)
         return cell
     }
 }
