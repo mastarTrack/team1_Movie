@@ -11,11 +11,15 @@
 		8AC8BB7C2F4FDFDC009690BD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB7B2F4FDFDC009690BD /* Alamofire */; };
 		8AC8BB7F2F4FDFF3009690BD /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB7E2F4FDFF3009690BD /* Then */; };
 		8AC8BBBF2F503C37009690BD /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8AC8BBBE2F503C37009690BD /* Config.xcconfig */; };
+		8AC8BC3C2F50597B009690BD /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC8BC3B2F50597B009690BD /* User+CoreDataProperties.swift */; };
+		8AC8BC3D2F50597B009690BD /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC8BC3A2F50597B009690BD /* User+CoreDataClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8AC8BB5C2F4FDFA8009690BD /* MovieBooking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBooking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC8BBBE2F503C37009690BD /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		8AC8BC3A2F50597B009690BD /* User+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8AC8BC3B2F50597B009690BD /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -56,6 +60,8 @@
 		8AC8BB532F4FDFA8009690BD = {
 			isa = PBXGroup;
 			children = (
+				8AC8BC3A2F50597B009690BD /* User+CoreDataClass.swift */,
+				8AC8BC3B2F50597B009690BD /* User+CoreDataProperties.swift */,
 				8AC8BBBE2F503C37009690BD /* Config.xcconfig */,
 				8AC8BB5E2F4FDFA8009690BD /* MovieBooking */,
 				8AC8BB5D2F4FDFA8009690BD /* Products */,
@@ -153,6 +159,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AC8BC3C2F50597B009690BD /* User+CoreDataProperties.swift in Sources */,
+				8AC8BC3D2F50597B009690BD /* User+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
