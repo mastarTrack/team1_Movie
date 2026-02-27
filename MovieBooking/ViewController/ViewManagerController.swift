@@ -19,10 +19,11 @@ class ViewManagerController: UITabBarController {
 extension ViewManagerController {
     private func setupTabBar() {
         let homeVC = createNC(rootVC: ViewController(), title: "Home", image: "house.fill")
+        let movieCollectionVC = createNC(rootVC: MovieCollectionViewController(), title: "Movie", image: "movieclapper.fill")
         let searchVC = createNC(rootVC: SearchViewController(), title: "Search", image: "magnifyingglass")
         tabBar.tintColor = .systemOrange
         tabBar.unselectedItemTintColor = .systemGray5
-        viewControllers = [homeVC, searchVC]
+        viewControllers = [homeVC, movieCollectionVC, searchVC]
     }
     
     private func createNC(rootVC: UIViewController, title: String, image: String) -> UINavigationController {
