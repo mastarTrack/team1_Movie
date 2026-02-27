@@ -42,4 +42,53 @@ class MovieCollectionViewModel {
             }
         }
     }
+    
+    // 각 섹션에다가 줄 아이템 갯수 주는 함수
+    func numberOfItems(in section: Int) -> Int {
+        guard let section = Section(rawValue: section) else { return 0 }
+        switch section {
+        case .nowPlaying: return nowPlaying.count
+        case .upcoming:   return upcoming.count
+        case .popular:    return popular.count
+        }
+    }
+
+    // 인덱스패스에 영화포스터 매치
+    func putMovieInfo(at indexPath: IndexPath) -> Movie? {
+        guard let section = Section(rawValue: indexPath.section) else { return nil }
+        switch section {
+            // 배열 범위체크
+        case .nowPlaying:
+            return nowPlaying.indices.contains(indexPath.item) ? nowPlaying[indexPath.item] : nil
+        case .upcoming:
+            return upcoming.indices.contains(indexPath.item) ? upcoming[indexPath.item] : nil
+        case .popular:
+            return popular.indices.contains(indexPath.item) ? popular[indexPath.item] : nil
+        }
+    }
+
+    func makeImageURL(path: String?) -> URL? {
+        guard let path = path else { return nil }
+        
+        let baseURL = "https://image.tmdb.org/t/p/"
+        let size = "w154"
+        
+        return URL(string: baseURL + size + path)
+    }
+}
+
+extension MovieCollectionViewModel {
+    enum Section: Int, CaseIterable {
+        case nowPlaying
+        case upcoming
+        case popular
+        
+        var title: String {
+            switch self {
+            case .nowPlaying: return "Now Playing"
+            case .upcoming:   return "Upcoming"
+            case .popular:    return "Popular"
+            }
+        }
+    }
 }
