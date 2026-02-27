@@ -12,8 +12,6 @@ import Kingfisher
 class MovieCollectionView: UIView {
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeLayout())
     
-    private let sectionTitles = ["Now Playing", "Upcoming", "Popular"]
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
