@@ -6,6 +6,7 @@
 //
 
 //TODO: 로그인 성공 시 화면 전환에 애니메이션 적용?
+//TODO: 로그인 성공 시 UserDefaults에 저장
 
 import UIKit
 
@@ -50,6 +51,8 @@ extension LoginViewController: LoginViewDelegate {
         let loginData = CoreDataManager.shared.login(email: email, password: password)
         switch loginData {
         case .some(true):
+            UserDefaults.standard.set(true, forKey: "isLogin")
+            UserDefaults.standard.set(email, forKey: "userEmail")
             showAlert(message: "로그인에 성공했습니다.", success: true)
         case .some(false):
             showAlert(message: "이메일과 비밀번호를 확인해주세요.")
