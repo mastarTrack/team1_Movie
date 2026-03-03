@@ -124,10 +124,10 @@ extension MovieCollectionViewController: UICollectionViewDataSource {
 // 사용자가 특정 위치(indexPath)의 셀을 터치했을 때 실행되는 콜백 함수
 extension MovieCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         guard let movie = viewModel.getMovieInfo(at: indexPath) else { return }
         
-        let movieDetailVC = MovieDetailViewController(movie: movie)
+        let detailVM = MovieDetailViewModel(movie: movie)
+        let movieDetailVC = MovieDetailViewController(viewModel: detailVM)
         navigationController?.pushViewController(movieDetailVC, animated: true)
     }
 }

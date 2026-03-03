@@ -7,12 +7,12 @@
 import UIKit
 import SnapKit
 
-class MovieDetailViewController: ViewController {
+final class MovieDetailViewController: ViewController {
     private let detailView = MovieDetailView()
-    private let movie: Movie
+    private let viewModel: MovieDetailViewModel
     
-    init(movie: Movie) {
-        self.movie = movie
+    init(viewModel: MovieDetailViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -24,7 +24,7 @@ class MovieDetailViewController: ViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        navigationItem.title = movie.title
+        navigationItem.title = ""
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         
