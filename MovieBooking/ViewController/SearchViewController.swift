@@ -82,6 +82,7 @@ extension SearchViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.id, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
         let movie = viewModel.getMovieData(index: indexPath.row)
         let posterURL = viewModel.getPosterURL(index: indexPath.row)
+        cell.delegate = self
         cell.config(posterURL: posterURL, score: movie.voteAverage, title: movie.title, date: movie.releaseDate)
         return cell
     }
@@ -91,5 +92,19 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.search(searchText: searchText)
     }
+}
+
+extension SearchViewController: SearchTableViewCellDelegate {
+    func didTapReservationButton(cell: SearchTableViewCell) {
+        guard let indexPath = searchView.tableView.indexPath(for: cell) else { return }
+        let movie = viewModel.getMovieData(index: indexPath.row)
+        
+        let detailVM = MovieDetailViewModel(movie: movie)
+        let detailVC = MovieDetailViewController(viewModel: detailVM)
+        
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    
 }
 

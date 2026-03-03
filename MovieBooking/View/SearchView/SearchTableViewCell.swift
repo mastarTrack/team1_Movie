@@ -10,9 +10,15 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol SearchTableViewCellDelegate: AnyObject {
+    func didTapReservationButton(cell: SearchTableViewCell)
+}
+
 class SearchTableViewCell: UITableViewCell {
     
     static let id = "SearchTableViewCell"
+    
+    weak var delegate: SearchTableViewCellDelegate?
     
     private let containerView = UIView()
     private let posterImageView = UIImageView()
@@ -27,6 +33,7 @@ class SearchTableViewCell: UITableViewCell {
         self.selectionStyle = .none // 클릭 음영 제거
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -108,5 +115,16 @@ extension SearchTableViewCell {
         scoreLabel.text = String(format: "%.1f", score)
         titleLabel.text = title
         dateLabel.text = "개봉일: \(date)"
+    }
+}
+
+extension SearchTableViewCell {
+    private func setAction() {
+        reservationButton.addTarget(self, action: #selector(reservationButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func reservationButtonTapped() {
+        delegate?.didTapReservationButton(cell: self)
     }
 }
