@@ -95,7 +95,7 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 extension SearchViewController: SearchTableViewCellDelegate {
-    func didTapReservationButton(cell: SearchTableViewCell) {
+    func didTapDetailButton(cell: SearchTableViewCell) {
         guard let indexPath = searchView.tableView.indexPath(for: cell) else { return }
         let movie = viewModel.getMovieData(index: indexPath.row)
         
