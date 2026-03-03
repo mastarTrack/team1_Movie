@@ -22,13 +22,16 @@ class LoginViewModel {
         }
         let loginData = CoreDataManager.shared.login(email: email, password: password)
         switch loginData {
-        case .some(true):
+        case .success(let user):
             UserDefaults.standard.set(true, forKey: "isLogin")
-            UserDefaults.standard.set(email, forKey: "userEmail")
+            UserDefaults.standard.set(user.name, forKey: "userName")
+            UserDefaults.standard.set(user.email, forKey: "userEmail")
             updateLoginStatus?("로그인에 성공했습니다.", true)
-        case .some(false):
-            updateLoginStatus?("이메일과 비밀번호를 확인해주세요.", false)
-        case .none:
+        case .userNotFound:
+            updateLoginStatus?("이메일을 확인해주세요.", false)
+        case .passwordError:
+            updateLoginStatus?("비밀번호를 확인해주세요.", false)
+        case .serverError:
             updateLoginStatus?("로그인 오류. 다시 시도해주세요.", false)
         }
     }

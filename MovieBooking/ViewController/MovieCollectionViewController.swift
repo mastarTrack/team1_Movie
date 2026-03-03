@@ -37,8 +37,7 @@ class MovieCollectionViewController: UIViewController {
         view.addSubview(movieCollectionView)
         
         movieCollectionView.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.bottom.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
         movieCollectionView.collectionView.dataSource = self
