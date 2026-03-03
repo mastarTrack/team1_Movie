@@ -7,23 +7,20 @@
 import UIKit
 import SnapKit
 import Then
-import Kingfisher
 
 class MovieDetailView: UIView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let contentStackView = UIStackView()
 
-    private let posterImageView = UIImageView()
-    private let titleLabel = UILabel()
-    private let genreLabel = UILabel()
-    private let releaseDateLabel = UILabel()
-    private let popularityLabel = UILabel()
+    let posterImageView = UIImageView()
+    let titleLabel = UILabel()
+    let genreLabel = UILabel()
+    let releaseDateLabel = UILabel()
 
-    private let voteAverageLabel = UILabel()
-    private let voteCountLabel = UILabel()
+    let voteAverageLabel = UILabel()
 
-    private let overviewLabel = UILabel()
+    let overviewLabel = UILabel()
     private let reservationButton = CustomButton(title: "예매하기")
 
     override init(frame: CGRect) {
@@ -31,6 +28,7 @@ class MovieDetailView: UIView {
         backgroundColor = .systemBackground
 
         configureView()
+        configureLabel()
         configureLayout()
     }
 
@@ -53,10 +51,12 @@ class MovieDetailView: UIView {
             $0.width.equalTo(scrollView.frameLayoutGuide)
         }
         
+        posterImageView.contentMode = .scaleAspectFill
+        posterImageView.clipsToBounds = true
+        
         posterImageView.snp.makeConstraints {
-            $0.height.equalTo(posterImageView.snp.width).multipliedBy(0.5)
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(posterImageView.snp.width).multipliedBy(9.0/16.0)
+            $0.leading.trailing.top.equalToSuperview()
         }
 
         contentStackView.snp.makeConstraints {
@@ -70,43 +70,24 @@ class MovieDetailView: UIView {
         }
     }
 
-    func configureLabel(movie: Movie) {
-        if let urlForDetail = movie.backdropPath {
-            let url = URL(string: "https://image.tmdb.org/t/p/w500\(urlForDetail)")
-            posterImageView.kf.setImage(with: url)
-        }
-        
+    func configureLabel() {
         titleLabel.apply(.descriptionText)
-        titleLabel.text = movie.title
-
         genreLabel.apply(.descriptionText)
-        genreLabel.text = "스릴러, 공포"
-
         releaseDateLabel.apply(.descriptionText)
-        releaseDateLabel.text = movie.releaseDate
-
-        popularityLabel.apply(.descriptionText)
-        popularityLabel.text = "이건 뺄까.."
-
         overviewLabel.apply(.descriptionText)
-        overviewLabel.text = movie.overview
-
         voteAverageLabel.apply(.descriptionText)
-        voteAverageLabel.text = "⭐️⭐️⭐️⭐️(3.84)"
     }
 
     func configureLayout() {
         let titleMarkLabel = UILabel(text: "제목", config: .descriptionTitle)
         let genreMarkLabel = UILabel(text: "장르", config: .descriptionTitle)
         let releaseDateMarkLabel = UILabel(text: "개봉일", config: .descriptionTitle)
-        let popularityMarkLabel = UILabel(text: "인기", config: .descriptionTitle)
 
         let titleStackView = UIStackView.horizontal([titleMarkLabel, titleLabel])
         let genreStackView = UIStackView.horizontal([genreMarkLabel, genreLabel])
         let releaseDateStackView = UIStackView.horizontal([releaseDateMarkLabel, releaseDateLabel])
-        let popularityStackView = UIStackView.horizontal([popularityMarkLabel, popularityLabel])
 
-        let posterDetailStackView = UIStackView.vertical([titleStackView, genreStackView, releaseDateStackView, popularityStackView])
+        let detailStackView = UIStackView.vertical([titleStackView, genreStackView, releaseDateStackView])
 
         let voteAverageMarkLabel = UILabel(text: "관람객 평점", config: .descriptionTitle)
         let voteStackView = UIStackView.horizontal([voteAverageMarkLabel, voteAverageLabel])
@@ -126,7 +107,7 @@ class MovieDetailView: UIView {
 
         contentStackView.addArrangedSubview(voteStackView)
         contentStackView.addArrangedSubview(overviewLabel)
-        contentStackView.addArrangedSubview(posterDetailStackView)
+        contentStackView.addArrangedSubview(detailStackView)
         contentStackView.addArrangedSubview(reservationButton)
         contentStackView.addArrangedSubview(layoutView)
     }
