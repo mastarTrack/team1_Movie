@@ -21,9 +21,10 @@ extension ViewManagerController {
         let homeVC = createNC(rootVC: ViewController(), title: "Home", image: "house.fill")
         let movieCollectionVC = createNC(rootVC: MovieCollectionViewController(), title: "Movie", image: "movieclapper.fill")
         let searchVC = createNC(rootVC: SearchViewController(), title: "Search", image: "magnifyingglass")
+        let myPageVC = createNC(rootVC: MyPageViewController(), title: "MyPage", image: "person.crop.circle")
         tabBar.tintColor = .systemOrange
         tabBar.unselectedItemTintColor = .systemGray5
-        viewControllers = [homeVC, movieCollectionVC, searchVC]
+        viewControllers = [homeVC, movieCollectionVC, searchVC, myPageVC]
     }
     
     private func createNC(rootVC: UIViewController, title: String, image: String) -> UINavigationController {
