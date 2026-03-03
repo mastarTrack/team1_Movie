@@ -12,15 +12,18 @@ import UIKit
 
 class MyPageViewController: UIViewController {
     
-    let myPageCollectionView = MyPageCollectionView()
+    private let viewModel = MyPageViewModel()
+    
+    let collectionView = MyPageCollectionView()
     
     override func loadView() {
-        self.view = myPageCollectionView
+        self.view = collectionView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+        bind()
     }
     
     // HomeView 접근 시 상단 네비게이션 제거
@@ -36,32 +39,29 @@ class MyPageViewController: UIViewController {
 }
 
 extension MyPageViewController {
+    private func bind() {
+        viewModel.onLogout = { [weak self] in
+            self?.changeNavigationToLogin()
+        }
+    }
+}
+
+extension MyPageViewController {
     private func setDelegate() {
-        myPageCollectionView.collectionView.delegate = self
-        myPageCollectionView.collectionView.dataSource = self
+        collectionView.collectionView.delegate = self
+        collectionView.collectionView.dataSource = self
     }
 }
 
 extension MyPageViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let sectionType = MyPageSectionType.allCases[indexPath.section]
+        let sectionType = viewModel.sections[indexPath.section]
         
         switch sectionType {
         case .profile:
             break
         case .menu:
-            switch indexPath.item {
-            case 0:
-                break
-            case 1:
-                break
-            case 2:
-                break
-            case 3:
-                logout()
-            default:
-                break
-            }
+            viewModel.didSelectMenuItem(index: indexPath.item)
         case .info:
             break
         }
@@ -71,42 +71,40 @@ extension MyPageViewController: UICollectionViewDelegate {
 extension MyPageViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        MyPageSectionType.allCases.count
+        viewModel.sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionType = MyPageSectionType.allCases[section]
+        let sectionType = viewModel.sections[section]
         
         switch sectionType {
         case .profile:
             return 1
         case .menu:
-            return MyPageMenu.menuList.count
+            return viewModel.menuItems.count
         case .info:
-            return MyPageInfo.infoList.count
+            return viewModel.infoItems.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sectionType = MyPageSectionType.allCases[indexPath.section]
+        let sectionType = viewModel.sections[indexPath.section]
         
         switch sectionType {
         case .profile:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageProfileCell.id, for: indexPath) as? MyPageProfileCell else { return UICollectionViewCell() }
-            let name = UserDefaults.standard.string(forKey: "userName") ?? "이름 정보 없음"
-            let email = UserDefaults.standard.string(forKey: "userEmail") ?? "이메일 정보 없음"
-            cell.config(name: name, email: email)
+            cell.config(name: viewModel.userName, email: viewModel.userEmail)
             return cell
             
         case .menu:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageMenuCell.id, for: indexPath) as? MyPageMenuCell else { return UICollectionViewCell() }
-            let item = MyPageMenu.menuList[indexPath.item]
+            let item = viewModel.menuItems[indexPath.item]
             cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, isLogout: item.isLogout)
             return cell
             
         case .info:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageInfoCell.id, for: indexPath) as? MyPageInfoCell else { return UICollectionViewCell() }
-            let item = MyPageInfo.infoList[indexPath.item]
+            let item = viewModel.infoItems[indexPath.item]
             cell.config(count: item.count, title: item.title)
             return cell
         }
@@ -114,11 +112,7 @@ extension MyPageViewController: UICollectionViewDataSource {
 }
 
 extension MyPageViewController {
-    private func logout() {
-        UserDefaults.standard.set(false, forKey: "isLogin")
-        UserDefaults.standard.removeObject(forKey: "userName")
-        UserDefaults.standard.removeObject(forKey: "userEmail")
-        
+    private func changeNavigationToLogin () {
         let loginVC = LoginViewController()
         let navigationController = UINavigationController(rootViewController: loginVC)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first {
