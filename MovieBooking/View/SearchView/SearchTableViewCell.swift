@@ -10,9 +10,15 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol SearchTableViewCellDelegate: AnyObject {
+    func didTapDetailButton(cell: SearchTableViewCell)
+}
+
 class SearchTableViewCell: UITableViewCell {
     
     static let id = "SearchTableViewCell"
+    
+    weak var delegate: SearchTableViewCellDelegate?
     
     private let containerView = UIView()
     private let posterImageView = UIImageView()
@@ -20,13 +26,14 @@ class SearchTableViewCell: UITableViewCell {
     private let stackView = UIStackView()
     private let scoreLabel = UILabel()
     private let dateLabel = UILabel()
-    private let reservationButton = CustomButton(title: "예매하기")
+    private let detailButton = CustomButton(title: "정보 보기")
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none // 클릭 음영 제거
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -67,7 +74,7 @@ extension SearchTableViewCell {
     }
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, dateLabel, reservationButton].forEach { stackView.addArrangedSubview($0) }
+        [titleLabel, dateLabel, detailButton].forEach { stackView.addArrangedSubview($0) }
         [posterImageView, stackView].forEach { containerView.addSubview($0) }
         posterImageView.addSubview(scoreLabel)
         
@@ -91,7 +98,7 @@ extension SearchTableViewCell {
             $0.trailing.equalToSuperview().offset(-10)
             $0.bottom.equalTo(posterImageView.snp.bottom).offset(-10)
         }
-        reservationButton.snp.makeConstraints {
+        detailButton.snp.makeConstraints {
             $0.width.equalTo(stackView.snp.width)
             $0.height.equalTo(40)
         }
@@ -108,5 +115,16 @@ extension SearchTableViewCell {
         scoreLabel.text = String(format: "%.1f", score)
         titleLabel.text = title
         dateLabel.text = "개봉일: \(date)"
+    }
+}
+
+extension SearchTableViewCell {
+    private func setAction() {
+        detailButton.addTarget(self, action: #selector(detailButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func detailButtonTapped() {
+        delegate?.didTapDetailButton(cell: self)
     }
 }
