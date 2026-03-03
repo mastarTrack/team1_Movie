@@ -34,4 +34,34 @@ class MovieDetailViewModel {
     init(movie: Movie) {
         self.movie = movie
     }
+    
+    var title: String { movie.title }
+    
+    var overview: String {
+        if movie.overview == "" {
+            return "줄거리를 제공하지 않습니다."
+        }
+        return movie.overview
+    }
+    
+    var genre: String {
+        movie.genreIDs.compactMap {
+            genreDictionary[$0]
+        }.joined(separator: ", ")
+    }
+    
+    var releaseDate: String {
+        movie.releaseDate.replacingOccurrences(of: "-", with: ".")
+    }
+    
+    var imageURL: String {
+        guard let url = movie.backdropPath else { return "" }
+        return "https://image.tmdb.org/t/p/w500\(url)"
+    }
+    
+    var stars: String {
+        let numOfStars = round(movie.voteAverage / 2)
+        let votes = String(repeating: "⭐️", count: Int(numOfStars)) + "(\(movie.voteCount))"
+        return votes
+    }
 }
