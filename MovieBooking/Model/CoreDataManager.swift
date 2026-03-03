@@ -5,8 +5,18 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
+//TODO: 로그인 로직 수정(로그인 시 Bool 반환 -> User 반환) userDefaults name 저장용
+//TODO: 로그인 성공 케이스 구분 enum 생성
+
 import UIKit
 import CoreData
+
+enum LoginResult {
+    case success(User)
+    case userNotFound
+    case passwordError
+    case serverError
+}
 
 class CoreDataManager {
     static let shared = CoreDataManager()
@@ -54,14 +64,21 @@ extension CoreDataManager {
         }
     }
     
-    func login(email: String, password: String) -> Bool? {
+    func login(email: String, password: String) -> LoginResult {
         let fetchRequest = User.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "email == %@ && password == %@", email, password)
+        fetchRequest.predicate = NSPredicate(format: "email == %@", email)
         do {
-            let result = try context.fetch(fetchRequest)
-            return !result.isEmpty
+            let users = try context.fetch(fetchRequest)
+            guard let user = users.first else {
+                return .userNotFound
+            }
+            if user.password == password {
+                return .success(user)
+            } else {
+                return .passwordError
+            }
         } catch {
-            return nil
+            return .serverError
         }
     }
 }

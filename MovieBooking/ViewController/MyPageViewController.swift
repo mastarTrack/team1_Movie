@@ -68,7 +68,9 @@ extension MyPageViewController: UICollectionViewDataSource {
         switch sectionType {
         case .profile:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageProfileCell.id, for: indexPath) as? MyPageProfileCell else { return UICollectionViewCell() }
-            cell.config(name: "SYB", email: "test@test.com")
+            let name = UserDefaults.standard.string(forKey: "userName") ?? "이름 정보 없음"
+            let email = UserDefaults.standard.string(forKey: "userEmail") ?? "이메일 정보 없음"
+            cell.config(name: name, email: email)
             return cell
             
         case .menu:

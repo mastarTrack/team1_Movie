@@ -36,6 +36,7 @@ extension ViewController {
     @objc
     private func logoutButtonTapped() {
         UserDefaults.standard.set(false, forKey: "isLogin")
+        UserDefaults.standard.removeObject(forKey: "userName")
         UserDefaults.standard.removeObject(forKey: "userEmail")
         
         let loginVC = LoginViewController()
