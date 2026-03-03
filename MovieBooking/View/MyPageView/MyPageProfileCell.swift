@@ -34,10 +34,10 @@ extension MyPageProfileCell {
         containerView.backgroundColor = .systemOrange
         containerView.layer.cornerRadius = 20
         
-        profileImageView.image = UIImage(systemName: "person.crop.circle")
+        profileImageView.image = UIImage(systemName: "person.crop.circle.fill")
         profileImageView.tintColor = .white
         profileImageView.contentMode = .scaleAspectFit
-        profileImageView.layer.cornerRadius = 50
+        profileImageView.layer.cornerRadius = 40
         profileImageView.clipsToBounds = true
         
         nameLabel.font = .systemFont(ofSize: 30, weight: .bold)
@@ -59,7 +59,7 @@ extension MyPageProfileCell {
         profileImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
             $0.centerY.equalToSuperview()
-            $0.size.equalTo(100)
+            $0.size.equalTo(80)
         }
         
         nameLabel.snp.makeConstraints {

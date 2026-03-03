@@ -35,7 +35,7 @@ extension MyPageViewController: UICollectionViewDelegate {
 extension MyPageViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
+        2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -44,6 +44,8 @@ extension MyPageViewController: UICollectionViewDataSource {
         switch sectionType {
         case .profile:
             return 1
+        case .menu:
+            return MyPageMenu.menuList.count
         default:
             return 0
         }
@@ -56,6 +58,11 @@ extension MyPageViewController: UICollectionViewDataSource {
         case .profile:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageProfileCell.id, for: indexPath) as? MyPageProfileCell else { return UICollectionViewCell() }
             cell.config(name: "SYB", email: "test@test.com")
+            return cell
+        case .menu:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageMenuCell.id, for: indexPath) as? MyPageMenuCell else { return UICollectionViewCell() }
+            let item = MyPageMenu.menuList[indexPath.row]
+            cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, isLogout: item.isLogout)
             return cell
         default:
             return UICollectionViewCell()
