@@ -38,6 +38,7 @@ extension MyPageCollectionView {
         
         collectionView.register(MyPageProfileCell.self, forCellWithReuseIdentifier: MyPageProfileCell.id)
         collectionView.register(MyPageMenuCell.self, forCellWithReuseIdentifier: MyPageMenuCell.id)
+        collectionView.register(MyPageInfoCell.self, forCellWithReuseIdentifier: MyPageInfoCell.id)
     }
 }
 
@@ -52,7 +53,7 @@ extension MyPageCollectionView {
             case .menu:
                 return self.createMenuSection()
             case .info:
-                return self.createProfileSection()
+                return self.createInfoSection()
             }
         }
     }
@@ -82,6 +83,19 @@ extension MyPageCollectionView {
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
         section.interGroupSpacing = 10
+        return section
+    }
+    
+    private func createInfoSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.33))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(10)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
         return section
     }
 }

@@ -28,3 +28,14 @@ struct MyPageMenu {
         MyPageMenu(title: "로그아웃", subTitle: "계정에서 로그아웃합니다", iconName: "iphone.and.arrow.right.outward", isLogout: true) // 못찾겠습니다 ..
     ]
 }
+
+struct MyPageInfo {
+    let count: Int
+    let title: String
+    
+    static let infoList: [MyPageInfo] = [
+        MyPageInfo(count: 99, title: "총 예매"),
+        MyPageInfo(count: 100, title: "찜한 영화"),
+        MyPageInfo(count: 5, title: "리뷰 작성")
+    ]
+}
