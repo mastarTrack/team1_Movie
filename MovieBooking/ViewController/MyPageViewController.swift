@@ -19,6 +19,17 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
         setDelegate()
     }
+    
+    // HomeView 접근 시 상단 네비게이션 제거
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    // 다른 페이지로 접근 시 상단 네비게이션 다시 생성
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
 }
 
 extension MyPageViewController {

@@ -14,6 +14,7 @@ class MyPageProfileCell: UICollectionViewCell {
     
     private let containerView = UIView()
     private let profileImageView = UIImageView()
+    private let stackView = UIStackView()
     private let nameLabel = UILabel()
     private let emailLabel = UILabel()
     
@@ -40,6 +41,10 @@ extension MyPageProfileCell {
         profileImageView.layer.cornerRadius = 40
         profileImageView.clipsToBounds = true
         
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.alignment = .leading
+        
         nameLabel.font = .systemFont(ofSize: 30, weight: .bold)
         nameLabel.textColor = .white
         
@@ -50,7 +55,8 @@ extension MyPageProfileCell {
     private func setLayout() {
         
         contentView.addSubview(containerView)
-        [profileImageView, nameLabel, emailLabel].forEach { containerView.addSubview($0) }
+        [nameLabel, emailLabel].forEach { stackView.addArrangedSubview($0) }
+        [profileImageView, stackView].forEach { containerView.addSubview($0) }
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -62,14 +68,10 @@ extension MyPageProfileCell {
             $0.size.equalTo(80)
         }
         
-        nameLabel.snp.makeConstraints {
+        stackView.snp.makeConstraints {
             $0.leading.equalTo(profileImageView.snp.trailing).offset(20)
-            $0.top.equalTo(profileImageView.snp.top).offset(10)
-        }
-        
-        emailLabel.snp.makeConstraints {
-            $0.leading.equalTo(nameLabel.snp.leading)
-            $0.top.equalTo(nameLabel.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
         }
         
     }
