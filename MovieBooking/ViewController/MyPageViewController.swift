@@ -5,6 +5,9 @@
 //  Created by 손영빈 on 3/3/26.
 //
 
+//TODO: 로그아웃 기능 연결 - 완료 (수정필요: Alert, 애니메이션 추가?)
+//TODO: MVVM 구조 변경
+
 import UIKit
 
 class MyPageViewController: UIViewController {
@@ -40,7 +43,29 @@ extension MyPageViewController {
 }
 
 extension MyPageViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionType = MyPageSectionType.allCases[indexPath.section]
+        
+        switch sectionType {
+        case .profile:
+            break
+        case .menu:
+            switch indexPath.item {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            case 3:
+                logout()
+            default:
+                break
+            }
+        case .info:
+            break
+        }
+    }
 }
 
 extension MyPageViewController: UICollectionViewDataSource {
@@ -75,15 +100,30 @@ extension MyPageViewController: UICollectionViewDataSource {
             
         case .menu:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageMenuCell.id, for: indexPath) as? MyPageMenuCell else { return UICollectionViewCell() }
-            let item = MyPageMenu.menuList[indexPath.row]
+            let item = MyPageMenu.menuList[indexPath.item]
             cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, isLogout: item.isLogout)
             return cell
             
         case .info:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageInfoCell.id, for: indexPath) as? MyPageInfoCell else { return UICollectionViewCell() }
-            let item = MyPageInfo.infoList[indexPath.row]
+            let item = MyPageInfo.infoList[indexPath.item]
             cell.config(count: item.count, title: item.title)
             return cell
+        }
+    }
+}
+
+extension MyPageViewController {
+    private func logout() {
+        UserDefaults.standard.set(false, forKey: "isLogin")
+        UserDefaults.standard.removeObject(forKey: "userName")
+        UserDefaults.standard.removeObject(forKey: "userEmail")
+        
+        let loginVC = LoginViewController()
+        let navigationController = UINavigationController(rootViewController: loginVC)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first {
+            window.rootViewController = navigationController
+            window.makeKeyAndVisible()
         }
     }
 }

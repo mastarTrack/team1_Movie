@@ -5,7 +5,6 @@
 //  Created by 손영빈 on 2/27/26.
 //
 
-//TODO: MVVM으로 구조 변경 -> 완료
 
 import UIKit
 

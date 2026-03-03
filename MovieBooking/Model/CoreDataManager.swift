@@ -5,8 +5,8 @@
 //  Created by 손영빈 on 2/26/26.
 //
 
-//TODO: 로그인 로직 수정(로그인 시 Bool 반환 -> User 반환) userDefaults name 저장용
-//TODO: 로그인 성공 케이스 구분 enum 생성
+//TODO: 로그인 로직 수정(로그인 시 Bool 반환 -> User 반환) userDefaults name 저장용 - 완료
+//TODO: 로그인 성공 케이스 구분 enum 생성 - 완료
 
 import UIKit
 import CoreData

@@ -5,7 +5,6 @@
 //  Created by 손영빈 on 2/27/26.
 //
 
-//TODO: Cell.config에 String 전달 -> URL로 바로 전달 - 완료
 
 import UIKit
 import SnapKit
