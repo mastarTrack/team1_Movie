@@ -8,7 +8,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class MovieDetailViewController: ViewController {
+final class MovieDetailViewController: UIViewController {
     private let detailView = MovieDetailView()
     private let viewModel: MovieDetailViewModel
     
