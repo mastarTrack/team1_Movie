@@ -20,6 +20,7 @@ class MovieCollectionViewModel {
         self.networkingService = networkingService
     }
     
+    // 해당 함수들은 비동기 작업 외에는 다 메인 스레드에서 이루어짐
     @MainActor
     func fetchMovieData() async {
         do {
