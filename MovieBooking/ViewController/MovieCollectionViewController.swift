@@ -64,8 +64,7 @@ class MovieCollectionViewController: UIViewController {
     
 }
 
-extension MovieCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    
+extension MovieCollectionViewController: UICollectionViewDataSource {
     // 섹션의 개수
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         MovieCollectionViewModel.Section.allCases.count
@@ -88,6 +87,12 @@ extension MovieCollectionViewController: UICollectionViewDataSource, UICollectio
             cell.setPoster(url: nil)
             return cell
         }
+        
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 0.5
+        cell.layer.shadowOffset = CGSize(width: 2, height: 10)
+        cell.layer.shadowRadius = 10
+        cell.layer.masksToBounds = false
         
         let posterURL = viewModel.makeImageURL(path: movie.posterPath)
         cell.setPoster(url: posterURL)
@@ -113,5 +118,15 @@ extension MovieCollectionViewController: UICollectionViewDataSource, UICollectio
         let section = MovieCollectionViewModel.Section(rawValue: indexPath.section)
         header.configure(title: section?.title ?? "")
         return header
+    }
+}
+// 사용자가 특정 위치(indexPath)의 셀을 터치했을 때 실행되는 콜백 함수
+extension MovieCollectionViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let movie = viewModel.getMovieInfo(at: indexPath) else { return }
+        
+        let detailVM = MovieDetailViewModel(movie: movie)
+        let movieDetailVC = MovieDetailViewController(viewModel: detailVM)
+        navigationController?.pushViewController(movieDetailVC, animated: true)
     }
 }

@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import Kingfisher
 
-class MovieCollectionView: UIView {
+final class MovieCollectionView: UIView {
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeLayout())
     
     override init(frame: CGRect) {
@@ -86,68 +86,5 @@ class MovieCollectionView: UIView {
             
             return section
         })
-    }
-}
-
-final class PosterCell: UICollectionViewCell {
-    static let identifier = "PosterCell"
-    private let imageView = UIImageView()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        contentView.layer.cornerRadius = 12
-        contentView.layer.masksToBounds = true
-        
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        
-        contentView.addSubview(imageView)
-        
-        imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // 스크롤 빠르게해도 재사용 안전하게
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageView.kf.cancelDownloadTask()
-        imageView.image = nil
-    }
-    
-    func setPoster(url: URL?) {
-        imageView.kf.setImage(with: url)
-    }
-}
-
-final class SectionHeaderView: UICollectionReusableView {
-    static let identifier = "SectionHeaderView"
-    
-    private let titleLabel = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        titleLabel.font = .boldSystemFont(ofSize: 25)
-        addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview().offset(-8)
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure(title: String) {
-        titleLabel.text = title
     }
 }
