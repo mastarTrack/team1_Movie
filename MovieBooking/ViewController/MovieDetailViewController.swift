@@ -6,6 +6,7 @@
 //
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class MovieDetailViewController: ViewController {
     private let detailView = MovieDetailView()
@@ -24,14 +25,15 @@ final class MovieDetailViewController: ViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        navigationItem.title = ""
+        navigationItem.title = viewModel.title
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         
-        configure()
+        configureDetailViewLabels()
+        configureLayout()
     }
 
-    private func configure() {
+    private func configureLayout() {
         view.addSubview(detailView)
 
         detailView.snp.makeConstraints {
@@ -39,5 +41,16 @@ final class MovieDetailViewController: ViewController {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
         }
+    }
+    
+    private func configureDetailViewLabels() {
+        let url = URL(string: viewModel.imageURL)
+        detailView.posterImageView.kf.setImage(with: url)
+        
+        detailView.titleLabel.text = viewModel.title
+        detailView.genreLabel.text = viewModel.genre
+        detailView.overviewLabel.text = viewModel.overview
+        detailView.voteAverageLabel.text = viewModel.stars
+        detailView.releaseDateLabel.text = viewModel.releaseDate
     }
 }
