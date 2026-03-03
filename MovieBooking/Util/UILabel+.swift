@@ -1,5 +1,5 @@
 //
-//  UILable+.swift
+//  UILabel+.swift
 //  MovieBooking
 //
 //  Created by Yeseul Jang on 3/2/26.
