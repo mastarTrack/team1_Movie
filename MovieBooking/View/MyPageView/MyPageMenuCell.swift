@@ -41,9 +41,9 @@ extension MyPageMenuCell {
         stackView.distribution = .fillEqually
         stackView.alignment = .leading
         
-        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
-        subTitleLabel.font = .systemFont(ofSize: 18)
+        subTitleLabel.font = .systemFont(ofSize: 16)
         subTitleLabel.textColor = .secondaryLabel
         
     }

@@ -43,6 +43,15 @@ extension MyPageViewController {
         viewModel.onLogout = { [weak self] in
             self?.changeNavigationToLogin()
         }
+        
+        viewModel.showLogoutAlert = { [weak self] in
+            let alert = UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+            alert.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
+                self?.viewModel.confirmLogout()
+            })
+            self?.present(alert, animated: true)
+        }
     }
 }
 

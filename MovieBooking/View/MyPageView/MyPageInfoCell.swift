@@ -32,11 +32,11 @@ extension MyPageInfoCell {
         containerView.backgroundColor = .systemGray6
         containerView.layer.cornerRadius = 10
         
-        countLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        countLabel.font = .systemFont(ofSize: 25, weight: .bold)
         countLabel.textColor = .systemOrange
         countLabel.textAlignment = .center
         
-        titleLabel.font = .systemFont(ofSize: 18)
+        titleLabel.font = .systemFont(ofSize: 16)
         titleLabel.textColor = .secondaryLabel
         titleLabel.textAlignment = .center
         

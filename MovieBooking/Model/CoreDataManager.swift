@@ -34,6 +34,7 @@ class CoreDataManager {
     }
 }
 
+// 회원정보 Entity 관련
 extension CoreDataManager {
     func saveUser(name: String, email: String, password: String) -> Bool {
         let user = User(context: context)

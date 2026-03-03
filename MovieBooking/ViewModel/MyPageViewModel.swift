@@ -14,6 +14,7 @@ class MyPageViewModel {
     let infoItems = MyPageInfo.infoList
     
     var onLogout: (() -> Void)?
+    var showLogoutAlert: (() -> Void)?
     
     var userName: String {
         UserDefaults.standard.string(forKey: "userName") ?? "이름 정보 없음"
@@ -26,9 +27,13 @@ class MyPageViewModel {
     func didSelectMenuItem(index: Int) {
         let item = menuItems[index]
         if item.isLogout {
-            removeUserData()
-            onLogout?()
+            showLogoutAlert?()
         }
+    }
+    
+    func confirmLogout() {
+        removeUserData()
+        onLogout?()
     }
     
     func removeUserData() {

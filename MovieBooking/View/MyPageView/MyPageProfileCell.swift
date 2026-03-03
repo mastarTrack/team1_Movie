@@ -45,10 +45,10 @@ extension MyPageProfileCell {
         stackView.distribution = .fillEqually
         stackView.alignment = .leading
         
-        nameLabel.font = .systemFont(ofSize: 30, weight: .bold)
+        nameLabel.font = .systemFont(ofSize: 25, weight: .bold)
         nameLabel.textColor = .white
         
-        emailLabel.font = .systemFont(ofSize: 21)
+        emailLabel.font = .systemFont(ofSize: 18)
         emailLabel.textColor = .white
         
     }
