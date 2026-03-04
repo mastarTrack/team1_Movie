@@ -8,7 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol PasswordChangeViewDelegate: AnyObject {
+    func passwordFieldDidChange(current: String?, new: String?, reNew: String?)
+    func didTapChangeButton()
+}
+
 class PasswordChangeView: UIView {
+    
+    weak var delegate: PasswordChangeViewDelegate?
     
     private let containerView = UIView()
     
@@ -16,9 +23,9 @@ class PasswordChangeView: UIView {
     private let newPasswordLabel = UILabel()
     private let reNewPasswordLabel = UILabel()
     
-    private let currentPasswordField = CustomTextField(placeholder: "현재 비밀번호")
-    private let newPasswordField = CustomTextField(placeholder: "새 비밀번호")
-    private let reNewPasswordField = CustomTextField(placeholder: "새 비밀번호 확인")
+    private let currentPasswordField = CustomTextField(placeholder: "현재 비밀번호", isPassword: true)
+    private let newPasswordField = CustomTextField(placeholder: "새 비밀번호", isPassword: true)
+    private let reNewPasswordField = CustomTextField(placeholder: "새 비밀번호 확인", isPassword: true)
     
     private let changeButton = CustomButton(title: "비밀번호 변경")
     
@@ -26,6 +33,7 @@ class PasswordChangeView: UIView {
         super.init(frame: frame)
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -49,6 +57,7 @@ extension PasswordChangeView {
         
         
         changeButton.isEnabled = false
+        changeButton.alpha = 0.5
     }
     
     private func setLayout() {
@@ -99,5 +108,32 @@ extension PasswordChangeView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(60)
         }
+    }
+}
+
+extension PasswordChangeView {
+    func setButtonEnbaled(isEnbaled: Bool) {
+        changeButton.isEnabled = isEnbaled
+        
+        changeButton.alpha = isEnbaled ? 1 : 0.5
+    }
+}
+
+extension PasswordChangeView {
+    private func setAction() {
+        [currentPasswordField, newPasswordField, reNewPasswordField].forEach {
+            $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        }
+        changeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func textFieldDidChange() {
+        delegate?.passwordFieldDidChange(current: currentPasswordField.text, new: newPasswordField.text, reNew: reNewPasswordField.text)
+    }
+    
+    @objc
+    private func changeButtonTapped() {
+        delegate?.didTapChangeButton()
     }
 }
