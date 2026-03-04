@@ -35,6 +35,9 @@ class MovieDetailViewModel {
         self.movie = movie
     }
     
+    // 예매화면으로 넘길것
+    var bookingMovie: Movie { movie }
+    
     var title: String { movie.title }
     
     var overview: String {
