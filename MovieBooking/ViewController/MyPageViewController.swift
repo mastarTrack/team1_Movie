@@ -52,6 +52,18 @@ extension MyPageViewController {
             })
             self?.present(alert, animated: true)
         }
+        
+        viewModel.navigateTo = { [weak self] index in
+            guard let self = self else { return }
+            
+            switch index {
+            case 2:
+                let settingVC = SettingViewController()
+                self.navigationController?.pushViewController(settingVC, animated: true)
+            default :
+                break
+            }
+        }
     }
 }
 
@@ -125,6 +137,7 @@ extension MyPageViewController {
         let loginVC = LoginViewController()
         let navigationController = UINavigationController(rootViewController: loginVC)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first {
+            window.overrideUserInterfaceStyle = .light
             window.rootViewController = navigationController
             window.makeKeyAndVisible()
         }

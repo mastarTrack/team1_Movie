@@ -82,4 +82,35 @@ extension CoreDataManager {
             return .serverError
         }
     }
+    
+    func checkPassword(email: String, password: String) -> Bool? {
+        let fetchRequest = User.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "email == %@", email)
+        
+        do {
+            let users = try context.fetch(fetchRequest)
+            guard let user = users.first else { return false }
+            
+            return user.password == password
+        } catch {
+            return nil
+        }
+    }
+    
+    func updatePassword(email: String, newPassword: String) -> Bool? {
+        let fetchRequest = User.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "email == %@", email)
+        
+        do {
+            let users = try context.fetch(fetchRequest)
+            guard let user = users.first else { return false }
+            
+            user.password = newPassword
+            
+            try context.save()
+            return true
+        } catch {
+            return nil
+        }
+    }
 }

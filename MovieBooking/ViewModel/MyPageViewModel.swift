@@ -15,6 +15,7 @@ class MyPageViewModel {
     
     var onLogout: (() -> Void)?
     var showLogoutAlert: (() -> Void)?
+    var navigateTo: ((Int) -> Void)?
     
     var userName: String {
         UserDefaults.standard.string(forKey: "userName") ?? "이름 정보 없음"
@@ -28,7 +29,9 @@ class MyPageViewModel {
         let item = menuItems[index]
         if item.isLogout {
             showLogoutAlert?()
+            return
         }
+        navigateTo?(index)
     }
     
     func confirmLogout() {
@@ -38,6 +41,7 @@ class MyPageViewModel {
     
     func removeUserData() {
         UserDefaults.standard.set(false, forKey: "isLogin")
+        UserDefaults.standard.set(false, forKey: "isDarkMode")
         UserDefaults.standard.removeObject(forKey: "userName")
         UserDefaults.standard.removeObject(forKey: "userEmail")
     }

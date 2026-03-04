@@ -49,3 +49,9 @@ extension CustomTextField {
         }
     }
 }
+
+extension CustomTextField {
+    func addTarget(_ target: Any?, action: Selector, for event: UIControl.Event) {
+        self.textField.addTarget(target, action: action, for: event)
+    }
+}
