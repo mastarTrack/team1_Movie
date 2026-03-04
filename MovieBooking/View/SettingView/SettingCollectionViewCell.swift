@@ -39,15 +39,14 @@ extension SettingCollectionViewCell {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         
         iconBackgroundView.layer.cornerRadius = 20
-        iconBackgroundView.backgroundColor = .systemOrange.withAlphaComponent(0.3)
         
-        iconView.tintColor = .white
+        iconView.tintColor = .systemOrange
         iconView.contentMode = .scaleAspectFit
         
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         
-        titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 16, weight: .medium)
         titleLabel.textColor = .label
         
         subTitleLabel.font = .systemFont(ofSize: 12)
@@ -104,7 +103,7 @@ extension SettingCollectionViewCell {
         if iconName == nil {
             iconBackgroundView.backgroundColor = .clear
         } else {
-            iconBackgroundView.backgroundColor = .systemOrange.withAlphaComponent(0.3)
+            iconBackgroundView.backgroundColor = .systemOrange.withAlphaComponent(0.1)
         }
         infoLabel.text = infoText
         

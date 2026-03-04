@@ -39,11 +39,11 @@ struct SettingMenu {
 
 struct SettingData {
     static let passwordList: [SettingMenu] = [
-        SettingMenu(title: "비밀번호 변경", subTitle: "계정 보안을 위해 주기적으로 변경하세요", iconName: "lock.fill")
+        SettingMenu(title: "비밀번호 변경", subTitle: "계정 보안을 위해 주기적으로 변경하세요", iconName: "lock")
     ]
     
     static let darkModeList: [SettingMenu] = [
-        SettingMenu(title: "다크 모드", subTitle: "라이트 모드로 표시 중", iconName: "sun.max.fill", hasSwitch: true)
+        SettingMenu(title: "다크 모드", subTitle: "라이트 모드로 표시 중", iconName: "sun.max", hasSwitch: true)
     ] // 기능 연결 필요, 표시되는 subTitle 변경 필요
     
     static let infoList: [SettingMenu] = [
