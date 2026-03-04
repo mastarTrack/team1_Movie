@@ -137,6 +137,7 @@ extension MyPageViewController {
         let loginVC = LoginViewController()
         let navigationController = UINavigationController(rootViewController: loginVC)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first {
+            window.overrideUserInterfaceStyle = .light
             window.rootViewController = navigationController
             window.makeKeyAndVisible()
         }

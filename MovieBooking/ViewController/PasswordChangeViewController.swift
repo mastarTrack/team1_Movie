@@ -54,11 +54,11 @@ extension PasswordChangeViewController: PasswordChangeViewDelegate {
                 let updateResult = CoreDataManager.shared.updatePassword(email: userEmail, newPassword: self.newInputPassword)
                 if let isSuccess = updateResult, isSuccess {
                     showCompletionAlert()
-                } else if checkResult == false {
-                    showErrorAlert(message: "현재 비밀번호가 일치하지 않습니다.")
-                } else {
-                    showErrorAlert(message: "비밀번호 변경에 실패하였습니다.")
                 }
+            } else if checkResult == false {
+                showErrorAlert(message: "현재 비밀번호가 틀렸습니다.")
+            } else {
+                showErrorAlert(message: "비밀번호 변경 오류 발생")
             }
         })
         present(alert, animated: true)
@@ -86,6 +86,7 @@ extension PasswordChangeViewController {
         let loginVC = LoginViewController()
         let navigationController = UINavigationController(rootViewController: loginVC)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first {
+            window.overrideUserInterfaceStyle = .light
             window.rootViewController = navigationController
             window.makeKeyAndVisible()
         }
