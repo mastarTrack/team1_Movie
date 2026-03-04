@@ -18,8 +18,7 @@ final class TicketBookingView: UIView {
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
-        collectionView.register(checkCell.self, forCellWithReuseIdentifier: checkCell.identifier)
+        registerCells()
         
         collectionView.register(
             BookingSectionHeaderView.self,
@@ -27,7 +26,28 @@ final class TicketBookingView: UIView {
             withReuseIdentifier: BookingSectionHeaderView.identifier
         )
     }
+    private func registerCells() {
+        collectionView.register(
+            CenterLabelCell.self,
+            forCellWithReuseIdentifier: CenterLabelCell.identifier
+        )
 
+        collectionView.register(
+            TripleLabelCell.self,
+            forCellWithReuseIdentifier: TripleLabelCell.identifier
+        )
+
+        collectionView.register(
+            TicketCountCell.self,
+            forCellWithReuseIdentifier: TicketCountCell.identifier
+        )
+        
+        collectionView.register(
+            BookingCell.self,
+            forCellWithReuseIdentifier: BookingCell.identifier
+        )
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -41,8 +61,10 @@ final class TicketBookingView: UIView {
                 return self.makeHorizontalScrollSection(environment: environment)
             case 2:
                 return self.make3x2GirdSection(environment: environment)
-            default:
+            case 3:
                 return self.makeListSection(environment: environment)
+            default:
+                return self.makeBookingSection(environment: environment)
             }
         }
     }
@@ -196,7 +218,7 @@ extension TicketBookingView {
         // 가로폭만 계산해서 아이템 사이즈 계산
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .absolute(itemWidthSize),
-            heightDimension: .absolute(70)
+            heightDimension: .absolute(90)
         )
         
         // 아이템 사이즈 지정
@@ -206,7 +228,7 @@ extension TicketBookingView {
         let gridGroup = NSCollectionLayoutGroup.vertical(
             layoutSize:NSCollectionLayoutSize(
                 widthDimension: .absolute(itemWidthSize),
-                heightDimension: .absolute(140)
+                heightDimension: .absolute(180)
             ),
             repeatingSubitem: item,
             count: 2
@@ -219,6 +241,42 @@ extension TicketBookingView {
         
         section.contentInsets = .init(top: spacing, leading: spacing, bottom: spacing, trailing: spacing)
         section.boundarySupplementaryItems = [makeHeaderItem(height: 60)]
+        return section
+    }
+    
+    private func makeBookingSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection{
+        let spacing: CGFloat = 10
+        
+        // 컬렉션 뷰가 들어갈 사이즈 구하기
+        let containerSize = environment.container.effectiveContentSize
+        let itemWidthSize = (containerSize.width - spacing * 2)
+        
+        // 가로폭만 계산해서 아이템 사이즈 계산
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(itemWidthSize),
+            heightDimension: .absolute(90)
+        )
+        
+        // 아이템 사이즈 지정
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // 2번 쌓기
+        let gridGroup = NSCollectionLayoutGroup.vertical(
+            layoutSize:NSCollectionLayoutSize(
+                widthDimension: .absolute(itemWidthSize),
+                heightDimension: .absolute(90)
+            ),
+            repeatingSubitem: item,
+            count: 1
+        )
+        
+        gridGroup.interItemSpacing = .fixed(spacing)
+        
+        let section = NSCollectionLayoutSection(group: gridGroup)
+        section.interGroupSpacing = spacing
+        
+        section.contentInsets = .init(top: spacing, leading: spacing, bottom: spacing, trailing: spacing)
+        
         return section
     }
     
