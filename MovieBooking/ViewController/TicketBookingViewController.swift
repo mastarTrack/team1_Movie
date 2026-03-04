@@ -65,9 +65,11 @@ extension TicketBookingViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0: header.configure(title: "극장 선택")
             
-        case 1: header.configure(title: "시간 선택")
+        case 1: header.configure(title: "날짜 선택")
             
-        default: header.configure(title: "기타")
+        case 2: header.configure(title: "시간 선택")
+        
+        default: header.configure(title: "인원 선택")
         }
         
         return header
