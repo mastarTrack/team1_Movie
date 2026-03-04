@@ -10,6 +10,7 @@ import UIKit
 class SettingViewController: UIViewController {
     
     private let settingView = SettingCollectionView()
+    private let viewModel = SettingViewModel()
     
     override func loadView() {
         self.view = settingView
@@ -39,33 +40,15 @@ extension SettingViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionType = SettingSection.allCases[section]
-        
-        switch sectionType {
-        case .passwordSection:
-            return SettingData.passwordList.count
-        case .darkModeSection:
-            return SettingData.darkModeList.count
-        case .infoSection:
-            return SettingData.infoList.count
-        }
+        let sectionType = viewModel.sections[section]
+        return viewModel.getItem(sectionType: sectionType).count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sectionType = SettingSection.allCases[indexPath.section]
-        
-        let item: SettingMenu
-        
+        let sectionType = viewModel.sections[indexPath.section]
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingCollectionViewCell.id, for: indexPath) as? SettingCollectionViewCell else {
             return UICollectionViewCell() }
-        switch sectionType {
-        case .passwordSection:
-            item = SettingData.passwordList[indexPath.item]
-        case .darkModeSection:
-            item = SettingData.darkModeList[indexPath.item]
-        case .infoSection:
-            item = SettingData.infoList[indexPath.item]
-        }
+        let item = viewModel.getItem(sectionType: sectionType)[indexPath.item]
         cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, infoText: item.infoText, hasSwitch: item.hasSwitch)
         return cell
     }
@@ -75,7 +58,7 @@ extension SettingViewController: UICollectionViewDataSource {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SettingHeader", for: indexPath) as! UICollectionViewListCell
         
         var content = header.defaultContentConfiguration()
-        content.text = SettingSection.allCases[indexPath.section].headerTitle
+        content.text = viewModel.sections[indexPath.section].headerTitle
         header.contentConfiguration = content
         return header
     }
