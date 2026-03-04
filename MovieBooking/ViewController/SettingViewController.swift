@@ -50,7 +50,7 @@ extension SettingViewController: UICollectionViewDataSource {
             return UICollectionViewCell() }
         let item = viewModel.getItem(sectionType: sectionType)[indexPath.item]
         let darkModeStatus = viewModel.isDarkMode
-        cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, infoText: item.infoText, hasSwitch: item.hasSwitch, isDarkMode: darkModeStatus)
+        cell.config(item: item, isDarkMode: darkModeStatus)
         cell.delegate = self
         return cell
     }

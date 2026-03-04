@@ -24,31 +24,33 @@ enum SettingSection: CaseIterable {
 struct SettingMenu {
     let title: String
     let subTitle: String?
-    let iconName: String?
+    let iconName: String
     let infoText: String?
+    let hasNav: Bool
     let hasSwitch: Bool
     
-    init(title: String, subTitle: String? = nil, iconName: String? = nil, infoText: String? = nil, hasSwitch: Bool = false) {
+    init(title: String, subTitle: String? = nil, iconName: String, infoText: String? = nil, hasNav: Bool = false, hasSwitch: Bool = false) {
         self.title = title
         self.subTitle = subTitle
         self.iconName = iconName
         self.infoText = infoText
+        self.hasNav = hasNav
         self.hasSwitch = hasSwitch
     }
 }
 
 struct SettingData {
     static let passwordList: [SettingMenu] = [
-        SettingMenu(title: "비밀번호 변경", subTitle: "계정 보안을 위해 주기적으로 변경하세요", iconName: "lock")
+        SettingMenu(title: "비밀번호 변경", subTitle: "계정 보안을 위해 주기적으로 변경하세요", iconName: "lock", hasNav: true)
     ]
     
     static let darkModeList: [SettingMenu] = [
-        SettingMenu(title: "다크 모드", subTitle: "라이트 모드로 표시 중", iconName: "sun.max", hasSwitch: true)
+        SettingMenu(title: "다크 모드", subTitle: "라이트/다크 모드 전환하세요", iconName: "sun.max", hasSwitch: true)
     ] // 기능 연결 필요, 표시되는 subTitle 변경 필요
     
     static let infoList: [SettingMenu] = [
-        SettingMenu(title: "버전", infoText: "1.0.0"),
-        SettingMenu(title: "개발사", infoText: "나머지공부 다 함께"),
-        SettingMenu(title: "Github", infoText: "github.com")
+        SettingMenu(title: "버전", iconName: "info.circle", infoText: "1.0.0"),
+        SettingMenu(title: "개발사", iconName: "figure.2.circle", infoText: "나머지공부 다 함께"),
+        SettingMenu(title: "Github", iconName: "link.circle", infoText: "github.com")
     ]
 }

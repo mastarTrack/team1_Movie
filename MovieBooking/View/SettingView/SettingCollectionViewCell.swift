@@ -12,7 +12,7 @@ protocol SettingCollectionViewCellDelegate: AnyObject {
     func didTapToggleSwitch(isDarkMode: Bool)
 }
 
-class SettingCollectionViewCell: UICollectionViewCell {
+class SettingCollectionViewCell: UICollectionViewListCell {
     
     static let id = "SettingCollectionViewCell"
     
@@ -100,21 +100,26 @@ extension SettingCollectionViewCell {
 }
 
 extension SettingCollectionViewCell {
-    func config(title: String, subTitle: String?, iconName: String?, infoText: String?, hasSwitch: Bool, isDarkMode: Bool) {
+    func config(item: SettingMenu, isDarkMode: Bool) {
         
-        titleLabel.text = title
-        subTitleLabel.text = subTitle
-        subTitleLabel.isHidden = subTitle == nil
-        iconView.image = UIImage(systemName: iconName ?? "")
+        titleLabel.text = item.title
         
-        if iconName == nil {
-            iconBackgroundView.backgroundColor = .clear
+        subTitleLabel.text = item.subTitle
+        subTitleLabel.isHidden = item.subTitle == nil
+        
+        iconView.image = UIImage(systemName: item.iconName)
+        iconBackgroundView.backgroundColor = .systemOrange.withAlphaComponent(0.1)
+        
+        infoLabel.text = item.infoText
+        infoLabel.isHidden = item.infoText == nil
+        
+        if item.hasNav {
+            self.accessories = [.disclosureIndicator()]
         } else {
-            iconBackgroundView.backgroundColor = .systemOrange.withAlphaComponent(0.1)
+            self.accessories = []
         }
-        infoLabel.text = infoText
         
-        toggleSwitch.isHidden = !hasSwitch
+        toggleSwitch.isHidden = !item.hasSwitch
         toggleSwitch.isOn = isDarkMode
     }
 }
