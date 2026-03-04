@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A815E862F584D46007E7CCF /* Reservation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A815E842F584D46007E7CCF /* Reservation+CoreDataClass.swift */; };
+		0A815E872F584D46007E7CCF /* Reservation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A815E852F584D46007E7CCF /* Reservation+CoreDataProperties.swift */; };
 		8AC8BB792F4FDFD4009690BD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB782F4FDFD4009690BD /* SnapKit */; };
 		8AC8BB7C2F4FDFDC009690BD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB7B2F4FDFDC009690BD /* Alamofire */; };
 		8AC8BB7F2F4FDFF3009690BD /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC8BB7E2F4FDFF3009690BD /* Then */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A815E842F584D46007E7CCF /* Reservation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reservation+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0A815E852F584D46007E7CCF /* Reservation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reservation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8AC8BB5C2F4FDFA8009690BD /* MovieBooking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBooking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC8BBBE2F503C37009690BD /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		8AC8BC3A2F50597B009690BD /* User+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -62,6 +66,8 @@
 		8AC8BB532F4FDFA8009690BD = {
 			isa = PBXGroup;
 			children = (
+				0A815E842F584D46007E7CCF /* Reservation+CoreDataClass.swift */,
+				0A815E852F584D46007E7CCF /* Reservation+CoreDataProperties.swift */,
 				8AC8BC3A2F50597B009690BD /* User+CoreDataClass.swift */,
 				8AC8BC3B2F50597B009690BD /* User+CoreDataProperties.swift */,
 				8AC8BBBE2F503C37009690BD /* Config.xcconfig */,
@@ -165,6 +171,8 @@
 			files = (
 				8AC8BC3C2F50597B009690BD /* User+CoreDataProperties.swift in Sources */,
 				8AC8BC3D2F50597B009690BD /* User+CoreDataClass.swift in Sources */,
+				0A815E862F584D46007E7CCF /* Reservation+CoreDataClass.swift in Sources */,
+				0A815E872F584D46007E7CCF /* Reservation+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
