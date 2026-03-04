@@ -9,6 +9,8 @@ import Foundation
 
 class SettingViewModel {
     
+    var navigateTo: (() -> Void)?
+    
     var isDarkMode: Bool {
         return UserDefaults.standard.bool(forKey: "isDarkMode")
     }
@@ -24,6 +26,10 @@ class SettingViewModel {
         case .infoSection:
             return SettingData.infoList
         }
+    }
+    
+    func didSelectPasswordSection() {
+        navigateTo?()
     }
     
     func toggleDarkMode(isDarkMode: Bool) {

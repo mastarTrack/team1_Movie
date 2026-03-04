@@ -19,6 +19,16 @@ class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+        bind()
+    }
+}
+
+extension SettingViewController {
+    private func bind() {
+        viewModel.navigateTo = { [weak self] in
+            let passwordChangeVC = PasswordChangeViewController()
+            self?.navigationController?.pushViewController(passwordChangeVC, animated: true)
+        }
     }
 }
 
@@ -30,7 +40,15 @@ extension SettingViewController {
 }
 
 extension SettingViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let sectionType = viewModel.sections[indexPath.section]
+        let item = viewModel.getItem(sectionType: sectionType)[indexPath.item]
+        
+        if item.hasNav {
+            viewModel.didSelectPasswordSection()
+        }
+    }
 }
 
 extension SettingViewController: UICollectionViewDataSource {
