@@ -114,3 +114,45 @@ extension CoreDataManager {
         }
     }
 }
+
+extension CoreDataManager {
+    func saveReservation(
+        title: String?,
+        posterPath: String?,
+        theaterName: String?,
+        watchDate: String?,
+        watchTime: String?,
+        adult: Int,
+        child: Int,
+        totalPrice: Int,
+        seatNumber: String? = nil,
+        userEmail: String? = nil
+    ) -> Bool {
+        
+        let reservation = Reservation(context: context)
+        reservation.id = UUID()
+        reservation.title = title
+        reservation.posterPath = posterPath
+        reservation.theaterName = theaterName
+        reservation.watchDate = watchDate
+        reservation.watchTime = watchTime
+        reservation.adult = Int16(adult)
+        reservation.child = Int16(child)
+        reservation.totalPrice = Int64(totalPrice)
+        reservation.seatNumber = seatNumber
+        reservation.userEmail = userEmail
+        
+        // 예매한 날짜 저장하기
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        reservation.reservationDate = formatter.string(from: Date())
+        
+        do {
+            try context.save()
+            return true
+        } catch {
+            print("저장 실패")
+            return false
+        }
+    }
+}

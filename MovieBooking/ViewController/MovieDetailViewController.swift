@@ -31,8 +31,20 @@ final class MovieDetailViewController: UIViewController {
         
         configureDetailViewLabels()
         configureLayout()
+        
+        // 버튼 눌렸을시 다음페이지 가기
+        detailView.onTapReservation = { [weak self] in
+            guard let self else { return }
+            pushBookingVC()
+        }
     }
-
+    
+    private func pushBookingVC() {
+        let bookingVM = TicketBookingViewModel(movie: self.viewModel.bookingMovie)
+        let bookingVC = TicketBookingViewController(viewModel: bookingVM)
+        self.navigationController?.pushViewController(bookingVC, animated: true)
+    }
+    
     private func configureLayout() {
         view.addSubview(detailView)
 

@@ -33,7 +33,7 @@ final class MovieCollectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func makeLayout() -> UICollectionViewLayout {
+    private func makeLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout(sectionProvider: { section, environment in
             let spacing: CGFloat = 10 // 간격
             

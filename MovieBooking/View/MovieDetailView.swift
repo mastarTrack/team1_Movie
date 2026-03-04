@@ -22,6 +22,9 @@ class MovieDetailView: UIView {
 
     let overviewLabel = UILabel()
     private let reservationButton = CustomButton(title: "예매하기")
+    
+    // 눌렸음을 알림
+    var onTapReservation: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,6 +33,11 @@ class MovieDetailView: UIView {
         configureView()
         configureLabel()
         configureLayout()
+        
+        // 버튼 액션 등록하기
+        reservationButton.addAction(UIAction { [weak self] _ in
+            self?.onTapReservation?()
+        }, for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
