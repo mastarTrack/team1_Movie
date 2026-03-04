@@ -69,4 +69,14 @@ extension SettingViewController: UICollectionViewDataSource {
         cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, infoText: item.infoText, hasSwitch: item.hasSwitch)
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SettingHeader", for: indexPath) as! UICollectionViewListCell
+        
+        var content = header.defaultContentConfiguration()
+        content.text = SettingSection.allCases[indexPath.section].headerTitle
+        header.contentConfiguration = content
+        return header
+    }
 }

@@ -11,6 +11,14 @@ enum SettingSection: CaseIterable {
     case passwordSection
     case darkModeSection
     case infoSection
+    
+    var headerTitle: String {
+        switch self {
+        case .passwordSection: return "보안"
+        case .darkModeSection: return "다크 모드"
+        case .infoSection: return "앱 정보"
+        }
+    }
 }
 
 struct SettingMenu {
