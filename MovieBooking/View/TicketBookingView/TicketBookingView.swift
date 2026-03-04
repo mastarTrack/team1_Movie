@@ -46,7 +46,13 @@ final class TicketBookingView: UIView {
             }
         }
     }
+}
 
+
+
+// 레이아웃 구현 부
+extension TicketBookingView {
+    // 2*2 그리드
     private func make2x2GirdSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection{
         let spacing: CGFloat = 10
         
@@ -130,6 +136,7 @@ final class TicketBookingView: UIView {
         return section
     }
     
+    // 3*2
     private func make3x2GirdSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection{
         let spacing: CGFloat = 10
         
@@ -178,6 +185,7 @@ final class TicketBookingView: UIView {
         return section
     }
     
+    // 두꺼운 리스트
     private func makeListSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection{
         let spacing: CGFloat = 10
         
