@@ -13,6 +13,7 @@ class SettingCollectionView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setup()
     }
     
     required init?(coder: NSCoder) {
@@ -28,6 +29,8 @@ extension SettingCollectionView {
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        collectionView.register(SettingCollectionViewCell.self, forCellWithReuseIdentifier: SettingCollectionViewCell.id)
         
     }
 }
