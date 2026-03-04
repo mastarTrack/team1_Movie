@@ -16,6 +16,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
+        let isDarkMode = UserDefaults.standard.bool(forKey: "isDarkMode")
+        window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+        
         let isLogin = UserDefaults.standard.bool(forKey: "isLogin")
         if isLogin {
             window.rootViewController = ViewManagerController()

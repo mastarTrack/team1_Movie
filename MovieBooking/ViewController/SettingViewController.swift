@@ -36,7 +36,7 @@ extension SettingViewController: UICollectionViewDelegate {
 extension SettingViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        SettingSection.allCases.count
+        viewModel.sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -49,7 +49,9 @@ extension SettingViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingCollectionViewCell.id, for: indexPath) as? SettingCollectionViewCell else {
             return UICollectionViewCell() }
         let item = viewModel.getItem(sectionType: sectionType)[indexPath.item]
-        cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, infoText: item.infoText, hasSwitch: item.hasSwitch)
+        let darkModeStatus = viewModel.isDarkMode
+        cell.config(title: item.title, subTitle: item.subTitle, iconName: item.iconName, infoText: item.infoText, hasSwitch: item.hasSwitch, isDarkMode: darkModeStatus)
+        cell.delegate = self
         return cell
     }
     
@@ -61,5 +63,17 @@ extension SettingViewController: UICollectionViewDataSource {
         content.text = viewModel.sections[indexPath.section].headerTitle
         header.contentConfiguration = content
         return header
+    }
+}
+
+extension SettingViewController: SettingCollectionViewCellDelegate {
+    func didTapToggleSwitch(isDarkMode: Bool) {
+        viewModel.toggleDarkMode(isDarkMode: isDarkMode)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            windowScene.windows.forEach { window in
+                window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+            }
+        }
     }
 }

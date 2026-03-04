@@ -9,6 +9,10 @@ import Foundation
 
 class SettingViewModel {
     
+    var isDarkMode: Bool {
+        return UserDefaults.standard.bool(forKey: "isDarkMode")
+    }
+    
     let sections = SettingSection.allCases
     
     func getItem(sectionType: SettingSection) -> [SettingMenu] {
@@ -22,4 +26,7 @@ class SettingViewModel {
         }
     }
     
+    func toggleDarkMode(isDarkMode: Bool) {
+        UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
+    }
 }

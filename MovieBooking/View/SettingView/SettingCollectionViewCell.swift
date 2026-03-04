@@ -8,9 +8,15 @@
 import UIKit
 import SnapKit
 
+protocol SettingCollectionViewCellDelegate: AnyObject {
+    func didTapToggleSwitch(isDarkMode: Bool)
+}
+
 class SettingCollectionViewCell: UICollectionViewCell {
     
     static let id = "SettingCollectionViewCell"
+    
+    weak var delegate: SettingCollectionViewCellDelegate?
     
     private let iconBackgroundView = UIView()
     private let iconView = UIImageView()
@@ -27,6 +33,7 @@ class SettingCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -93,7 +100,7 @@ extension SettingCollectionViewCell {
 }
 
 extension SettingCollectionViewCell {
-    func config(title: String, subTitle: String?, iconName: String?, infoText: String?, hasSwitch: Bool) {
+    func config(title: String, subTitle: String?, iconName: String?, infoText: String?, hasSwitch: Bool, isDarkMode: Bool) {
         
         titleLabel.text = title
         subTitleLabel.text = subTitle
@@ -108,5 +115,17 @@ extension SettingCollectionViewCell {
         infoLabel.text = infoText
         
         toggleSwitch.isHidden = !hasSwitch
+        toggleSwitch.isOn = isDarkMode
+    }
+}
+
+extension SettingCollectionViewCell {
+    private func setAction() {
+        toggleSwitch.addTarget(self, action: #selector(toggleSwitchTapped), for: .valueChanged)
+    }
+    
+    @objc
+    private func toggleSwitchTapped(sender: UISwitch) {
+        delegate?.didTapToggleSwitch(isDarkMode: sender.isOn)
     }
 }
