@@ -41,6 +41,7 @@ class MyPageViewModel {
     
     func removeUserData() {
         UserDefaults.standard.set(false, forKey: "isLogin")
+        UserDefaults.standard.set(false, forKey: "isDarkMode")
         UserDefaults.standard.removeObject(forKey: "userName")
         UserDefaults.standard.removeObject(forKey: "userEmail")
     }

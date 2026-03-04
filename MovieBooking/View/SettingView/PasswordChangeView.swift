@@ -23,12 +23,11 @@ class PasswordChangeView: UIView {
     private let newPasswordLabel = UILabel()
     private let reNewPasswordLabel = UILabel()
     
-    private let currentPasswordField = CustomTextField(placeholder: "현재 비밀번호", isPassword: true)
-    private let newPasswordField = CustomTextField(placeholder: "새 비밀번호", isPassword: true)
-    private let reNewPasswordField = CustomTextField(placeholder: "새 비밀번호 확인", isPassword: true)
+    private let currentPasswordField = CustomTextField(placeholder: "현재 비밀번호")
+    private let newPasswordField = CustomTextField(placeholder: "새 비밀번호")
+    private let reNewPasswordField = CustomTextField(placeholder: "새 비밀번호 확인")
     
     private let changeButton = CustomButton(title: "비밀번호 변경")
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setAttributes()
