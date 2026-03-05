@@ -10,11 +10,7 @@ import UIKit
 class ReviewViewController: UIViewController {
     
     private let reviewView = ReviewCollectionView()
-    
-    private var selectedIndex = 0
-    
-    private var availableData: [Reservation] = []
-    private var writtenData: [Review] = []
+    private let viewModel = ReviewViewModel()
     
     override func loadView() {
         self.view = reviewView
@@ -23,7 +19,16 @@ class ReviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+        bind()
         loadAllData()
+    }
+}
+
+extension ReviewViewController {
+    private func bind() {
+        viewModel.onUpdated = { [weak self] in
+            self?.reviewView.collectionView.reloadData()
+        }
     }
 }
 
@@ -41,36 +46,13 @@ extension ReviewViewController {
 extension ReviewViewController {
     
     private func loadAllData() {
-        loadAvailableData()
-        loadWrittenData()
-        reviewView.collectionView.reloadData()
-    }
-    
-    private func loadWrittenData() {
-        self.writtenData = CoreDataManager.shared.fetchReview()
-    }
-    
-    private func loadAvailableData() {
-        guard let email = UserDefaults.standard.string(forKey: "userEmail") else { return }
-        let allData = CoreDataManager.shared.fetchReservations(email: email)
-        
-        let now = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        
-        self.availableData = allData.filter{ data in
-            let dateData = "\(data.safeWatchDate) \(data.safeWatchTime)"
-            guard let watchDate = formatter.date(from: dateData) else { return false }
-            return watchDate < now && data.review == nil
-        }.reversed()
-        reviewView.collectionView.reloadData()
+        viewModel.loadData()
     }
 }
 
 extension ReviewViewController: ReviewCollectionViewDelegate {
     func didChangeSegment(index: Int) {
-        self.selectedIndex = index
-        reviewView.collectionView.reloadData()
+        viewModel.updateSelectedIndex(index: index)
     }
 }
 
@@ -81,22 +63,18 @@ extension ReviewViewController: UICollectionViewDelegate {
 
 extension ReviewViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if selectedIndex == 0 {
-            return writtenData.count
-        } else {
-            return availableData.count
-        }
+        viewModel.numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if selectedIndex == 0 {
+        if viewModel.selectedIndex == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewCollectionViewCell.id, for: indexPath) as? ReviewCollectionViewCell else { return UICollectionViewCell() }
-            let item = writtenData[indexPath.item]
+            let item = viewModel.getWrittenData(index: indexPath.item)
             cell.config(data: item)
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AvailableReviewCollectionViewCell.id, for: indexPath) as? AvailableReviewCollectionViewCell else { return UICollectionViewCell() }
-            let item = availableData[indexPath.row]
+            let item = viewModel.getAvailableData(index: indexPath.item)
             cell.delegate = self
             cell.config(data: item)
             return cell
@@ -108,7 +86,7 @@ extension ReviewViewController: AvailableReviewCollectionViewCellDelegate {
     func didTapWriteButton(cell: AvailableReviewCollectionViewCell) {
         guard let indexPath = reviewView.collectionView.indexPath(for: cell) else { return }
         
-        let reservation = availableData[indexPath.item]
+        let reservation = viewModel.getAvailableData(index: indexPath.item)
         showReviewModal(data: reservation)
     }
     
