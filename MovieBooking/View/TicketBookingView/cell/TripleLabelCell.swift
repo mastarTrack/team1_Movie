@@ -37,6 +37,10 @@ final class TripleLabelCell: UICollectionViewCell {
             $0.font = .systemFont(ofSize: 14, weight: .medium)
             $0.textColor = .label
         }
+        
+        firstLabel.font = .systemFont(ofSize: 13, weight: .thin)
+        secondLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        thirdLabel.font = .systemFont(ofSize: 14, weight: .medium)
     }
 
     private func configureStackView() {

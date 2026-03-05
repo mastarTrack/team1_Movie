@@ -16,6 +16,15 @@ final class TicketBookingViewModel {
     
     lazy var dates = makeDates()
     
+    // 좌석 정보 넘겨 받음
+    private(set) var selectedSeatNumber: String? = nil
+    
+    // 선택되는 좌석 감시하기
+    func setSelectedSeats(_ seats: String) {
+        selectedSeatNumber = seats
+        onStateChange?()
+    }
+    
     // 영상시간 장소는 서버에서 오는 값이 없기때문에 넣어줌
     let theaters = ["CGV 강남", "CGV 홍대", "메가박스 코엑스", "롯데시네마 월드타워"]
     let times = ["10:30", "13:20", "16:10", "19:00", "21:50"]
@@ -83,10 +92,11 @@ final class TicketBookingViewModel {
     }
     
     // 예매완료 - 저장됨을 알림
-    var onBooked: ((Bool) -> Void)?
+    //var onBooked: ((Bool) -> Void)?
     
     // coreData 저장
-    func bookReservation() {
+    // 호출한 쪽에서 결과로 알럿 처리하도록 escaping으로 변경함
+    func bookReservation(completion: @escaping (Bool) -> Void) {
         let success = CoreDataManager.shared.saveReservation(
             title: title,
             posterPath: selectedPoster,
@@ -96,10 +106,10 @@ final class TicketBookingViewModel {
             adult: adultCount,
             child: childCount,
             totalPrice: totalPrice,
-            seatNumber: nil,
+            seatNumber: selectedSeatNumber,
             userEmail: email
         )
-        onBooked?(success)
+        completion(success)
     }
     
     private func convertForSaveDate(_ date: String) -> String {
