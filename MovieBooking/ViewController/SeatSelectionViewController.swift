@@ -41,14 +41,7 @@ final class SeatSelectionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // 예매하기 눌렀을때 좌석 확정되도록 만들기
-    private func didTapSeats() {
-        let seats = seatViewModel.selectedSeatsForSave
-        ticketBookingViewModel.setSelectedSeats(seats)
-        
-        navigationController?.popViewController(animated: true)
-    }
-    
+    // 예매된 좌석 임의로 추가
     private func setupViewModel() {
         seatViewModel.setup(
             totalSeatsCount: seatView.totalSeatsCount,
@@ -84,17 +77,53 @@ final class SeatSelectionViewController: UIViewController {
         }
         
         //여기서 그냥 저장도 함
-        seatView.reservationButton.addAction(UIAction { [weak self] _ in
-            guard let self else { return }
-            let seats = self.seatViewModel.selectedSeatsForSave
-            self.ticketBookingViewModel.setSelectedSeats(seats)
-            
-            self.ticketBookingViewModel.bookReservation()
-        }, for: .touchUpInside)
+        seatView.reservationButton.addAction(
+            UIAction { [weak self] _ in
+                self?.didTapReservation()
+            },
+            for: .touchUpInside
+        )
     }
     
     private func didTapReservation() {
+        // 1) 좌석 문자열 가져오기
         let seats = seatViewModel.selectedSeatsForSave
-        print("저장할 좌석:", seats)
+        
+        // 좌석을 하나도 안 골랐으면 막기
+        guard seats.isEmpty == false else {
+            showSimpleAlert(title: "좌석 선택", message: "좌석을 선택해주세요.")
+            return
+        }
+        
+        // 2) TicketBookingViewModel에 좌석 저장
+        ticketBookingViewModel.setSelectedSeats(seats)
+        
+        // 3) CoreData 저장 + 결과 받기
+        ticketBookingViewModel.bookReservation { [weak self] success in
+            guard let self else { return }
+            self.showBookingResult(success: success)
+        }
+    }
+    
+    private func showBookingResult(success: Bool) {
+        let title = success ? "예매 완료" : "예매 실패"
+        let message = success ? "예매가 완료되었습니다." : "예매에 실패했습니다."
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            guard let self else { return }
+            if success {
+                // 현재 화면(SeatSelectionVC)이 pop → TicketBookingVC로 돌아감
+                self.navigationController?.popViewController(animated: true)
+            }
+        })
+        present(alert, animated: true)
+    }
+    
+    
+    private func showSimpleAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
     }
 }

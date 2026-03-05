@@ -37,11 +37,6 @@ final class TicketBookingViewController: UIViewController {
             date: viewModel.releaseDateText
         )
         
-        // 저장만 하도록 변경
-        viewModel.onBooked = { [weak self] result in
-            self?.showBookingResult(result: result)
-        }
-        
         viewModel.onStateChange = { [weak self] in
             self?.ticketBookingView.collectionView.reloadData()
         }
@@ -56,23 +51,6 @@ final class TicketBookingViewController: UIViewController {
         )
         navigationController?.pushViewController(seatVC, animated: true)
     }
-    
-    func showBookingResult(result: Bool) {
-        let title = result ? "예매 완료" : "예매 실패"
-        let message = result ? "예매가 완료되었습니다." : "예매 실패했습니다."
-        
-        let alert = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
-            if result { self.navigationController?.popViewController(animated: true) }
-        })
-        self.present(alert, animated: true)
-    }
-    
     
     private func configureLayout() {
         view.addSubview(ticketBookingView)
