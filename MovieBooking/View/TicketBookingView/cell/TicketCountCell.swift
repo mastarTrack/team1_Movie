@@ -42,7 +42,6 @@ final class TicketCountCell: UICollectionViewCell {
         priceLabel.text = priceText
         setCount(count)
         minusButton.isEnabled = isMinusEnabled
-        //minusButton.alpha = isMinusEnabled ? 1.0 : 0.35
     }
 
     func setCount(_ newValue: Int) {
@@ -144,5 +143,13 @@ final class TicketCountCell: UICollectionViewCell {
         plusButton.addAction(UIAction { [weak self] _ in
             self?.onTapPlus?()
         }, for: .touchUpInside)
+    }
+    
+    func applySelectedStyle(_ isSelected: Bool) {
+        if isSelected {
+            contentView.backgroundColor = .systemOrange
+        } else {
+            contentView.backgroundColor = .systemGray6
+        }
     }
 }

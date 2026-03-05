@@ -33,7 +33,16 @@ final class CenterLabelCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     func configure(text: String) {
         titleLabel.text = text
+    }
+    
+    func applySelectedStyle(_ isSelected: Bool) {
+        if isSelected {
+            contentView.backgroundColor = .systemOrange
+        } else {
+            contentView.backgroundColor = .systemGray6
+        }
     }
 }

@@ -190,7 +190,7 @@ extension TicketBookingView {
         // 2번 쌓기
         let gridGroup = NSCollectionLayoutGroup.vertical(
             layoutSize:NSCollectionLayoutSize(
-                widthDimension: .absolute(itemWidthSize * 2),
+                widthDimension: .absolute(itemWidthSize * 3),
                 heightDimension: .absolute(100)
             ),
             repeatingSubitem: rowGroup,
@@ -289,23 +289,5 @@ extension TicketBookingView {
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top
         )
-    }
-}
-
-final class checkCell: UICollectionViewCell {
-    static let identifier = "checkCell"
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        contentView.layer.cornerRadius = 12
-        contentView.layer.masksToBounds = true
-        
-        contentView.backgroundColor = .cyan
-
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
