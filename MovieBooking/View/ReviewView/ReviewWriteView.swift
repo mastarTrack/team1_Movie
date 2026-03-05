@@ -11,6 +11,9 @@ import Kingfisher
 
 class ReviewWriteView: UIView {
     
+    private var currentStar = 0
+    private var starImageViews: [UIImageView] = []
+    
     private let posterImageView = UIImageView()
     
     private let stackView = UIStackView()
@@ -52,11 +55,18 @@ extension ReviewWriteView {
         starStackView.axis = .horizontal
         starStackView.spacing = 10
         starStackView.distribution = .fillEqually
-        for _ in 1...5 {
+        for i in 1...5 {
             let starImageView = UIImageView(image: UIImage(systemName: "star"))
             starImageView.tintColor = .systemOrange
             starImageView.contentMode = .scaleAspectFit
+            starImageView.tag = i
+            starImageView.isUserInteractionEnabled = true
+            
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(starTapped(sender:)))
+            starImageView.addGestureRecognizer(gesture)
+            
             starStackView.addArrangedSubview(starImageView)
+            starImageViews.append(starImageView)
         }
         
         textView.text = "영화에 대한 솔직한 리뷰를 남겨 주세요. (선택)"
@@ -115,6 +125,26 @@ extension ReviewWriteView {
         
         titleLabel.text = data.safeTitle
         dateLabel.text = data.safeWatchDate
+    }
+}
+
+extension ReviewWriteView {
+    func updateStar(starCount: Int) {
+        self.currentStar = starCount
+        
+        for (index, starImageView) in starImageViews.enumerated() {
+            if index < starCount {
+                starImageView.image = UIImage(systemName: "star.fill")
+            } else {
+                starImageView.image = UIImage(systemName: "star")
+            }
+        }
+    }
+    
+    @objc
+    private func starTapped(sender: UITapGestureRecognizer) {
+        guard let tappedView = sender.view else { return }
+        updateStar(starCount: tappedView.tag)
     }
 }
 
