@@ -8,6 +8,12 @@ import UIKit
 import SnapKit
 
 final class SeatSelectionView: UIView {
+    enum SeatState {
+        case available
+        case selected
+        case Unavailable
+    }
+    
     let titleLabel = UILabel()
     let guideLabel = UILabel() // 좌석 상태 안내
     let screenLabel = UILabel()
@@ -21,18 +27,20 @@ final class SeatSelectionView: UIView {
     let rows = 10
     let seatSize = CGSize(width: 40, height: 40)
     let spacing: CGFloat = 6
-    lazy var totalSeatsCount = rows * columns
-    var seatButtons: [UIButton] = []
+    lazy var totalSeatsCount = rows * columns // 150개
+    var seatButtons = [UIButton]()
+    var seatStates = [SeatState]()
     
     // 좌석으로 크기 정하기
     lazy var containerWidth = CGFloat(columns) * seatSize.width + CGFloat(columns) * spacing + 40
-
     lazy var containerHeight = CGFloat(rows) * seatSize.height + CGFloat(rows) * spacing + 40
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
+        
+        setupStates()
         
         configureFixedView()
         configureSeatView()
@@ -106,7 +114,7 @@ final class SeatSelectionView: UIView {
             button.tag = index
             button.setTitle(seatTitle(index: index), for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
-            button.backgroundColor = .systemBlue
+            button.backgroundColor = .systemGray4
             button.layer.cornerRadius = 6
             
             // 뷰에 넣기
@@ -130,6 +138,7 @@ final class SeatSelectionView: UIView {
             
             // 이걸로 상태저장
             seatButtons.append(button)
+            updateSeatState(index: index)
         }
     }
     
@@ -151,9 +160,52 @@ final class SeatSelectionView: UIView {
         return "\(rowLetter)\(seatNumber)"
     }
     
+    // 좌석 눌릴경우
     private func didTapSeat(_ sender: UIButton) {
-        // 좌석 선택 로직
-        print("\(sender.tag)눌렸음!")
+        let index = sender.tag
+        
+        // 선택불가면 아무것도 안하게
+        guard seatStates[index] != .Unavailable else { return }
+
+        if seatStates[index] == .selected {
+            seatStates[index] = .available
+        } else {
+            seatStates[index] = .selected
+        }
+        
+        // 바뀐상태 버튼에 적용
+        updateSeatState(index: index)
+    }
+    
+    // 선택 버튼 상태 저장하기
+    private func setupStates() {
+        seatStates = Array(repeating: .available, count: totalSeatsCount)
+        
+        let a = [3,6,123]
+        
+        for i in a {
+            seatStates[i] = .Unavailable
+        }
+        
+    }
+    
+    // 저장된 걸로 버튼 모양 바꾸기
+    private func updateSeatState(index: Int) {
+        let button = seatButtons[index]
+        
+        switch seatStates[index] {
+        case .available:
+            button.backgroundColor = .systemGray4
+            button.isEnabled = true
+        case .selected:
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = .systemOrange
+            button.isEnabled = true
+        case .Unavailable:
+            button.backgroundColor = .systemGray
+            button.setTitleColor(.clear, for: .normal)
+            button.isEnabled = false
+        }
     }
 }
 
