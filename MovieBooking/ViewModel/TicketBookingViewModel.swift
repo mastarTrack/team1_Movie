@@ -32,7 +32,7 @@ final class TicketBookingViewModel {
     ]
     
     var selectedTheaterName: String? = "스크림"
-    var selectedWatchDate: String? = "2/27"
+    var selectedWatchDate: String? = "2026-03-05"
     var selectedWatchTime: String? = "10:30"
     var adultCount: Int = 2
     var childCount: Int = 1
@@ -72,7 +72,7 @@ final class TicketBookingViewModel {
             child: childCount,
             totalPrice: totalPrice,
             seatNumber: nil,
-            userEmail: nil
+            userEmail: UserDefaults.standard.string(forKey: "userEmail")!
         )
         onBooked?(success)
     }
