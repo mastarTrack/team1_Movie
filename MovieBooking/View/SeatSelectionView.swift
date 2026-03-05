@@ -6,13 +6,12 @@
 //
 import UIKit
 import SnapKit
+// 접근제어자 붙이기
 
 final class SeatSelectionView: UIView {
-    enum SeatState {
-        case available
-        case selected
-        case Unavailable
-    }
+    
+    // VC에게 전달할 이벤트
+    var onSeatTapped: ((Int, String) -> Void)?
     
     let titleLabel = UILabel()
     let guideLabel = UILabel() // 좌석 상태 안내
@@ -20,6 +19,7 @@ final class SeatSelectionView: UIView {
     
     let scrollView = UIScrollView()
     let contentView = UIView()
+    let reservationButton = CustomButton(title: "예매하기")
     
     // 좌석은 여기에 넣기
     let seatContainerView = UIView()
@@ -29,18 +29,14 @@ final class SeatSelectionView: UIView {
     let spacing: CGFloat = 6
     lazy var totalSeatsCount = rows * columns // 150개
     var seatButtons = [UIButton]()
-    var seatStates = [SeatState]()
     
     // 좌석으로 크기 정하기
     lazy var containerWidth = CGFloat(columns) * seatSize.width + CGFloat(columns) * spacing + 40
     lazy var containerHeight = CGFloat(rows) * seatSize.height + CGFloat(rows) * spacing + 40
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
-        
-        setupStates()
         
         configureFixedView()
         configureSeatView()
@@ -50,6 +46,60 @@ final class SeatSelectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func configureSeatView() {
+        for index in 0..<totalSeatsCount {
+            let button = UIButton()
+            button.tag = index
+            button.setTitle(seatTitle(index: index), for: .normal)
+            button.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
+            button.backgroundColor = .systemGray4
+            button.layer.cornerRadius = 6
+            
+            // 뷰에 넣기
+            seatContainerView.addSubview(button)
+            
+            // 버튼에 액션 등록하기
+            button.addAction(UIAction { [weak self] _ in
+                guard let self else { return }
+                let title = self.seatTitle(index: index)
+                self.onSeatTapped?(index, title)
+            }, for: .touchUpInside)
+
+            
+            // CGFloat로 Grid 그리기
+            let row = index / columns
+            let column = index % columns
+            let x = 20 + CGFloat(column) * (seatSize.width + spacing)
+            let y = 20 + CGFloat(row) * (seatSize.height + spacing)
+            button.frame = CGRect(x: x, y: y, width: seatSize.width, height: seatSize.height)
+            
+            // 이걸로 상태저장
+            seatButtons.append(button)
+        }
+    }
+    
+    // 저장된 걸로 버튼 모양 바꾸기
+    private func updateSeatState(index: Int, state: SeatSelectionViewModel.SeatState) {
+        let button = seatButtons[index]
+        
+        switch state {
+        case .available:
+            button.backgroundColor = .systemGray4
+            button.isEnabled = true
+        case .selected:
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = .systemOrange
+            button.isEnabled = true
+        case .Unavailable:
+            button.backgroundColor = .systemGray
+            button.setTitleColor(.clear, for: .normal)
+            button.isEnabled = false
+        }
+    }
+}
+
+
+extension SeatSelectionView {
     private func configureFixedView() {
         titleLabel.text = "좌석 선택"
         titleLabel.font = .boldSystemFont(ofSize: 24)
@@ -69,6 +119,7 @@ final class SeatSelectionView: UIView {
         addSubview(titleLabel)
         addSubview(guideLabel)
         addSubview(screenLabel)
+        addSubview(reservationButton)
         addSubview(scrollView)
         
         scrollView.addSubview(contentView)
@@ -91,8 +142,15 @@ final class SeatSelectionView: UIView {
             $0.height.equalTo(32)
         }
         
+        reservationButton.snp.makeConstraints {
+            $0.width.equalTo(150)
+            $0.height.equalTo(40)
+            $0.top.equalTo(safeAreaInsets).offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+        }
+        
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(screenLabel.snp.bottom).offset(16)
+            $0.top.equalTo(screenLabel.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
 
@@ -108,36 +166,6 @@ final class SeatSelectionView: UIView {
         }
     }
     
-    private func configureSeatView() {
-        for index in 0..<totalSeatsCount {
-            let button = UIButton()
-            button.tag = index
-            button.setTitle(seatTitle(index: index), for: .normal)
-            button.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
-            button.backgroundColor = .systemGray4
-            button.layer.cornerRadius = 6
-            
-            // 뷰에 넣기
-            seatContainerView.addSubview(button)
-            
-            // 버튼에 액션 등록하기
-            button.addAction(UIAction { [weak self] _ in
-                self?.didTapSeat(button)
-            }, for: .touchUpInside)
-            
-            // CGFloat로 Grid 그리기
-            let row = index / columns
-            let column = index % columns
-            let x = 20 + CGFloat(column) * (seatSize.width + spacing)
-            let y = 20 + CGFloat(row) * (seatSize.height + spacing)
-            button.frame = CGRect(x: x, y: y, width: seatSize.width, height: seatSize.height)
-            
-            // 이걸로 상태저장
-            seatButtons.append(button)
-            updateSeatState(index: index)
-        }
-    }
-
     private func seatTitle(index: Int) -> String {
         // 몇번째 줄인지
         let rowIndex = index / columns
@@ -153,52 +181,6 @@ final class SeatSelectionView: UIView {
         let seatNumber = columnIndex
         
         return "\(rowLetter)\(seatNumber)"
-    }
-    
-    // 좌석 눌릴경우
-    private func didTapSeat(_ sender: UIButton) {
-        let index = sender.tag
-        
-        // 선택불가면 아무것도 안하게
-        guard seatStates[index] != .Unavailable else { return }
-
-        if seatStates[index] == .selected {
-            seatStates[index] = .available
-        } else {
-            seatStates[index] = .selected
-        }
-        // 바뀐상태 버튼에 적용
-        updateSeatState(index: index)
-    }
-    
-    // 선택 버튼 상태 저장하기
-    private func setupStates() {
-        seatStates = Array(repeating: .available, count: totalSeatsCount)
-        
-        let a = [3,6,123]
-        
-        for i in a {
-            seatStates[i] = .Unavailable
-        }
-    }
-    
-    // 저장된 걸로 버튼 모양 바꾸기
-    private func updateSeatState(index: Int) {
-        let button = seatButtons[index]
-        
-        switch seatStates[index] {
-        case .available:
-            button.backgroundColor = .systemGray4
-            button.isEnabled = true
-        case .selected:
-            button.setTitleColor(.white, for: .normal)
-            button.backgroundColor = .systemOrange
-            button.isEnabled = true
-        case .Unavailable:
-            button.backgroundColor = .systemGray
-            button.setTitleColor(.clear, for: .normal)
-            button.isEnabled = false
-        }
     }
 }
 
