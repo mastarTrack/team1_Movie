@@ -58,8 +58,11 @@ extension MyPageViewController {
             
             switch index {
             case 0:
-                let reservationDetailVC = ReservationViewController()
-                self.navigationController?.pushViewController(reservationDetailVC, animated: true)
+                let reservationVC = ReservationViewController()
+                self.navigationController?.pushViewController(reservationVC, animated: true)
+            case 1:
+                let reviewVC = ReviewViewController()
+                self.navigationController?.pushViewController(reviewVC, animated: true)
             case 2:
                 let settingVC = SettingViewController()
                 self.navigationController?.pushViewController(settingVC, animated: true)
