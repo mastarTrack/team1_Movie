@@ -122,16 +122,16 @@ extension ReviewWriteView {
 }
 
 extension ReviewWriteView {
-    func config(data: Reservation) {
+    func config(title: String, date: String, posterPath: String) {
         
-        if let url = URL(string: data.safePosterPath) {
+        if let url = URL(string: posterPath) {
             posterImageView.kf.setImage(with: url)
         } else {
             posterImageView.image = UIImage(systemName: "movieclapper")
         }
         
-        titleLabel.text = data.safeTitle
-        dateLabel.text = data.safeWatchDate
+        titleLabel.text = title
+        dateLabel.text = date
     }
 }
 
