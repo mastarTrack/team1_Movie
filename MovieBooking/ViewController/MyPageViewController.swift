@@ -30,6 +30,7 @@ class MyPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        viewModel.loadInfoItems()
     }
     // 다른 페이지로 접근 시 상단 네비게이션 다시 생성
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,6 +70,10 @@ extension MyPageViewController {
             default :
                 break
             }
+        }
+        
+        viewModel.onUpdated = { [weak self] in
+                self?.collectionView.collectionView.reloadData()
         }
     }
 }
@@ -132,7 +137,7 @@ extension MyPageViewController: UICollectionViewDataSource {
         case .info:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageInfoCell.id, for: indexPath) as? MyPageInfoCell else { return UICollectionViewCell() }
             let item = viewModel.infoItems[indexPath.item]
-            cell.config(count: item.count, title: item.title)
+            cell.config(data: item)
             return cell
         }
     }

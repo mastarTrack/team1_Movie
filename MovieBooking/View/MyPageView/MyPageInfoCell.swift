@@ -62,8 +62,8 @@ extension MyPageInfoCell {
 }
 
 extension MyPageInfoCell {
-    func config(count: Int, title: String) {
-        countLabel.text = "\(count)"
-        titleLabel.text = title
+    func config(data: MyPageInfo) {
+        countLabel.text = data.value
+        titleLabel.text = data.title
     }
 }

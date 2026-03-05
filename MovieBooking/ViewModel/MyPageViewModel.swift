@@ -11,7 +11,9 @@ class MyPageViewModel {
     
     let sections = MyPageSectionType.allCases
     let menuItems = MyPageMenu.menuList
-    let infoItems = MyPageInfo.infoList
+    var infoItems: [MyPageInfo] = []
+    
+    var onUpdated: (() -> Void)?
     
     var onLogout: (() -> Void)?
     var showLogoutAlert: (() -> Void)?
@@ -44,5 +46,33 @@ class MyPageViewModel {
         UserDefaults.standard.set(false, forKey: "isDarkMode")
         UserDefaults.standard.removeObject(forKey: "userName")
         UserDefaults.standard.removeObject(forKey: "userEmail")
+    }
+    
+    func loadInfoItems() {
+        guard let email = UserDefaults.standard.string(forKey: "userEmail") else { return }
+        
+        let allReservation = CoreDataManager.shared.fetchReservations(email: email)
+        let reservationCount = allReservation.count
+        
+        let allReviews = CoreDataManager.shared.fetchReview()
+        
+        let myReviews = allReviews.filter { $0.reservation?.userEmail == email }
+        let reviewCount = myReviews.count
+        
+        let averageRating: Double
+        if !myReviews.isEmpty {
+            let totalRating = myReviews.reduce(0) { $0 + Int($1.rating) }
+            
+            averageRating = Double(totalRating) / Double(myReviews.count)
+        } else {
+            averageRating = 0.0
+        }
+        
+        self.infoItems = [
+            MyPageInfo(count: reservationCount, title: "총 예매"),
+            MyPageInfo(count: reviewCount, title: "리뷰 작성"),
+            MyPageInfo(rating: averageRating, title: "평균 별점")
+        ]
+        onUpdated?()
     }
 }

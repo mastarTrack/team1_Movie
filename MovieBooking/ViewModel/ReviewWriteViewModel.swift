@@ -9,7 +9,7 @@ import Foundation
 
 class ReviewWriteViewModel {
     
-    private let reservation: Reservation
+    let reservation: Reservation
     
     var rating: Int = 0
     var content: String?
