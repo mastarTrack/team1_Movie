@@ -25,6 +25,7 @@ class AvailableReviewCollectionViewCell: UICollectionViewCell {
     private let titleLabel = UILabel()
     private let infoLabel = UILabel()
     private let watchDateLael = UILabel()
+    private let peopleLabel = UILabel()
     
     private let writeButton = CustomButton(title: "작성")
     
@@ -53,20 +54,21 @@ extension AvailableReviewCollectionViewCell {
         posterImageView.backgroundColor = .white
         
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        [infoLabel, watchDateLael].forEach {
+        [infoLabel, watchDateLael, peopleLabel].forEach {
             $0.font = .systemFont(ofSize: 14)
             $0.textColor = .darkGray
         }
         
         stackView.axis = .vertical
         stackView.alignment = .leading
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
+        stackView.spacing = 8
         
     }
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, infoLabel, watchDateLael].forEach { stackView.addArrangedSubview($0) }
-        [posterImageView, stackView, writeButton].forEach { containerView.addSubview($0) }
+        [titleLabel, infoLabel, watchDateLael, peopleLabel, writeButton].forEach { stackView.addArrangedSubview($0) }
+        [posterImageView, stackView].forEach { containerView.addSubview($0) }
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -79,16 +81,13 @@ extension AvailableReviewCollectionViewCell {
         }
         
         stackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
+            $0.top.trailing.equalToSuperview().inset(10)
             $0.leading.equalTo(posterImageView.snp.trailing).offset(10)
-            $0.trailing.equalTo(writeButton.snp.leading).offset(-10)
             $0.bottom.equalTo(posterImageView.snp.bottom)
         }
         
         writeButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-10)
-            $0.width.equalTo(80)
+            $0.width.equalTo(stackView.snp.width)
             $0.height.equalTo(40)
         }
     }
@@ -106,6 +105,14 @@ extension AvailableReviewCollectionViewCell {
         titleLabel.text = data.safeTitle
         infoLabel.text = data.safeTheaterName
         watchDateLael.text = "\(data.safeWatchDate) 관람"
+        
+        let adultCount = data.intAdult
+        let childCount = data.intChild
+        let totalCount = adultCount + childCount
+        let adultText = adultCount > 0 ? "성인 \(adultCount)명" : ""
+        let childText = childCount > 0 ? "어린이 \(childCount)명" : ""
+        
+        peopleLabel.text = "\(totalCount)명 ( \(adultText) \(childText))"
         
     }
 }

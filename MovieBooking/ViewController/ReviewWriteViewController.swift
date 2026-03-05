@@ -37,6 +37,7 @@ extension ReviewWriteViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == .lightGray {
             textView.text = nil
+            textView.textColor = .label
         }
     }
 }

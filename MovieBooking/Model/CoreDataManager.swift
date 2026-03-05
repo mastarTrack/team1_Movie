@@ -190,4 +190,16 @@ extension CoreDataManager {
             return false
         }
     }
+    
+    func fetchReview() -> [Review] {
+        let fetchRequest = Review.fetchRequest()
+        let sortedByDate = NSSortDescriptor(key: "date", ascending: false)
+        fetchRequest.sortDescriptors = [sortedByDate]
+        
+        do {
+            return try self.context.fetch(fetchRequest)
+        } catch {
+            return []
+        }
+    }
 }

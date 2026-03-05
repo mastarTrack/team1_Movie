@@ -25,12 +25,13 @@ class ReviewCollectionViewCell: UICollectionViewCell {
     
     private let locationLabel = UILabel()
     private let dateLabel = UILabel()
-    private let timeLabel = UILabel()
     private let peopleLabel = UILabel()
+    private let starLabel = UILabel()
     
-    private let priceTitleLabel = UILabel()
-    private let priceValueLabel = UILabel()
     
+    private let reviewTitleLabel = UILabel()
+    private let reviewContentLabel = UILabel()
+    private let writtenDateLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,7 +68,7 @@ extension ReviewCollectionViewCell {
 //        genreLabel.font = .systemFont(ofSize: 12)
 //        genreLabel.textColor = .systemGray
         
-        [locationLabel, dateLabel, timeLabel, peopleLabel].forEach {
+        [locationLabel, dateLabel, peopleLabel].forEach {
             $0.font = .systemFont(ofSize: 14)
             $0.textColor = .darkGray
         }
@@ -76,19 +77,27 @@ extension ReviewCollectionViewCell {
         infoStackView.alignment = .leading
         infoStackView.distribution = .fillEqually
         
-        priceTitleLabel.text = "결제 금액"
-        priceTitleLabel.font = .systemFont(ofSize: 14)
-        priceTitleLabel.textColor = .systemGray
+        starLabel.font = .systemFont(ofSize: 14)
+        starLabel.textColor = .systemOrange
         
-        priceValueLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        reviewTitleLabel.text = "리뷰 내용"
+        reviewTitleLabel.font = .systemFont(ofSize: 14)
+        reviewTitleLabel.textColor = .systemGray
+        
+        reviewContentLabel.font = .systemFont(ofSize: 14)
+        reviewContentLabel.numberOfLines = 0
+        reviewContentLabel.textColor = .label
+        
+        writtenDateLabel.font = .boldSystemFont(ofSize: 12)
+        writtenDateLabel.textColor = .systemGray
         
     }
     
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, locationLabel, dateLabel, timeLabel, peopleLabel].forEach { infoStackView.addArrangedSubview($0) }
+        [titleLabel, locationLabel, dateLabel, peopleLabel, starLabel].forEach { infoStackView.addArrangedSubview($0) }
         [posterImageView, infoStackView].forEach { seperateView.addSubview($0) }
-        [idLabel, seperateView, priceTitleLabel, priceValueLabel].forEach { containerView.addSubview($0) }
+        [idLabel, seperateView, reviewTitleLabel, reviewContentLabel, writtenDateLabel].forEach { containerView.addSubview($0) }
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -117,50 +126,61 @@ extension ReviewCollectionViewCell {
             $0.bottom.equalTo(posterImageView.snp.bottom)
         }
         
-        priceTitleLabel.snp.makeConstraints {
+        reviewTitleLabel.snp.makeConstraints {
             $0.top.equalTo(seperateView.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().offset(10)
+            $0.leading.trailing.equalToSuperview().offset(10)
         }
         
-        priceValueLabel.snp.makeConstraints {
-            $0.top.equalTo(priceTitleLabel.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().offset(10)
-            $0.bottom.equalToSuperview().inset(20)
+        reviewContentLabel.snp.makeConstraints {
+            $0.top.equalTo(reviewTitleLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(10)
         }
+        
+        writtenDateLabel.snp.makeConstraints {
+            $0.top.equalTo(reviewContentLabel.snp.bottom).offset(10)
+            $0.leading.equalToSuperview().offset(10)
+            $0.bottom.equalToSuperview().offset(-10)
+        }
+        
     }
 }
 
 extension ReviewCollectionViewCell {
-    func config(data: Reservation) {
-        idLabel.text = data.safeId.uuidString.prefix(12).uppercased()
+    func config(data: Review) {
         
-        if let url = URL(string: data.safePosterPath) {
+        guard let reservation = data.reservation else { return }
+        
+        idLabel.text = reservation.safeId.uuidString.prefix(12).uppercased()
+        
+        if let url = URL(string: reservation.safePosterPath) {
             posterImageView.kf.setImage(with: url)
         } else {
             posterImageView.image = UIImage(systemName: "movieclapper")
         }
         
-        titleLabel.text = data.safeTitle
-        locationLabel.text = data.safeTheaterName
-        dateLabel.text = data.safeWatchDate
-        timeLabel.text = data.safeWatchTime
+        titleLabel.text = reservation.safeTitle
+        locationLabel.text = reservation.safeTheaterName
+        dateLabel.text = "\(reservation.safeWatchDate) \(reservation.safeWatchTime)"
         
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
         
-        if let formattedPrice = formatter.string(from: NSNumber(value: data.intPrice)) {
-            priceValueLabel.text = "\(formattedPrice)원"
-        } else {
-            priceValueLabel.text = "\(data.intPrice)원"
-        }
-        
-        let adultCount = data.intAdult
-        let childCount = data.intChild
+        let adultCount = reservation.intAdult
+        let childCount = reservation.intChild
         let totalCount = adultCount + childCount
         let adultText = adultCount > 0 ? "성인 \(adultCount)명" : ""
         let childText = childCount > 0 ? "어린이 \(childCount)명" : ""
         
-        peopleLabel.text = "\(totalCount)명 (\(adultText) \(childText))"
+        peopleLabel.text = "\(totalCount)명 ( \(adultText) \(childText))"
+        
+        let stars = String(repeating: "⭐️", count: Int(data.rating))
+        starLabel.text = "\(stars)"
+        
+        reviewContentLabel.text = data.content ?? "내용 없음"
+        
+        if let writeDate = data.date {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy. MM. dd HH:mm"
+            writtenDateLabel.text = "\(formatter.string(from: writeDate)) 작성"
+        }
         
     }
 }
