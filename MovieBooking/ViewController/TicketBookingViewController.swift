@@ -58,8 +58,11 @@ final class TicketBookingViewController: UIViewController {
                 preferredStyle: .alert
             )
             
-            let action = UIAlertAction(title: "확인", style: .default)
-            alert.addAction(action)
+            alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
+                if result {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            })
             
             self.present(alert, animated: true)
         }
