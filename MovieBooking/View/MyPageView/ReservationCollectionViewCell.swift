@@ -1,5 +1,5 @@
 //
-//  ReservationDetailCell.swift
+//  ReservationCollectionViewCell.swift
 //  MovieBooking
 //
 //  Created by 손영빈 on 3/5/26.
@@ -9,9 +9,9 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class ReservationDetailCell: UICollectionViewCell {
+class ReservationCollectionViewCell: UICollectionViewCell {
     
-    static let id = "ReservationDetailCell"
+    static let id = "ReservationCollectionViewCell"
     
     private let containerView = UIView()
     private let idLabel = UILabel()
@@ -44,7 +44,7 @@ class ReservationDetailCell: UICollectionViewCell {
 }
 
 
-extension ReservationDetailCell {
+extension ReservationCollectionViewCell {
     private func setAttributes() {
         containerView.backgroundColor = .systemGray6
         containerView.layer.cornerRadius = 20
@@ -130,7 +130,7 @@ extension ReservationDetailCell {
     }
 }
 
-extension ReservationDetailCell {
+extension ReservationCollectionViewCell {
     func config(data: Reservation) {
         idLabel.text = data.safeId.uuidString.prefix(12).uppercased()
         

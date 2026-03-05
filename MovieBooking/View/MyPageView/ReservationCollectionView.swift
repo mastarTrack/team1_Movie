@@ -30,7 +30,7 @@ extension ReservationCollectionView {
             $0.edges.equalToSuperview()
         }
         
-        collectionView.register(ReservationDetailCell.self, forCellWithReuseIdentifier: ReservationDetailCell.id)
+        collectionView.register(ReservationCollectionViewCell.self, forCellWithReuseIdentifier: ReservationCollectionViewCell.id)
         collectionView.register(ReservationHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReservationHeaderView.id)
     }
 }

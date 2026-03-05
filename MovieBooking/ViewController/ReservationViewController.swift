@@ -1,5 +1,5 @@
 //
-//  ReservationDetailViewController.swift
+//  ReservationViewController.swift
 //  MovieBooking
 //
 //  Created by 손영빈 on 3/5/26.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ReservationDetailViewController: UIViewController {
+class ReservationViewController: UIViewController {
     
     private let reservationView = ReservationCollectionView()
     private let viewModel = ReservationViewModel()
@@ -24,7 +24,7 @@ class ReservationDetailViewController: UIViewController {
     }
 }
 
-extension ReservationDetailViewController {
+extension ReservationViewController {
     private func bind() {
         viewModel.onUpdated = { [weak self] in
             guard let self = self else { return }
@@ -43,23 +43,23 @@ extension ReservationDetailViewController {
     }
 }
 
-extension ReservationDetailViewController {
+extension ReservationViewController {
     private func setDelegate() {
         reservationView.collectionView.delegate = self
         reservationView.collectionView.dataSource = self
     }
 }
 
-extension ReservationDetailViewController {
+extension ReservationViewController {
     func loadData() {
         viewModel.loadData()
     }
 }
 
-extension ReservationDetailViewController: UICollectionViewDelegate{
+extension ReservationViewController: UICollectionViewDelegate{
     
 }
-extension ReservationDetailViewController: UICollectionViewDataSource{
+extension ReservationViewController: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader,
@@ -77,7 +77,7 @@ extension ReservationDetailViewController: UICollectionViewDataSource{
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReservationDetailCell.id, for: indexPath) as? ReservationDetailCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReservationCollectionViewCell.id, for: indexPath) as? ReservationCollectionViewCell else { return UICollectionViewCell() }
         
         let data = viewModel.getData(section: indexPath.section, item: indexPath.item)
         cell.config(data: data)
