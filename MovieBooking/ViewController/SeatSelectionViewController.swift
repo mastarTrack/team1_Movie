@@ -9,9 +9,10 @@ import SnapKit
 
 final class SeatSelectionViewController: UIViewController {
     private let seatView = SeatSelectionView()
-    let seatViewModel: SeatSelectionViewModel
+    private let seatViewModel: SeatSelectionViewModel
     private let ticketBookingViewModel: TicketBookingViewModel
     
+    // 초기값을 아예 주입함
     init(ticketBookingViewModel: TicketBookingViewModel) {
         self.ticketBookingViewModel = ticketBookingViewModel
         self.seatViewModel = SeatSelectionViewModel(
