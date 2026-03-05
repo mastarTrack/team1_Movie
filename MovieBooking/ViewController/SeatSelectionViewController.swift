@@ -12,6 +12,10 @@ final class SeatSelectionViewController: UIViewController {
     let seatViewModel = SeatSelectionViewModel()
     private let ticketBookingViewModel: TicketBookingViewModel
     
+    private var requiredSeatCount: Int {
+        ticketBookingViewModel.adultCount + ticketBookingViewModel.childCount
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -29,6 +33,7 @@ final class SeatSelectionViewController: UIViewController {
         setupSeatView()
         bindViewModel()
         bindView()
+        updateReservationButtonState()
     }
     
     // 아예 뷰모델 넘겨받기
@@ -39,6 +44,14 @@ final class SeatSelectionViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func updateReservationButtonState() {
+        let selectedCount = seatViewModel.selectedSeatTitles.count
+        let isEnabled = (selectedCount == requiredSeatCount) && requiredSeatCount > 0
+        
+        seatView.reservationButton.isEnabled = isEnabled
+        seatView.reservationButton.backgroundColor = isEnabled ? .systemOrange : .systemGray5
     }
     
     // 뷰모델에서 뷰에 받아오는거
@@ -54,6 +67,8 @@ final class SeatSelectionViewController: UIViewController {
             self?.seatView.guideLabel.text =
             titles.isEmpty ? "좌석을 선택하세요." :
             "선택: \(titles.joined(separator: " "))"
+            
+            self?.updateReservationButtonState()
         }
         // 시트를 제한된 좌석수에 다달았을때
         seatViewModel.onLimitReached = { [weak self] max in
