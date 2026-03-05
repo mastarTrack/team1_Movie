@@ -91,10 +91,14 @@ extension ReviewViewController: AvailableReviewCollectionViewCellDelegate {
         guard let indexPath = reviewView.collectionView.indexPath(for: cell) else { return }
         
         let reservation = availableData[indexPath.item]
+        showReviewModal(data: reservation)
     }
     
-    private func showModal() {
+    private func showReviewModal(data: Reservation) {
+        let reviewWriteVC = ReviewWriteViewController()
         
+        reviewWriteVC.modalPresentationStyle = .pageSheet
+        self.present(reviewWriteVC, animated: true)
     }
 }
 
