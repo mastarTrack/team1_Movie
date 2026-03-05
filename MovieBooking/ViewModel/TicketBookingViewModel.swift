@@ -10,6 +10,10 @@ import UIKit
 final class TicketBookingViewModel {
     private let movie: Movie
     
+    init(movie: Movie) {
+        self.movie = movie
+    }
+    
     // 영상시간 장소는 서버에서 오는 값이 없기때문에 넣어줌
     let theaters = ["CGV 강남", "CGV 홍대", "메가박스 코엑스", "롯데시네마 월드타워"]
     let times = ["10:30", "13:20", "16:10", "19:00", "21:50"]
@@ -22,28 +26,14 @@ final class TicketBookingViewModel {
         ]
     
     let genreDictionary: [Int: String] = [
-        28: "액션",
-        12: "모험",
-        16: "애니메이션",
-        35: "코미디",
-        80: "범죄",
-        99: "다큐멘터리",
-        18: "드라마",
-        10751: "가족",
-        14: "판타지",
-        36: "역사",
-        27: "공포",
-        10402: "음악",
-        9648: "미스터리",
-        10749: "로맨스",
-        878: "SF",
-        10770: "TV 영화",
-        53: "스릴러",
-        10752: "전쟁",
-        37: "서부"
+        28: "액션", 12: "모험", 16: "애니메이션", 35: "코미디",
+        80: "범죄", 99: "다큐멘터리",18: "드라마", 10751: "가족",
+        14: "판타지", 36: "역사", 27: "공포", 10402: "음악",
+        9648: "미스터리", 10749: "로맨스", 878: "SF", 10770: "TV 영화",
+        53: "스릴러", 10752: "전쟁",37: "서부"
     ]
     
-    // 선택된 상태값
+    // 선택된 상태값 저장
     private(set) var selectedTheaterIndex: Int? = nil
     private(set) var selectedDateIndex: Int? = nil
     private(set) var selectedTimeIndex: Int? = nil
@@ -76,16 +66,18 @@ final class TicketBookingViewModel {
     }
     
     
+    // MARK: 예매하기 저장 프로퍼티
+    var moviePosterPath: String { movie.posterPath ?? "" }
+    
     let email = UserDefaults.standard.string(forKey: "userEmail")
     
-    var selectedTheaterName: String? = "스크림"
-    var selectedWatchDate: String? = "2/27"
-    var selectedWatchTime: String? = "10:30"
+    var selectedTheaterName: String?
+    var selectedWatchDate: String?
+    var selectedWatchTime: String?
     
-    var posterPath: String = "https://image.tmdb.org/t/p/w185/nTbO6UF944b0VZrgypMK5rFYRSW.jpg"
-    
-    init(movie: Movie) {
-        self.movie = movie
+    var selectedPoster: String? {
+        guard let path = movie.posterPath else { return nil }
+        return "https://image.tmdb.org/t/p/w185" + path
     }
     
     // 예매완료 - 저장됨을 알림
@@ -95,7 +87,7 @@ final class TicketBookingViewModel {
     func bookReservation() {
         let success = CoreDataManager.shared.saveReservation(
             title: title,
-            posterPath: posterPath,
+            posterPath: selectedPoster,
             theaterName: selectedTheaterName,
             watchDate: selectedWatchDate,
             watchTime: selectedWatchTime,
@@ -107,10 +99,20 @@ final class TicketBookingViewModel {
         )
         onBooked?(success)
     }
+    
+    private func convertForSaveDate(_ date: String) -> String {
+        let parts = date.split(separator: "/")
+        guard parts.count == 2 else { return "" }
+        
+        let month = parts[0].count == 1 ? "0\(parts[0])" : String(parts[0])
+        let day = parts[1].count == 1 ? "0\(parts[1])" : String(parts[1])
+        
+        return "2026-\(month)-\(day)"
+    }
 }
 
 
-// summaryView 표시용
+// MARK:  summaryView 표시용
 extension TicketBookingViewModel {
     var title: String { movie.title }
     
@@ -123,7 +125,7 @@ extension TicketBookingViewModel {
     }
     
     var posterURL: URL? {
-        guard let path = movie.backdropPath else { return nil }
+        guard let path = movie.posterPath else { return nil }
         return URL(string: "https://image.tmdb.org/t/p/w185\(path)")
     }
 }
@@ -137,7 +139,7 @@ extension TicketBookingViewModel {
     }
 }
 
-
+// MARK: 콜렉션 뷰 관련
 extension TicketBookingViewModel {
     enum Section: Int, CaseIterable {
         case theater
@@ -172,20 +174,25 @@ extension TicketBookingViewModel {
         }
     }
     
-    // 선택된 아이템 넣기
+    // 컬렉션뷰 셀 선택 처리
+    // 선택된 극장 날짜 시간 index를 저장
     func selectItem(at indexPath: IndexPath) {
         guard let sec = Section(rawValue: indexPath.section) else { return }
 
         switch sec {
         case .theater:
             selectedTheaterIndex = indexPath.item
-
+            selectedTheaterName = theaters[indexPath.item]
+            
         case .date:
             selectedDateIndex = indexPath.item
-
+            let rawDate = dates[indexPath.item].date
+            selectedWatchDate = convertForSaveDate(rawDate)
+            
         case .time:
             selectedTimeIndex = indexPath.item
-
+            selectedWatchTime = times[indexPath.item]
+            
         default:
             return
         }
