@@ -25,6 +25,7 @@ final class TicketBookingViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationItem.title = "예매하기"
+        navigationItem.largeTitleDisplayMode = .never
         
         ticketBookingView.collectionView.dataSource = self
         ticketBookingView.collectionView.delegate = self
@@ -36,10 +37,9 @@ final class TicketBookingViewController: UIViewController {
             date: viewModel.releaseDateText
         )
         
-        viewModel.onBooked = { [weak self] success in
-            guard let self else { return }
-            // 알럿 띄우기
-            print(success)
+        viewModel.onBooked = { [weak self] result in
+            guard self != nil else { return }
+            showBookingResult(result: result)
         }
         
         viewModel.onStateChange = { [weak self] in
@@ -47,6 +47,22 @@ final class TicketBookingViewController: UIViewController {
         }
         
         configureLayout()
+        
+        func showBookingResult(result: Bool) {
+            let title = result ? "예매 완료" : "예매 실패"
+            let message = result ? "예매가 완료되었습니다." : "예매 실패했습니다."
+            
+            let alert = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert
+            )
+            
+            let action = UIAlertAction(title: "확인", style: .default)
+            alert.addAction(action)
+            
+            self.present(alert, animated: true)
+        }
     }
     
     private func configureLayout() {
@@ -158,7 +174,8 @@ extension TicketBookingViewController: UICollectionViewDataSource {
 
             cell.configure(
                 guideText: viewModel.isBookingEnabled ? "예매가 가능합니다." : "인원을 선택해주세요.",
-                priceText: viewModel.totalPriceText
+                priceText: viewModel.totalPriceText,
+                isBookingEnabled: viewModel.isBookingEnabled
             )
             
             // 예매하기 버튼 예매내용 저장 연결
