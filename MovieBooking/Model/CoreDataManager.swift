@@ -155,4 +155,21 @@ extension CoreDataManager {
             return false
         }
     }
+    
+    func fetchReservations(email: String) -> [Reservation] {
+        let fetchRequest = Reservation.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "userEmail == %@", email)
+        
+        let dateSort = NSSortDescriptor(key: "watchDate", ascending: true)
+        let timeSort = NSSortDescriptor(key: "watchTime", ascending: true)
+        
+        fetchRequest.sortDescriptors = [dateSort, timeSort]
+        
+        do {
+            return try context.fetch(fetchRequest)
+        } catch {
+            print("예약 정보 fetch 실패")
+            return []
+        }
+    }
 }
