@@ -57,6 +57,9 @@ extension MyPageViewController {
             guard let self = self else { return }
             
             switch index {
+            case 0:
+                let reservationDetailVC = ReservationDetailViewController()
+                self.navigationController?.pushViewController(reservationDetailVC, animated: true)
             case 2:
                 let settingVC = SettingViewController()
                 self.navigationController?.pushViewController(settingVC, animated: true)
