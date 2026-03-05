@@ -31,6 +31,7 @@ extension ReservationCollectionView {
         }
         
         collectionView.register(ReservationDetailCell.self, forCellWithReuseIdentifier: ReservationDetailCell.id)
+        collectionView.register(ReservationHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReservationHeaderView.id)
     }
 }
 

@@ -53,6 +53,14 @@ extension ReservationDetailViewController: UICollectionViewDelegate{
 }
 extension ReservationDetailViewController: UICollectionViewDataSource{
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader,
+              let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReservationHeaderView.id, for: indexPath) as? ReservationHeaderView else { return UICollectionReusableView() }
+        let title = (indexPath.section) == 0 ? "관람 예정" : "지난 예매"
+        header.config(title: title)
+        return header
+    }
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         2
     }
