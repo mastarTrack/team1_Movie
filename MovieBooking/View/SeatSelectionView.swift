@@ -10,7 +10,7 @@ import SnapKit
 
 final class SeatSelectionView: UIView {
     
-    // VC에게 전달할 이벤트
+    // VC 보낼것 좌석 인덱스랑 좌석 번호
     var onSeatTapped: ((Int, String) -> Void)?
     
     let titleLabel = UILabel()
@@ -79,7 +79,7 @@ final class SeatSelectionView: UIView {
     }
     
     // 저장된 걸로 버튼 모양 바꾸기
-    private func updateSeatState(index: Int, state: SeatSelectionViewModel.SeatState) {
+    func updateSeatState(index: Int, state: SeatSelectionViewModel.SeatState) {
         let button = seatButtons[index]
         
         switch state {
