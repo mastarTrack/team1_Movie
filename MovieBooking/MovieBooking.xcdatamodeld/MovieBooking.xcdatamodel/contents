@@ -13,6 +13,13 @@
         <attribute name="userEmail" optional="YES" attributeType="String"/>
         <attribute name="watchDate" optional="YES" attributeType="String"/>
         <attribute name="watchTime" optional="YES" attributeType="String"/>
+        <relationship name="review" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Review" inverseName="reservation" inverseEntity="Review"/>
+    </entity>
+    <entity name="Review" representedClassName="Review" syncable="YES">
+        <attribute name="content" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="reservation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Reservation" inverseName="review" inverseEntity="Reservation"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String"/>

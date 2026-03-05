@@ -173,3 +173,33 @@ extension CoreDataManager {
         }
     }
 }
+
+extension CoreDataManager {
+    func saveReview(reservation: Reservation, content: String?, rating: Int) -> Bool {
+        let review = Review(context: context)
+        review.content = content
+        review.date = Date()
+        review.rating = Int16(rating)
+        
+        review.reservation = reservation
+        
+        do {
+            try self.context.save()
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    func fetchReview() -> [Review] {
+        let fetchRequest = Review.fetchRequest()
+        let sortedByDate = NSSortDescriptor(key: "date", ascending: false)
+        fetchRequest.sortDescriptors = [sortedByDate]
+        
+        do {
+            return try self.context.fetch(fetchRequest)
+        } catch {
+            return []
+        }
+    }
+}
