@@ -20,6 +20,12 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         setDelegate()
         bind()
+        setupKeyboardEvent()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeKeyboardEvent()
     }
 }
 

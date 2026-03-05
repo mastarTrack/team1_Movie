@@ -26,7 +26,7 @@ extension UIViewController {
                 let keyboardRectangle = keyboardFrame.cgRectValue
                 let keyboardHeight = keyboardRectangle.height
                 UIView.animate(withDuration: 0.3) {
-                    self.view.frame.origin.y -= keyboardHeight
+                    self.view.frame.origin.y -= keyboardHeight * 2 / 3
                 }
             }
         }
