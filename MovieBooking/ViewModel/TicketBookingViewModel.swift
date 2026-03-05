@@ -14,10 +14,12 @@ final class TicketBookingViewModel {
         self.movie = movie
     }
     
+    lazy var dates = makeDates()
+    
     // 영상시간 장소는 서버에서 오는 값이 없기때문에 넣어줌
     let theaters = ["CGV 강남", "CGV 홍대", "메가박스 코엑스", "롯데시네마 월드타워"]
     let times = ["10:30", "13:20", "16:10", "19:00", "21:50"]
-    let dates: [DateItem] = [
+    let DummyDates: [DateItem] = [
             .init(top: "오늘", date: "2/27", day: "금"),
             .init(top: "내일", date: "2/28", day: "토"),
             .init(top: "", date: "3/1", day: "일"),
@@ -130,12 +132,46 @@ extension TicketBookingViewModel {
     }
 }
 
-// date 구조체 선언
+// date 관련
 extension TicketBookingViewModel {
     struct DateItem {
         let top: String    // 오늘/내일
         let date: String   // 2/27
         let day: String    // 금
+    }
+    
+    private func makeDates() -> [DateItem] {
+        let calender = Calendar.current
+        let today = Date()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M/d"
+        
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "E"
+        dayFormatter.locale = Locale(identifier: "ko_KR")
+        
+        var result = [DateItem]()
+        
+        for i in 1...5 {
+            guard let date = calender.date(byAdding: .day, value: i - 1, to: today) else { return DummyDates }
+            
+            let dateText = dateFormatter.string(from: date)
+            let dayText = dayFormatter.string(from: date)
+            
+            let topText: String
+            
+            if i == 1 {
+                topText = "오늘"
+            } else if i == 2 {
+                topText = "내일"
+            } else {
+                topText = ""
+            }
+            
+            result.append(DateItem(top: topText, date: dateText, day: dayText))
+        }
+        return result
     }
 }
 
