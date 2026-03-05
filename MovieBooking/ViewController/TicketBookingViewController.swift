@@ -25,8 +25,10 @@ final class TicketBookingViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationItem.title = "예매하기"
+        navigationItem.largeTitleDisplayMode = .never
         
         ticketBookingView.collectionView.dataSource = self
+        ticketBookingView.collectionView.delegate = self
         
         movieSummaryView.config(
             posterURL: viewModel.posterURL,
@@ -35,12 +37,32 @@ final class TicketBookingViewController: UIViewController {
             date: viewModel.releaseDateText
         )
         
-        viewModel.onBooked = { [weak self] success in
-            guard let self else { return }
-            print(success)
+        viewModel.onBooked = { [weak self] result in
+            guard self != nil else { return }
+            showBookingResult(result: result)
+        }
+        
+        viewModel.onStateChange = { [weak self] in
+            self?.ticketBookingView.collectionView.reloadData()
         }
         
         configureLayout()
+        
+        func showBookingResult(result: Bool) {
+            let title = result ? "예매 완료" : "예매 실패"
+            let message = result ? "예매가 완료되었습니다." : "예매 실패했습니다."
+            
+            let alert = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert
+            )
+            
+            let action = UIAlertAction(title: "확인", style: .default)
+            alert.addAction(action)
+            
+            self.present(alert, animated: true)
+        }
     }
     
     private func configureLayout() {
@@ -60,77 +82,100 @@ final class TicketBookingViewController: UIViewController {
     }
 }
 
+extension TicketBookingViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectItem(at: indexPath)
+    }
+}
+
 extension TicketBookingViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        5
+        viewModel.numberOfSections()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return 4   // 극장선택 2*2
-        } else if section == 1{
-            return 7   // 가로
-        } else if section == 2 {
-            return 5 // 시간선택 3*2
-        } else if section == 3{
-            return 2 // 인원선택
-        } else {
-            return 1 // 에매하기
-        }
+        viewModel.numberOfItems(section: section)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let section = TicketBookingViewModel.Section(rawValue: indexPath.section) else {
+                    return UICollectionViewCell()
+                }
 
-        switch indexPath.section {
-
-        case 0:
+        
+        switch section {
+        case .theater:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CenterLabelCell.identifier,
                 for: indexPath
             ) as! CenterLabelCell
-
-            cell.configure(text: "섹션0")
+            
+            let text = viewModel.theaters[indexPath.item]
+            cell.configure(text: text)
+            let isSelected = (viewModel.selectedTheaterIndex == indexPath.item)
+            cell.applySelectedStyle(isSelected)
             return cell
 
 
-        case 1:
+        case .date:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TripleLabelCell.identifier,
                 for: indexPath
             ) as! TripleLabelCell
-
-            cell.configure(first: "A", second: "B", third: "C")
+            let item = viewModel.dates[indexPath.item]
+            cell.configure(first: item.top, second: item.date, third: item.day)
+            
+            let isSelected = (viewModel.selectedDateIndex == indexPath.item)
+            cell.applySelectedStyle(isSelected)
             return cell
 
 
-        case 2:
+        case .time:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CenterLabelCell.identifier,
                 for: indexPath
             ) as! CenterLabelCell
-
-            cell.configure(text: "섹션2")
+            let text = viewModel.times[indexPath.item]
+            cell.configure(text: text)
+            
+            let isSelected = (viewModel.selectedTimeIndex == indexPath.item)
+            cell.applySelectedStyle(isSelected)
             return cell
 
 
-        case 3:
+        case .people:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TicketCountCell.identifier,
                 for: indexPath
             ) as! TicketCountCell
 
-            cell.configure(title: "성인", priceText: "₩12,000", count: 0)
+            if indexPath.item == 0 {
+                cell.configure(title: "성인", priceText: "\(viewModel.adultPrice)원", count: viewModel.adultCount)
+                
+                // 인원설정 버튼이 눌렸다는 신호 보내면 할 뷰모델 로직 연결
+                cell.onTapMinus = { [weak self] in self?.viewModel.changeAdultCount(change: -1) }
+                cell.onTapPlus  = { [weak self] in self?.viewModel.changeAdultCount(change: +1) }
+            } else {
+                cell.configure(title: "청소년", priceText: "\(viewModel.childPrice)원", count: viewModel.childCount)
+                cell.onTapMinus = { [weak self] in self?.viewModel.changeTeenCount(change: -1) }
+                cell.onTapPlus  = { [weak self] in self?.viewModel.changeTeenCount(change: +1) }
+            }
+            
             return cell
-        case 4:
+            
+            
+        case .booking:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: BookingCell.identifier,
                 for: indexPath
             ) as! BookingCell
 
             cell.configure(
-                guideText: "인원을 선택해주세요",
-                priceText: "0원",
+                guideText: viewModel.isBookingEnabled ? "예매가 가능합니다." : "인원을 선택해주세요.",
+                priceText: viewModel.totalPriceText,
+                isBookingEnabled: viewModel.isBookingEnabled
             )
             
             // 예매하기 버튼 예매내용 저장 연결
@@ -139,12 +184,10 @@ extension TicketBookingViewController: UICollectionViewDataSource {
             }
             
             return cell
-            
-        default:
-            return UICollectionViewCell()
         }
     }
     
+    // 헤더설정
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
@@ -157,14 +200,10 @@ extension TicketBookingViewController: UICollectionViewDataSource {
         
         switch indexPath.section {
         case 0: header.configure(title: "극장 선택")
-            
         case 1: header.configure(title: "날짜 선택")
-            
         case 2: header.configure(title: "시간 선택")
-        
         default: header.configure(title: "인원 선택")
         }
-        
         return header
     }
 }

@@ -63,8 +63,8 @@ private extension BookingCell {
         // 예매 버튼
         bookingButton.setTitle("예매하기", for: .normal)
         bookingButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        bookingButton.backgroundColor = .systemGray5
-        bookingButton.setTitleColor(.systemGray, for: .normal)
+        bookingButton.backgroundColor = .systemGray6
+        bookingButton.setTitleColor(.white, for: .normal)
         bookingButton.layer.cornerRadius = 14
         
         containerView.addSubview(leftStackView)
@@ -95,8 +95,19 @@ private extension BookingCell {
 }
 
 extension BookingCell {
-    func configure(guideText: String, priceText: String) {
+    func configure(guideText: String, priceText: String, isBookingEnabled: Bool) {
         guideLabel.text = guideText
         priceLabel.text = priceText
+        updateBookingButton(isEnabled: isBookingEnabled)
+    }
+    
+    func updateBookingButton(isEnabled: Bool) {
+        bookingButton.isEnabled = isEnabled
+        
+        if isEnabled {
+            bookingButton.backgroundColor = .systemOrange
+        } else {
+            bookingButton.backgroundColor = .systemGray3
+        }
     }
 }
