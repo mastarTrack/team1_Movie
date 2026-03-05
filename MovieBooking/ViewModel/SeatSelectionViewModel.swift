@@ -4,12 +4,17 @@
 //
 //  Created by Yeseul Jang on 3/5/26.
 //
+import UIKit
 
 final class SeatSelectionViewModel {
     enum SeatState {
         case available
         case selected
         case Unavailable
+    }
+    
+    init(adultCount: Int, childCount: Int) {
+        self.maxSelectableCount = adultCount + childCount
     }
     
     // 바뀐 정보 보내는 콜백
@@ -24,8 +29,20 @@ final class SeatSelectionViewModel {
     private(set) var selectedSeatTitles: [String] = []
     
     // 선택 가능 인원
-    private var maxSelectableCount: Int = 0
+    private(set) var maxSelectableCount: Int
     
+    var isReservationEnabled: Bool {
+        maxSelectableCount > 0 && selectedSeatTitles.count == maxSelectableCount
+    }
+    
+    var reservationButtonColor: UIColor {
+        isReservationEnabled ? .systemOrange : .systemGray5
+    }
+    
+    func setMaxSelectableCount(_ count: Int) {
+        maxSelectableCount = max(0, count)
+        onSelectionChanged?(selectedSeatTitles) // 기존 콜백 재사용(최소 변경)
+    }
     
     // 시트의 초기 설정
     func setup(totalSeatsCount: Int, unavailableIndexes: [Int]) {
@@ -38,11 +55,6 @@ final class SeatSelectionViewModel {
         selectedSeatTitles.removeAll()
         // 좌석 번호 전달
         onSelectionChanged?(selectedSeatTitles)
-    }
-    
-    // 선택가능 좌석 바꾸기
-    func setMaxSelectableCount(_ count: Int) {
-        maxSelectableCount = count
     }
     
     // 좌석 상태를 바꿔줌

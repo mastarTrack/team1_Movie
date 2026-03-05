@@ -9,21 +9,22 @@ import SnapKit
 
 final class SeatSelectionViewController: UIViewController {
     private let seatView = SeatSelectionView()
-    let seatViewModel = SeatSelectionViewModel()
+    let seatViewModel: SeatSelectionViewModel
     private let ticketBookingViewModel: TicketBookingViewModel
     
-    private var requiredSeatCount: Int {
-        ticketBookingViewModel.adultCount + ticketBookingViewModel.childCount
+    init(ticketBookingViewModel: TicketBookingViewModel) {
+        self.ticketBookingViewModel = ticketBookingViewModel
+        self.seatViewModel = SeatSelectionViewModel(
+            adultCount: ticketBookingViewModel.adultCount,
+            childCount: ticketBookingViewModel.childCount
+        )
+        super.init(nibName: nil, bundle: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationItem.title = "좌석 선택"
-        
-        seatViewModel.setMaxSelectableCount(
-            ticketBookingViewModel.adultCount + ticketBookingViewModel.childCount
-        )
         
         view.addSubview(seatView)
         seatView.snp.makeConstraints {
@@ -36,22 +37,15 @@ final class SeatSelectionViewController: UIViewController {
         updateReservationButtonState()
     }
     
-    // 아예 뷰모델 넘겨받기
-    init(ticketBookingViewModel: TicketBookingViewModel) {
-        self.ticketBookingViewModel = ticketBookingViewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func updateReservationButtonState() {
-        let selectedCount = seatViewModel.selectedSeatTitles.count
-        let isEnabled = (selectedCount == requiredSeatCount) && requiredSeatCount > 0
-        
+        let isEnabled = seatViewModel.isReservationEnabled
+
         seatView.reservationButton.isEnabled = isEnabled
-        seatView.reservationButton.backgroundColor = isEnabled ? .systemOrange : .systemGray5
+        seatView.reservationButton.backgroundColor = seatViewModel.reservationButtonColor
     }
     
     // 뷰모델에서 뷰에 받아오는거
@@ -96,12 +90,6 @@ final class SeatSelectionViewController: UIViewController {
         // 1) 좌석 문자열 가져오기
         let seats = seatViewModel.selectedSeatsForSave
         
-        // 좌석을 하나도 안 골랐으면 막기
-        guard seats.isEmpty == false else {
-            showSimpleAlert(title: "좌석 선택", message: "좌석을 선택해주세요.")
-            return
-        }
-        
         // 2) TicketBookingViewModel에 좌석 저장
         ticketBookingViewModel.setSelectedSeats(seats)
         
@@ -130,13 +118,6 @@ final class SeatSelectionViewController: UIViewController {
                 }
             }
         })
-        present(alert, animated: true)
-    }
-    
-    
-    private func showSimpleAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
         present(alert, animated: true)
     }
     
