@@ -20,6 +20,12 @@ class ReviewWriteViewController: UIViewController {
         super.viewDidLoad()
         setup()
         bind()
+        setupKeyboardEvent()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeKeyboardEvent()
     }
 }
 
