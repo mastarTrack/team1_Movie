@@ -9,7 +9,13 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol ReviewWriteViewDelegate: AnyObject {
+    func didTapWriteButton()
+}
+
 class ReviewWriteView: UIView {
+    
+    weak var delegate: ReviewWriteViewDelegate?
     
     private var currentStar = 0
     private var starImageViews: [UIImageView] = []
@@ -29,6 +35,7 @@ class ReviewWriteView: UIView {
         super.init(frame: frame)
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -145,6 +152,28 @@ extension ReviewWriteView {
     private func starTapped(sender: UITapGestureRecognizer) {
         guard let tappedView = sender.view else { return }
         updateStar(starCount: tappedView.tag)
+    }
+}
+
+extension ReviewWriteView {
+    private func setAction() {
+        writeButton.addTarget(self, action: #selector(writeButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func writeButtonTapped() {
+        delegate?.didTapWriteButton()
+    }
+}
+
+extension ReviewWriteView {
+    func getStarCount() -> Int {
+        return self.currentStar
+    }
+    
+    func getReviewText() -> String? {
+        if textView.textColor == .lightGray { return nil}
+        return textView.text
     }
 }
 

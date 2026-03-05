@@ -20,6 +20,7 @@ extension Review {
 
     @NSManaged public var content: String?
     @NSManaged public var date: Date?
+    @NSManaged public var rating: Int16
     @NSManaged public var reservation: Reservation?
 
 }
