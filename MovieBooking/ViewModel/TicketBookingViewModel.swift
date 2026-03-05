@@ -16,6 +16,15 @@ final class TicketBookingViewModel {
     
     lazy var dates = makeDates()
     
+    // 좌석 정보 넘겨 받음
+    private(set) var selectedSeatNumber: String? = nil
+    
+    // 선택되는 좌석 감시하기
+    func setSelectedSeats(_ seats: String) {
+        selectedSeatNumber = seats
+        onStateChange?()
+    }
+    
     // 영상시간 장소는 서버에서 오는 값이 없기때문에 넣어줌
     let theaters = ["CGV 강남", "CGV 홍대", "메가박스 코엑스", "롯데시네마 월드타워"]
     let times = ["10:30", "13:20", "16:10", "19:00", "21:50"]
@@ -96,7 +105,7 @@ final class TicketBookingViewModel {
             adult: adultCount,
             child: childCount,
             totalPrice: totalPrice,
-            seatNumber: nil,
+            seatNumber: selectedSeatNumber,
             userEmail: email
         )
         onBooked?(success)
