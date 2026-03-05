@@ -96,6 +96,7 @@ extension ReviewViewController: AvailableReviewCollectionViewCellDelegate {
     
     private func showReviewModal(data: Reservation) {
         let reviewWriteVC = ReviewWriteViewController()
+        reviewWriteVC.reservationData = data
         
         reviewWriteVC.modalPresentationStyle = .pageSheet
         self.present(reviewWriteVC, animated: true)
