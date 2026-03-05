@@ -37,9 +37,9 @@ final class TicketBookingViewController: UIViewController {
             date: viewModel.releaseDateText
         )
         
+        // 저장만 하도록 변경
         viewModel.onBooked = { [weak self] result in
-            guard self != nil else { return }
-            showBookingResult(result: result)
+            self?.showBookingResult(result: result)
         }
         
         viewModel.onStateChange = { [weak self] in
@@ -47,26 +47,32 @@ final class TicketBookingViewController: UIViewController {
         }
         
         configureLayout()
-        
-        func showBookingResult(result: Bool) {
-            let title = result ? "예매 완료" : "예매 실패"
-            let message = result ? "예매가 완료되었습니다." : "예매 실패했습니다."
-            
-            let alert = UIAlertController(
-                title: title,
-                message: message,
-                preferredStyle: .alert
-            )
-            
-            alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
-                if result {
-                    self.navigationController?.popViewController(animated: true)
-                }
-            })
-            
-            self.present(alert, animated: true)
-        }
     }
+    
+    // 좌석 예매창 띄우기
+    private func pushSeatSelection() {
+        let seatVC = SeatSelectionViewController(
+            ticketBookingViewModel: viewModel
+        )
+        navigationController?.pushViewController(seatVC, animated: true)
+    }
+    
+    func showBookingResult(result: Bool) {
+        let title = result ? "예매 완료" : "예매 실패"
+        let message = result ? "예매가 완료되었습니다." : "예매 실패했습니다."
+        
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
+            if result { self.navigationController?.popViewController(animated: true) }
+        })
+        self.present(alert, animated: true)
+    }
+    
     
     private func configureLayout() {
         view.addSubview(ticketBookingView)
@@ -76,7 +82,7 @@ final class TicketBookingViewController: UIViewController {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(150)
         }
-
+        
         ticketBookingView.snp.makeConstraints {
             $0.top.equalTo(movieSummaryView.snp.bottom)
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -181,9 +187,9 @@ extension TicketBookingViewController: UICollectionViewDataSource {
                 isBookingEnabled: viewModel.isBookingEnabled
             )
             
-            // 예매하기 버튼 예매내용 저장 연결
+            // 시트뷰 연결
             cell.onTapBooking = { [weak self] in
-                self?.viewModel.bookReservation()
+                self?.pushSeatSelection()
             }
             
             return cell
