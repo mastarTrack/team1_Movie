@@ -42,7 +42,12 @@ class ReviewViewModel{
     }
     
     private func loadWrittenData() {
-        self.writtenData = CoreDataManager.shared.fetchReview()
+        guard let email = UserDefaults.standard.string(forKey: "userEmail") else { return }
+        let allReviews = CoreDataManager.shared.fetchReview()
+        
+        let myReviews = allReviews.filter { $0.reservation?.userEmail == email }
+        
+        self.writtenData = myReviews
     }
     
     private func loadAvailableData() {

@@ -96,9 +96,16 @@ extension ReviewViewController: AvailableReviewCollectionViewCellDelegate {
         let reviewWriteVC = ReviewWriteViewController()
         reviewWriteVC.viewModel = reviewWriteVM
         
+        reviewWriteVC.delegate = self
         
         reviewWriteVC.modalPresentationStyle = .pageSheet
         self.present(reviewWriteVC, animated: true)
+    }
+}
+
+extension ReviewViewController: ReviewWriteViewControllerDelegate {
+    func didFinishReviewWrite() {
+        viewModel.loadData()
     }
 }
 

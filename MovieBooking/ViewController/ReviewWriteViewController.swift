@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol ReviewWriteViewControllerDelegate: AnyObject {
+    func didFinishReviewWrite()
+}
+
 class ReviewWriteViewController: UIViewController {
+    
+    weak var delegate: ReviewWriteViewControllerDelegate?
     
     private let reviewWriteView = ReviewWriteView()
     var viewModel: ReviewWriteViewModel?
@@ -75,7 +81,9 @@ extension ReviewWriteViewController {
     private func showCompletionAlert() {
         let alert = UIAlertController(title: "완료", message: "저장이 완료되었습니다.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-            self?.dismiss(animated: true)
+            self?.dismiss(animated: true) {
+                self?.delegate?.didFinishReviewWrite()
+            }
         })
         present(alert, animated: true)
     }
