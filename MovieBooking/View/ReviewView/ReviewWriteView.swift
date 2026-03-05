@@ -21,7 +21,7 @@ class ReviewWriteView: UIView {
     private let dateLabel = UILabel()
     
     private let starStackView = UIStackView()
-    private let textView = UITextView()
+    let textView = UITextView()
     let writeButton = CustomButton(title: "리뷰 등록")
     
     

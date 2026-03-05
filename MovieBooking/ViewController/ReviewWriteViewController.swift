@@ -28,5 +28,14 @@ extension ReviewWriteViewController {
         if let data = reservationData {
             reviewWriteView.config(data: data)
         }
+        reviewWriteView.textView.delegate = self
+    }
+}
+
+extension ReviewWriteViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .lightGray {
+            textView.text = nil
+        }
     }
 }
