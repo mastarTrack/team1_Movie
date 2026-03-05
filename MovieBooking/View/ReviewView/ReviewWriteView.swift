@@ -24,7 +24,9 @@ class ReviewWriteView: UIView {
     
     private let stackView = UIStackView()
     private let titleLabel = UILabel()
+    private let locationLabel = UILabel()
     private let dateLabel = UILabel()
+    private let peopleLabel = UILabel()
     
     private let starStackView = UIStackView()
     let textView = UITextView()
@@ -52,8 +54,10 @@ extension ReviewWriteView {
         
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         
-        dateLabel.font = .systemFont(ofSize: 14)
-        dateLabel.textColor = .darkGray
+        [locationLabel, dateLabel, peopleLabel].forEach {
+            $0.font = .systemFont(ofSize: 14)
+            $0.textColor = .darkGray
+        }
         
         stackView.axis = .vertical
         stackView.alignment = .leading
@@ -63,7 +67,8 @@ extension ReviewWriteView {
         starStackView.spacing = 10
         starStackView.distribution = .fillEqually
         for i in 1...5 {
-            let starImageView = UIImageView(image: UIImage(systemName: "star"))
+            let config = UIImage.SymbolConfiguration(pointSize: 20)
+            let starImageView = UIImageView(image: UIImage(systemName: "star", withConfiguration: config))
             starImageView.tintColor = .systemOrange
             starImageView.contentMode = .scaleAspectFit
             starImageView.tag = i
@@ -85,7 +90,7 @@ extension ReviewWriteView {
     }
     
     private func setLayout() {
-        [titleLabel, dateLabel].forEach { stackView.addArrangedSubview($0) }
+        [titleLabel, locationLabel, dateLabel, peopleLabel].forEach { stackView.addArrangedSubview($0) }
         [posterImageView, stackView, starStackView, textView, writeButton].forEach{ addSubview($0) }
         
         posterImageView.snp.makeConstraints {
@@ -122,16 +127,25 @@ extension ReviewWriteView {
 }
 
 extension ReviewWriteView {
-    func config(title: String, date: String, posterPath: String) {
+    func config(data: Reservation) {
         
-        if let url = URL(string: posterPath) {
+        if let url = URL(string: data.safePosterPath) {
             posterImageView.kf.setImage(with: url)
         } else {
             posterImageView.image = UIImage(systemName: "movieclapper")
         }
         
-        titleLabel.text = title
-        dateLabel.text = date
+        titleLabel.text = data.safeTitle
+        locationLabel.text = data.safeTheaterName
+        dateLabel.text = data.safeWatchDate
+        
+        let adultCount = data.intAdult
+        let childCount = data.intChild
+        let totalCount = adultCount + childCount
+        let adultText = adultCount > 0 ? "성인 \(adultCount)명" : ""
+        let childText = childCount > 0 ? "어린이 \(childCount)명" : ""
+        
+        peopleLabel.text = "\(totalCount)명 ( \(adultText) \(childText))"
     }
 }
 
@@ -139,11 +153,13 @@ extension ReviewWriteView {
     func updateStar(starCount: Int) {
         self.currentStar = starCount
         
+        let config = UIImage.SymbolConfiguration(pointSize: 20)
+        
         for (index, starImageView) in starImageViews.enumerated() {
             if index < starCount {
-                starImageView.image = UIImage(systemName: "star.fill")
+                starImageView.image = UIImage(systemName: "star.fill", withConfiguration: config)
             } else {
-                starImageView.image = UIImage(systemName: "star")
+                starImageView.image = UIImage(systemName: "star", withConfiguration: config)
             }
         }
     }

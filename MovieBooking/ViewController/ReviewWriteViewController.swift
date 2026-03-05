@@ -40,8 +40,8 @@ extension ReviewWriteViewController {
 
 extension ReviewWriteViewController {
     private func setup() {
-        if let data = viewModel?.movieInfo {
-            reviewWriteView.config(title: data.title, date: data.date, posterPath: data.posterPath)
+        if let data = viewModel?.reservation {
+            reviewWriteView.config(data: data)
         }
         reviewWriteView.textView.delegate = self
         reviewWriteView.delegate = self
