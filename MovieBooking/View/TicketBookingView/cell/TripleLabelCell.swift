@@ -63,4 +63,12 @@ final class TripleLabelCell: UICollectionViewCell {
         secondLabel.text = second
         thirdLabel.text = third
     }
+    
+    func applySelectedStyle(_ isSelected: Bool) {
+        if isSelected {
+            contentView.backgroundColor = .systemOrange
+        } else {
+            contentView.backgroundColor = .systemGray6
+        }
+    }
 }
