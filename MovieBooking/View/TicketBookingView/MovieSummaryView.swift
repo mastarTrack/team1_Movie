@@ -16,15 +16,11 @@ class MovieSummaryView: UIView {
     private let dateLabel = UILabel()
     private let genreLabel = UILabel()
     
-    let url = URL(string: "https://image.tmdb.org/t/p/w185/buPFnHZ3xQy6vZEHxbHgL1Pc6CR.jpg")
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
         setAttributes()
         setLayout()
-        
-        config(posterURL: url, genre: "액션, 공포", title: "제목", date: "2022.03.45")
     }
 
     required init?(coder: NSCoder) {

@@ -30,7 +30,7 @@ final class TicketBookingViewModel {
         10752: "전쟁",
         37: "서부"
     ]
-    
+    let email = UserDefaults.standard.string(forKey: "userEmail")
     var selectedTheaterName: String? = "스크림"
     var selectedWatchDate: String? = "2/27"
     var selectedWatchTime: String? = "10:30"
@@ -72,7 +72,7 @@ final class TicketBookingViewModel {
             child: childCount,
             totalPrice: totalPrice,
             seatNumber: nil,
-            userEmail: nil
+            userEmail: email
         )
         onBooked?(success)
     }
