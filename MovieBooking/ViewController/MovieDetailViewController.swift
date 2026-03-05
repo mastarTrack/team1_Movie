@@ -49,7 +49,7 @@ final class MovieDetailViewController: UIViewController {
         view.addSubview(detailView)
 
         detailView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
         }
