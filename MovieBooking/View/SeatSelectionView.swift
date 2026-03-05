@@ -120,13 +120,9 @@ final class SeatSelectionView: UIView {
             // 뷰에 넣기
             seatContainerView.addSubview(button)
             
-            button.addAction(UIAction { [weak self] action in
-                guard let self = self else { return }
-                
-                // action.sender는 Any?
-                guard let tappedButton = action.sender as? UIButton else { return }
-                
-                self.didTapSeat(tappedButton)
+            // 버튼에 액션 등록하기
+            button.addAction(UIAction { [weak self] _ in
+                self?.didTapSeat(button)
             }, for: .touchUpInside)
             
             // CGFloat로 Grid 그리기
@@ -141,8 +137,7 @@ final class SeatSelectionView: UIView {
             updateSeatState(index: index)
         }
     }
-    
-    
+
     private func seatTitle(index: Int) -> String {
         // 몇번째 줄인지
         let rowIndex = index / columns
@@ -172,7 +167,6 @@ final class SeatSelectionView: UIView {
         } else {
             seatStates[index] = .selected
         }
-        
         // 바뀐상태 버튼에 적용
         updateSeatState(index: index)
     }
@@ -186,7 +180,6 @@ final class SeatSelectionView: UIView {
         for i in a {
             seatStates[i] = .Unavailable
         }
-        
     }
     
     // 저장된 걸로 버튼 모양 바꾸기
