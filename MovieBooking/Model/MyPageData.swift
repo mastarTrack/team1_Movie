@@ -30,12 +30,22 @@ struct MyPageMenu {
 }
 
 struct MyPageInfo {
-    let count: Int
+    let count: Int?
+    let rating: Double?
     let title: String
     
-    static let infoList: [MyPageInfo] = [
-        MyPageInfo(count: 99, title: "총 예매"),
-        MyPageInfo(count: 100, title: "찜한 영화"),
-        MyPageInfo(count: 5, title: "리뷰 작성")
-    ]
+    init(count: Int? = nil, rating: Double? = nil, title: String) {
+        self.count = count
+        self.rating = rating
+        self.title = title
+    }
+    
+    var value: String {
+        if let count = count {
+            return "\(count)"
+        } else if let rating = rating {
+            return String(format: "%.1f", rating)
+        }
+        return "0"
+    }
 }

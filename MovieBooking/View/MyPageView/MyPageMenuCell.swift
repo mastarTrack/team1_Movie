@@ -81,6 +81,10 @@ extension MyPageMenuCell {
             iconImageView.tintColor = .systemRed
             titleLabel.textColor = .systemRed
             subTitleLabel.textColor = .systemRed
+        } else {
+            iconImageView.tintColor = .systemOrange
+            titleLabel.textColor = .label
+            subTitleLabel.textColor = .secondaryLabel
         }
     }
 }
