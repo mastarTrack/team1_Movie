@@ -9,8 +9,14 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol AvailableReviewCollectionViewCellDelegate: AnyObject {
+    func didTapWriteButton(cell: AvailableReviewCollectionViewCell)
+}
+
 class AvailableReviewCollectionViewCell: UICollectionViewCell {
     static let id = "AvailableReviewCollectionViewCell"
+    
+    weak var delegate: AvailableReviewCollectionViewCellDelegate?
     
     private let containerView = UIView()
     private let posterImageView = UIImageView()
@@ -26,6 +32,7 @@ class AvailableReviewCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setAttributes()
         setLayout()
+        setAction()
     }
     
     required init?(coder: NSCoder) {
@@ -100,5 +107,16 @@ extension AvailableReviewCollectionViewCell {
         infoLabel.text = data.safeTheaterName
         watchDateLael.text = "\(data.safeWatchDate) 관람"
         
+    }
+}
+
+extension AvailableReviewCollectionViewCell {
+    private func setAction() {
+        writeButton.addTarget(self, action: #selector(writeButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func writeButtonTapped() {
+        delegate?.didTapWriteButton(cell: self)
     }
 }

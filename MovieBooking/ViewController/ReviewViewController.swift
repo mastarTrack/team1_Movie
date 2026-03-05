@@ -79,10 +79,22 @@ extension ReviewViewController: UICollectionViewDataSource {
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AvailableReviewCollectionViewCell.id, for: indexPath) as? AvailableReviewCollectionViewCell else { return UICollectionViewCell() }
             let item = availableData[indexPath.row]
+            cell.delegate = self
             cell.config(data: item)
             return cell
         }
     }
-    
-    
 }
+
+extension ReviewViewController: AvailableReviewCollectionViewCellDelegate {
+    func didTapWriteButton(cell: AvailableReviewCollectionViewCell) {
+        guard let indexPath = reviewView.collectionView.indexPath(for: cell) else { return }
+        
+        let reservation = availableData[indexPath.item]
+    }
+    
+    private func showModal() {
+        
+    }
+}
+
