@@ -92,10 +92,11 @@ final class TicketBookingViewModel {
     }
     
     // 예매완료 - 저장됨을 알림
-    var onBooked: ((Bool) -> Void)?
+    //var onBooked: ((Bool) -> Void)?
     
     // coreData 저장
-    func bookReservation() {
+    // 호출한 쪽에서 결과로 알럿 처리하도록 escaping으로 변경함
+    func bookReservation(completion: @escaping (Bool) -> Void) {
         let success = CoreDataManager.shared.saveReservation(
             title: title,
             posterPath: selectedPoster,
@@ -108,7 +109,7 @@ final class TicketBookingViewModel {
             seatNumber: selectedSeatNumber,
             userEmail: email
         )
-        onBooked?(success)
+        completion(success)
     }
     
     private func convertForSaveDate(_ date: String) -> String {
