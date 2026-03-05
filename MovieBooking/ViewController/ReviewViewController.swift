@@ -21,6 +21,8 @@ class ReviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setDelegate()
+        loadAvailableData()
     }
 }
 
@@ -32,6 +34,24 @@ extension ReviewViewController {
         
         reviewView.collectionView.register(ReviewCollectionViewCell.self, forCellWithReuseIdentifier: ReviewCollectionViewCell.id)
         reviewView.collectionView.register(AvailableReviewCollectionViewCell.self, forCellWithReuseIdentifier: AvailableReviewCollectionViewCell.id)
+    }
+}
+
+extension ReviewViewController {
+    private func loadAvailableData() {
+        guard let email = UserDefaults.standard.string(forKey: "userEmail") else { return }
+        let allData = CoreDataManager.shared.fetchReservations(email: email)
+        
+        let now = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        
+        self.availableData = allData.filter{ data in
+            let dateData = "\(data.safeWatchDate) \(data.safeWatchTime)"
+            guard let watchDate = formatter.date(from: dateData) else { return false }
+            return watchDate < now && data.review == nil
+        }.reversed()
+        reviewView.collectionView.reloadData()
     }
 }
 
@@ -58,6 +78,8 @@ extension ReviewViewController: UICollectionViewDataSource {
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AvailableReviewCollectionViewCell.id, for: indexPath) as? AvailableReviewCollectionViewCell else { return UICollectionViewCell() }
+            let item = availableData[indexPath.row]
+            cell.config(data: item)
             return cell
         }
     }

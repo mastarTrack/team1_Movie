@@ -30,6 +30,7 @@ extension Reservation {
     @NSManaged public var totalPrice: Int64
     @NSManaged public var userEmail: String?
     @NSManaged public var seatNumber: String?
+    @NSManaged public var review: Review?
 
 }
 
