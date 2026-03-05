@@ -26,12 +26,12 @@ final class SeatSelectionViewController: UIViewController {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        setupViewModel()
+        setupSeatView()
         bindViewModel()
         bindView()
     }
     
-    // 아예 뷰모델 넘겨주기
+    // 아예 뷰모델 넘겨받기
     init(ticketBookingViewModel: TicketBookingViewModel) {
         self.ticketBookingViewModel = ticketBookingViewModel
         super.init(nibName: nil, bundle: nil)
@@ -39,14 +39,6 @@ final class SeatSelectionViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // 예매된 좌석 임의로 추가
-    private func setupViewModel() {
-        seatViewModel.setup(
-            totalSeatsCount: seatView.totalSeatsCount,
-            unavailableIndexes: [3,6,100]
-        )
     }
     
     // 뷰모델에서 뷰에 받아오는거
@@ -69,7 +61,7 @@ final class SeatSelectionViewController: UIViewController {
         }
     }
     
-    // 뷰에서 뷰모델 받아오는거
+    // 뷰에서 뷰모델 받아오는 정보
     private func bindView() {
         // 뷰에서 시트 눌렸을때 해당 좌석 정보 뷰모델로 보내기
         seatView.onSeatTapped = { [weak self] index, title in
@@ -112,9 +104,15 @@ final class SeatSelectionViewController: UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
             guard let self else { return }
+            // 성공시
             if success {
-                // 현재 화면(SeatSelectionVC)이 pop → TicketBookingVC로 돌아감
-                self.navigationController?.popViewController(animated: true)
+                // 콜렉션뷰 찾아서
+                if let targetVC = self.navigationController?.viewControllers.first(where: {
+                    $0 is MovieCollectionViewController
+                }) {
+                    // 팝해줌
+                    self.navigationController?.popToViewController(targetVC, animated: true)
+                }
             }
         })
         present(alert, animated: true)
@@ -125,5 +123,18 @@ final class SeatSelectionViewController: UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default))
         present(alert, animated: true)
+    }
+    
+    // 예매된 좌석 임의로 추가
+    private func setupSeatView() {
+        seatViewModel.setup(
+            totalSeatsCount: seatView.totalSeatsCount,
+            unavailableIndexes: [0,1,2,6,46,56,76,77,78,79,80,81,82,83,84,61,71,91,92,93,94,95,96,97,98,99,100,
+                                 14,23,35,44,52,68,107,118,129,137]
+        )
+        for index in 0..<seatView.totalSeatsCount {
+            let state = seatViewModel.seatStates[index]
+            seatView.updateSeatState(index: index, state: state)
+        }
     }
 }
