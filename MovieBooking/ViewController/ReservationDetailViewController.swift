@@ -37,13 +37,22 @@ extension ReservationDetailViewController {
         guard let email = UserDefaults.standard.string(forKey: "userEmail") else { return }
         let allData = CoreDataManager.shared.fetchReservations(email: email)
         
+        let now = Date()
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let today = formatter.string(from: Date())
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
         
-        upcomingResrvation = allData.filter { ($0.watchDate ?? "") >= today }
-        pastReservation = allData.filter{($0.watchDate ?? "") < today }
-        
+        for data in allData {
+            let dateData = "\(data.safeWatchDate) \(data.safeWatchTime)"
+            
+            if let watchDate = formatter.date(from: dateData) {
+                if watchDate >= now {
+                    upcomingResrvation.append(data)
+                } else {
+                    pastReservation.append(data)
+                }
+            }
+        }
+        pastReservation = pastReservation.reversed()
         reservationView.collectionView.reloadData()
     }
 }

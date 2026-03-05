@@ -160,8 +160,10 @@ extension CoreDataManager {
         let fetchRequest = Reservation.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "userEmail == %@", email)
         
-        let sortedData = NSSortDescriptor(key: "reservationDate", ascending: false)
-        fetchRequest.sortDescriptors = [sortedData]
+        let dateSort = NSSortDescriptor(key: "watchDate", ascending: true)
+        let timeSort = NSSortDescriptor(key: "watchTime", ascending: true)
+        
+        fetchRequest.sortDescriptors = [dateSort, timeSort]
         
         do {
             return try context.fetch(fetchRequest)
