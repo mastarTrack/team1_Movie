@@ -47,6 +47,11 @@ extension SearchTableViewCell {
         containerView.backgroundColor = .systemGray6
         containerView.layer.cornerRadius = 10
         containerView.clipsToBounds = true
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOpacity = 0.5
+        containerView.layer.shadowOffset = CGSize(width: 2, height: 10)
+        containerView.layer.shadowRadius = 10
+        containerView.layer.masksToBounds = false
         
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.layer.cornerRadius = 10

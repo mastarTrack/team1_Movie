@@ -23,9 +23,9 @@ class PasswordChangeView: UIView {
     private let newPasswordLabel = UILabel()
     private let reNewPasswordLabel = UILabel()
     
-    private let currentPasswordField = CustomTextField(placeholder: "현재 비밀번호")
-    private let newPasswordField = CustomTextField(placeholder: "새 비밀번호")
-    private let reNewPasswordField = CustomTextField(placeholder: "새 비밀번호 확인")
+    private let currentPasswordField = CustomTextField(placeholder: "현재 비밀번호", isPassword: true)
+    private let newPasswordField = CustomTextField(placeholder: "새 비밀번호", isPassword: true)
+    private let reNewPasswordField = CustomTextField(placeholder: "새 비밀번호 확인", isPassword: true)
     
     private let changeButton = CustomButton(title: "비밀번호 변경")
     override init(frame: CGRect) {
@@ -121,7 +121,7 @@ extension PasswordChangeView {
 extension PasswordChangeView {
     private func setAction() {
         [currentPasswordField, newPasswordField, reNewPasswordField].forEach {
-            $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            $0.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         }
         changeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
     }

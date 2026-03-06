@@ -26,6 +26,7 @@ class ReviewCollectionViewCell: UICollectionViewCell {
     private let locationLabel = UILabel()
     private let dateLabel = UILabel()
     private let peopleLabel = UILabel()
+    private let seatLabel = UILabel()
     private let starLabel = UILabel()
     
     
@@ -51,6 +52,11 @@ extension ReviewCollectionViewCell {
         containerView.layer.cornerRadius = 20
         containerView.layer.borderWidth = 1
         containerView.layer.borderColor = UIColor.systemGray5.cgColor
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOpacity = 0.5
+        containerView.layer.shadowOffset = CGSize(width: 2, height: 10)
+        containerView.layer.shadowRadius = 10
+        containerView.layer.masksToBounds = false
         
         seperateView.backgroundColor = .systemBackground
         seperateView.layer.borderWidth = 1
@@ -68,7 +74,7 @@ extension ReviewCollectionViewCell {
 //        genreLabel.font = .systemFont(ofSize: 12)
 //        genreLabel.textColor = .systemGray
         
-        [locationLabel, dateLabel, peopleLabel].forEach {
+        [locationLabel, dateLabel, peopleLabel, seatLabel].forEach {
             $0.font = .systemFont(ofSize: 14)
             $0.textColor = .darkGray
         }
@@ -95,7 +101,7 @@ extension ReviewCollectionViewCell {
     
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, locationLabel, dateLabel, peopleLabel, starLabel].forEach { infoStackView.addArrangedSubview($0) }
+        [titleLabel, locationLabel, dateLabel, peopleLabel, seatLabel, starLabel].forEach { infoStackView.addArrangedSubview($0) }
         [posterImageView, infoStackView].forEach { seperateView.addSubview($0) }
         [idLabel, seperateView, reviewTitleLabel, reviewContentLabel, writtenDateLabel].forEach { containerView.addSubview($0) }
         
@@ -167,8 +173,9 @@ extension ReviewCollectionViewCell {
         let childCount = reservation.intChild
         let totalCount = adultCount + childCount
         let adultText = adultCount > 0 ? "성인 \(adultCount)명" : ""
-        let childText = childCount > 0 ? "어린이 \(childCount)명" : ""
+        let childText = childCount > 0 ? "어린이 \(childCount)명 " : ""
         
+        seatLabel.text = "좌석: \(reservation.safeSeat)"
         peopleLabel.text = "\(totalCount)명 ( \(adultText) \(childText))"
         
         let stars = String(repeating: "⭐️", count: Int(data.rating))

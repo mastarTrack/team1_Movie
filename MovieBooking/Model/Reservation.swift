@@ -26,6 +26,9 @@ extension Reservation {
     var safeWatchTime: String {
         watchTime ?? ""
     }
+    var safeSeat: String {
+        seatNumber ?? "좌석 정보 없음"
+    }
     var intAdult: Int {
         Int(adult)
     }
