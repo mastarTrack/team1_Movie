@@ -52,6 +52,11 @@ extension ReviewCollectionViewCell {
         containerView.layer.cornerRadius = 20
         containerView.layer.borderWidth = 1
         containerView.layer.borderColor = UIColor.systemGray5.cgColor
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOpacity = 0.5
+        containerView.layer.shadowOffset = CGSize(width: 2, height: 10)
+        containerView.layer.shadowRadius = 10
+        containerView.layer.masksToBounds = false
         
         seperateView.backgroundColor = .systemBackground
         seperateView.layer.borderWidth = 1
