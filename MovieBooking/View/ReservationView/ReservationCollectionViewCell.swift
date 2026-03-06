@@ -27,6 +27,7 @@ class ReservationCollectionViewCell: UICollectionViewCell {
     private let dateLabel = UILabel()
     private let timeLabel = UILabel()
     private let peopleLabel = UILabel()
+    private let seatLabel = UILabel()
     
     private let priceTitleLabel = UILabel()
     private let priceValueLabel = UILabel()
@@ -67,7 +68,7 @@ extension ReservationCollectionViewCell {
 //        genreLabel.font = .systemFont(ofSize: 12)
 //        genreLabel.textColor = .systemGray
         
-        [locationLabel, dateLabel, timeLabel, peopleLabel].forEach {
+        [locationLabel, dateLabel, timeLabel, peopleLabel, seatLabel].forEach {
             $0.font = .systemFont(ofSize: 14)
             $0.textColor = .darkGray
         }
@@ -86,7 +87,7 @@ extension ReservationCollectionViewCell {
     
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, locationLabel, dateLabel, timeLabel, peopleLabel].forEach { infoStackView.addArrangedSubview($0) }
+        [titleLabel, locationLabel, dateLabel, timeLabel, peopleLabel, seatLabel].forEach { infoStackView.addArrangedSubview($0) }
         [posterImageView, infoStackView].forEach { seperateView.addSubview($0) }
         [idLabel, seperateView, priceTitleLabel, priceValueLabel].forEach { containerView.addSubview($0) }
         
@@ -161,6 +162,8 @@ extension ReservationCollectionViewCell {
         let childText = childCount > 0 ? "어린이 \(childCount)명" : ""
         
         peopleLabel.text = "\(totalCount)명 (\(adultText) \(childText))"
+        
+        seatLabel.text = "좌석: \(data.safeSeat)"
         
     }
 }

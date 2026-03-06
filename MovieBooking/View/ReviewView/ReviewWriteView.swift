@@ -27,6 +27,7 @@ class ReviewWriteView: UIView {
     private let locationLabel = UILabel()
     private let dateLabel = UILabel()
     private let peopleLabel = UILabel()
+    private let seatLabel = UILabel()
     
     private let starStackView = UIStackView()
     let textView = UITextView()
@@ -54,7 +55,7 @@ extension ReviewWriteView {
         
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         
-        [locationLabel, dateLabel, peopleLabel].forEach {
+        [locationLabel, dateLabel, peopleLabel, seatLabel].forEach {
             $0.font = .systemFont(ofSize: 14)
             $0.textColor = .darkGray
         }
@@ -90,7 +91,7 @@ extension ReviewWriteView {
     }
     
     private func setLayout() {
-        [titleLabel, locationLabel, dateLabel, peopleLabel].forEach { stackView.addArrangedSubview($0) }
+        [titleLabel, locationLabel, dateLabel, peopleLabel, seatLabel].forEach { stackView.addArrangedSubview($0) }
         [posterImageView, stackView, starStackView, textView, writeButton].forEach{ addSubview($0) }
         
         posterImageView.snp.makeConstraints {
@@ -146,6 +147,7 @@ extension ReviewWriteView {
         let childText = childCount > 0 ? "어린이 \(childCount)명" : ""
         
         peopleLabel.text = "\(totalCount)명 ( \(adultText) \(childText))"
+        seatLabel.text = "좌석: \(data.safeSeat)"
     }
 }
 

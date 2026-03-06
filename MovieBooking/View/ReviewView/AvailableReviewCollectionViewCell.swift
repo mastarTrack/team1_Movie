@@ -26,6 +26,7 @@ class AvailableReviewCollectionViewCell: UICollectionViewCell {
     private let infoLabel = UILabel()
     private let watchDateLael = UILabel()
     private let peopleLabel = UILabel()
+    private let seatLabel = UILabel()
     
     private let writeButton = CustomButton(title: "작성")
     
@@ -54,7 +55,7 @@ extension AvailableReviewCollectionViewCell {
         posterImageView.backgroundColor = .white
         
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        [infoLabel, watchDateLael, peopleLabel].forEach {
+        [infoLabel, watchDateLael, peopleLabel, seatLabel].forEach {
             $0.font = .systemFont(ofSize: 14)
             $0.textColor = .darkGray
         }
@@ -67,7 +68,7 @@ extension AvailableReviewCollectionViewCell {
     }
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, infoLabel, watchDateLael, peopleLabel, writeButton].forEach { stackView.addArrangedSubview($0) }
+        [titleLabel, infoLabel, watchDateLael, peopleLabel, seatLabel, writeButton].forEach { stackView.addArrangedSubview($0) }
         [posterImageView, stackView].forEach { containerView.addSubview($0) }
         
         containerView.snp.makeConstraints {
@@ -110,9 +111,10 @@ extension AvailableReviewCollectionViewCell {
         let childCount = data.intChild
         let totalCount = adultCount + childCount
         let adultText = adultCount > 0 ? "성인 \(adultCount)명" : ""
-        let childText = childCount > 0 ? "어린이 \(childCount)명" : ""
+        let childText = childCount > 0 ? "어린이 \(childCount)명 " : ""
         
         peopleLabel.text = "\(totalCount)명 ( \(adultText) \(childText))"
+        seatLabel.text = "좌석: \(data.safeSeat)"
         
     }
 }
