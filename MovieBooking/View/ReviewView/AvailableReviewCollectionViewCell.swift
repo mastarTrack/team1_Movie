@@ -73,15 +73,15 @@ extension AvailableReviewCollectionViewCell {
     }
     private func setLayout() {
         contentView.addSubview(containerView)
-        [titleLabel, infoLabel, watchDateLael, peopleLabel, seatLabel, writeButton].forEach { stackView.addArrangedSubview($0) }
-        [posterImageView, stackView].forEach { containerView.addSubview($0) }
+        [titleLabel, infoLabel, watchDateLael, peopleLabel, seatLabel].forEach { stackView.addArrangedSubview($0) }
+        [posterImageView, stackView, writeButton].forEach { containerView.addSubview($0) }
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
         posterImageView.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview().inset(10)
+            $0.top.leading.equalToSuperview().inset(10)
             $0.width.equalTo(100)
             $0.height.equalTo(150)
         }
@@ -93,8 +93,11 @@ extension AvailableReviewCollectionViewCell {
         }
         
         writeButton.snp.makeConstraints {
-            $0.width.equalTo(stackView.snp.width)
+            $0.top.equalTo(posterImageView.snp.bottom).offset(10)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview().inset(10)
             $0.height.equalTo(40)
+            $0.bottom.equalToSuperview().offset(-10)
         }
     }
 }
